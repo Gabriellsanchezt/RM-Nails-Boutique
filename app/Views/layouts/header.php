@@ -78,11 +78,11 @@
             </div>
           </div>
         </div>
-        <div class="flex flex-col justify-center">
-          <span class="font-serif font-bold text-base sm:text-lg text-gray-900 tracking-tight leading-tight group-hover:text-[#E57399] transition-colors">
+        <div class="flex flex-col justify-center min-w-0">
+          <span class="font-serif font-bold text-sm sm:text-base lg:text-lg text-gray-900 tracking-tight leading-tight group-hover:text-[#E57399] transition-colors truncate max-w-[130px] xs:max-w-[200px] sm:max-w-none">
             <?= htmlspecialchars($appName ?? 'RM Nails Boutique') ?>
           </span>
-          <span class="text-[9px] sm:text-[10px] font-semibold text-gray-400 tracking-widest uppercase">
+          <span class="text-[8px] sm:text-[10px] font-semibold text-gray-400 tracking-widest uppercase truncate max-w-[130px] xs:max-w-[200px] sm:max-w-none">
             <?= htmlspecialchars($slogan ?? 'La boutique de las unas') ?>
           </span>
         </div>
@@ -106,7 +106,7 @@
       </div>
 
       <!-- Right Quick Actions -->
-      <div class="flex items-center gap-2 sm:gap-3">
+      <div class="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
         <!-- WhatsApp Fast Contact -->
         <button 
           onclick="openGeneralWhatsApp()"
@@ -121,7 +121,7 @@
         <!-- Wishlist Button -->
         <button 
           onclick="openWishlistModal()"
-          class="relative p-2.5 rounded-full text-gray-600 hover:text-pink-600 hover:bg-pink-50 transition-colors"
+          class="relative p-2 sm:p-2.5 rounded-full text-gray-600 hover:text-pink-600 hover:bg-pink-50 transition-colors"
           title="Ver favoritos"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -135,7 +135,7 @@
         <!-- Cart Slide-Over Trigger Button -->
         <button 
           onclick="openCartDrawer()"
-          class="relative flex items-center gap-2 bg-[#FFF1F5] hover:bg-[#FDE2EC] text-[#C84B75] border border-pink-200 px-3.5 py-2 rounded-full font-semibold text-xs transition-all shadow-sm group"
+          class="relative flex items-center gap-1.5 sm:gap-2 bg-[#FFF1F5] hover:bg-[#FDE2EC] text-[#C84B75] border border-pink-200 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-full font-semibold text-xs transition-all shadow-sm group"
           title="Ver carrito de compras"
         >
           <div class="relative">
@@ -315,10 +315,10 @@
 <div class="md:hidden bg-white px-4 py-2.5 border-b border-pink-100">
   <div class="relative w-full">
     <input 
+      id="mobile-search-input"
       type="text" 
-      oninput="STATE.searchQuery = this.value; renderProducts();"
       placeholder="Buscar insumos (geles, pestanas, lamparas...)" 
-      class="w-full bg-[#FCF8F9] border border-pink-200 rounded-full py-2 pl-9 pr-4 text-xs focus:outline-none focus:border-pink-500"
+      class="w-full bg-[#FCF8F9] border border-pink-200 rounded-full py-2 pl-9 pr-4 text-xs focus:outline-none focus:border-pink-500 shadow-inner"
     />
     <div class="absolute left-3 top-1/2 -translate-y-1/2 text-pink-400">
       <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

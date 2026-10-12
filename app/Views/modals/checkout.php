@@ -1,25 +1,27 @@
 <!-- Checkout Modal -->
-<div id="checkout-modal" class="modal-overlay fixed inset-0 bg-black/60 z-50 backdrop-blur-sm flex items-center justify-center p-4">
-  <div class="modal-container bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-pink-100 max-h-[90vh] flex flex-col">
+<div id="checkout-modal" class="modal-overlay fixed inset-0 bg-black/60 z-50 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+  <div class="modal-container bg-white rounded-2xl sm:rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-pink-100 max-h-[92vh] flex flex-col">
     
     <!-- Modal Header -->
-    <div class="p-5 border-b border-pink-100 bg-gradient-to-r from-pink-50 to-white flex items-center justify-between">
+    <div class="p-4 sm:p-5 border-b border-pink-100 bg-gradient-to-r from-pink-50 to-white flex items-center justify-between">
       <div class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center text-sm font-bold">
+        <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center text-sm font-bold flex-shrink-0">
           <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
           </svg>
         </div>
         <div>
-          <h3 class="font-serif font-bold text-base text-gray-900">Enviar Orden a WhatsApp</h3>
-          <p class="text-[11px] text-gray-500"><?= htmlspecialchars($appName ?? 'RM Nails Boutique') ?> | wa.me/<?= htmlspecialchars($whatsApp ?? '584120549526') ?></p>
+          <h3 class="font-serif font-bold text-sm sm:text-base text-gray-900">Enviar Orden a WhatsApp</h3>
+          <p class="text-[10px] sm:text-[11px] text-gray-500"><?= htmlspecialchars($appName ?? 'RM Nails Boutique') ?> | wa.me/<?= htmlspecialchars($whatsApp ?? '584120549526') ?></p>
         </div>
       </div>
-      <button onclick="closeCheckoutModal()" class="text-gray-400 hover:text-gray-700 p-1 rounded-lg">✕</button>
+      <button onclick="closeCheckoutModal()" class="text-gray-400 hover:text-gray-700 p-1.5 rounded-lg hover:bg-gray-100 transition-colors" aria-label="Cerrar modal de pedido">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
     </div>
 
     <!-- Modal Body (Form) -->
-    <form id="checkout-form" class="p-6 overflow-y-auto space-y-4" novalidate>
+    <form id="checkout-form" class="p-4 sm:p-6 overflow-y-auto space-y-3.5 sm:space-y-4" novalidate>
       
       <!-- Alert Message Box -->
       <div id="checkout-form-alert" class="hidden p-3 rounded-xl text-xs font-semibold bg-rose-50 border border-rose-200 text-rose-700"></div>

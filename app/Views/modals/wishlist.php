@@ -1,14 +1,16 @@
 <!-- Wishlist Modal -->
-<div id="wishlist-modal" class="modal-overlay fixed inset-0 bg-black/60 z-50 backdrop-blur-sm flex items-center justify-center p-4">
-  <div class="modal-container bg-white rounded-3xl max-w-md w-full overflow-hidden shadow-2xl border border-pink-100 p-6">
+<div id="wishlist-modal" class="modal-overlay fixed inset-0 bg-black/60 z-50 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+  <div class="modal-container bg-white rounded-2xl sm:rounded-3xl max-w-md w-full overflow-hidden shadow-2xl border border-pink-100 p-4 sm:p-6 max-h-[92vh] flex flex-col">
     <div class="flex items-center justify-between pb-3 border-b border-pink-100 mb-4">
       <div class="flex items-center gap-2">
         <svg class="w-5 h-5 text-pink-600 fill-current" viewBox="0 0 24 24">
           <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
         </svg>
-        <h4 class="font-serif font-bold text-gray-900 text-base">Tus Favoritos</h4>
+        <h4 class="font-serif font-bold text-gray-900 text-sm sm:text-base">Tus Favoritos</h4>
       </div>
-      <button onclick="closeWishlistModal()" class="text-gray-400 hover:text-gray-700">✕</button>
+      <button onclick="closeWishlistModal()" class="text-gray-400 hover:text-gray-700 p-1.5 rounded-lg hover:bg-gray-100 transition-colors" aria-label="Cerrar favoritos">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
     </div>
 
     <div id="wishlist-empty-state" class="text-center py-8">

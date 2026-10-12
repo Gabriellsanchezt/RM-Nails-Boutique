@@ -45,7 +45,7 @@
   </div>
 
   <!-- Category Filter Pills (Sin kits, con iconos SVG limpios) -->
-  <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-8 no-scrollbar">
+  <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-8 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
     <button 
       data-category="all"
       class="cat-pill active px-4 py-2 rounded-full text-xs font-semibold border border-pink-200 bg-white text-gray-700 whitespace-nowrap transition-all flex items-center gap-1.5"
@@ -89,7 +89,7 @@
   </div>
 
   <!-- Products Grid Container -->
-  <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+  <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
     <?php foreach ($products as $product): ?>
       <div class="product-card bg-white rounded-2xl overflow-hidden flex flex-col justify-between group relative" data-product-id="<?= htmlspecialchars($product['id']) ?>">
         <div class="relative w-full pt-[95%] overflow-hidden bg-pink-50/50">
@@ -164,12 +164,12 @@
               </span>
             </div>
 
-            <div class="grid grid-cols-2 gap-2">
+            <div class="grid grid-cols-2 gap-1.5 sm:gap-2">
               <button 
                 onclick="addToCart('<?= htmlspecialchars($product['id']) ?>')"
-                class="w-full btn-primary-boutique py-2.5 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 text-center"
+                class="w-full btn-primary-boutique py-2 sm:py-2.5 px-2 sm:px-3 rounded-xl text-[11px] sm:text-xs font-semibold flex items-center justify-center gap-1 sm:gap-1.5 text-center min-h-[38px]"
               >
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
                 </svg>
                 <span>Anadir</span>
@@ -177,10 +177,10 @@
 
               <button 
                 onclick="buyDirectWhatsApp('<?= htmlspecialchars($product['id']) ?>')"
-                class="w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 py-2.5 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors"
+                class="w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 py-2 sm:py-2.5 px-2 sm:px-3 rounded-xl text-[11px] sm:text-xs font-semibold flex items-center justify-center gap-1 sm:gap-1.5 transition-colors min-h-[38px]"
                 title="Consultar y comprar por WhatsApp"
               >
-                <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 24 24">
+                <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.668-.699c.974.53 1.83.82 2.792.82 3.183 0 5.77-2.587 5.77-5.768.001-3.182-2.585-5.804-5.77-5.804zm8.286 5.768c0 4.568-3.719 8.286-8.286 8.286-1.42 0-2.75-.36-3.92-.99l-4.35 1.14 1.16-4.24c-.73-1.23-1.16-2.67-1.16-4.196 0-4.567 3.719-8.286 8.27-8.286 4.567 0 8.286 3.719 8.286 8.286z"/>
                 </svg>
                 <span>Consultar</span>

@@ -289,6 +289,7 @@ function initElements() {
     cartTotalUsd: document.getElementById('cart-total-usd'),
     cartTotalVes: document.getElementById('cart-total-ves'),
     searchInput: document.getElementById('search-input'),
+    mobileSearchInput: document.getElementById('mobile-search-input'),
     sortSelect: document.getElementById('sort-select'),
     categoryPills: document.querySelectorAll('.cat-pill'),
     currencyToggleBtn: document.getElementById('currency-toggle-btn'),
@@ -433,12 +434,12 @@ function renderProducts() {
               </span>
             </div>
 
-            <div class="grid grid-cols-2 gap-2">
+            <div class="grid grid-cols-2 gap-1.5 sm:gap-2">
               <button 
                 onclick="addToCart('${product.id}')"
-                class="w-full btn-primary-boutique py-2.5 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 text-center"
+                class="w-full btn-primary-boutique py-2 sm:py-2.5 px-2 sm:px-3 rounded-xl text-[11px] sm:text-xs font-semibold flex items-center justify-center gap-1 sm:gap-1.5 text-center min-h-[38px]"
               >
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
                 </svg>
                 <span>${inCartQty > 0 ? `En Carrito (${inCartQty})` : 'Anadir'}</span>
@@ -446,10 +447,10 @@ function renderProducts() {
 
               <button 
                 onclick="buyDirectWhatsApp('${product.id}')"
-                class="w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 py-2.5 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors"
+                class="w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 py-2 sm:py-2.5 px-2 sm:px-3 rounded-xl text-[11px] sm:text-xs font-semibold flex items-center justify-center gap-1 sm:gap-1.5 transition-colors min-h-[38px]"
                 title="Consultar por WhatsApp"
               >
-                <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 24 24">
+                <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.668-.699c.974.53 1.83.82 2.792.82 3.183 0 5.77-2.587 5.77-5.768.001-3.182-2.585-5.804-5.77-5.804zm8.286 5.768c0 4.568-3.719 8.286-8.286 8.286-1.42 0-2.75-.36-3.92-.99l-4.35 1.14 1.16-4.24c-.73-1.23-1.16-2.67-1.16-4.196 0-4.567 3.719-8.286 8.27-8.286 4.567 0 8.286 3.719 8.286 8.286z"/>
                 </svg>
                 <span>Consultar</span>
@@ -717,7 +718,7 @@ function openQuickView(productId) {
   STATE.quickViewProduct = prod;
 
   elements.quickViewContainer.innerHTML = `
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 p-4 sm:p-6">
       <div class="relative rounded-2xl overflow-hidden bg-pink-50 aspect-square">
         <img src="${prod.image}" alt="${prod.name}" class="w-full h-full object-cover" />
         <span class="absolute top-3 left-3 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full ${prod.badgeType}">
@@ -727,43 +728,43 @@ function openQuickView(productId) {
       <div class="flex flex-col justify-between">
         <div>
           <div class="flex items-center justify-between text-xs text-gray-400 mb-2">
-            <span class="font-bold text-pink-600 uppercase">${prod.categoryName}</span>
+            <span class="font-bold text-pink-600 uppercase text-[11px] sm:text-xs">${prod.categoryName}</span>
             <span class="text-amber-500 font-bold">${prod.rating} (${prod.reviews} resenas)</span>
           </div>
-          <h3 class="text-xl font-serif font-bold text-gray-900 mb-2">${prod.name}</h3>
-          <div class="text-xl mb-3">
+          <h3 class="text-lg sm:text-xl font-serif font-bold text-gray-900 mb-2 leading-snug">${prod.name}</h3>
+          <div class="text-lg sm:text-xl mb-3">
             ${formatPrice(prod.priceUsd)}
           </div>
           <p class="text-xs text-gray-600 leading-relaxed mb-4">${prod.description}</p>
           
           <div class="bg-pink-50/50 rounded-xl p-3 border border-pink-100 mb-4">
-            <h6 class="text-[11px] font-bold uppercase text-pink-900 mb-2 tracking-wider">Caracteristicas Profesionales:</h6>
+            <h6 class="text-[10px] sm:text-[11px] font-bold uppercase text-pink-900 mb-2 tracking-wider">Caracteristicas Profesionales:</h6>
             <ul class="text-xs text-gray-700 space-y-1">
-              ${prod.features.map(f => `<li class="flex items-center gap-1.5"><span class="text-pink-500">✓</span> ${f}</li>`).join('')}
+              ${prod.features.map(f => `<li class="flex items-center gap-1.5"><span class="text-pink-500 font-bold">✓</span> ${f}</li>`).join('')}
             </ul>
           </div>
         </div>
 
         <div class="pt-3 border-t border-gray-100 flex flex-col gap-2.5">
-          <div class="flex items-center gap-3">
+          <div class="flex items-center gap-2 sm:gap-3">
             <div class="flex items-center border border-pink-200 rounded-xl bg-pink-50/50 p-1">
-              <button onclick="adjustQuickViewQty(-1)" class="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-gray-600 hover:bg-pink-100">-</button>
-              <input id="quickview-qty" type="number" value="1" min="1" max="50" class="w-12 text-center text-sm font-bold bg-transparent border-none outline-none" />
-              <button onclick="adjustQuickViewQty(1)" class="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-gray-600 hover:bg-pink-100">+</button>
+              <button onclick="adjustQuickViewQty(-1)" class="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-gray-600 hover:bg-pink-100 text-sm">-</button>
+              <input id="quickview-qty" type="number" value="1" min="1" max="50" class="w-10 sm:w-12 text-center text-sm font-bold bg-transparent border-none outline-none" />
+              <button onclick="adjustQuickViewQty(1)" class="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-gray-600 hover:bg-pink-100 text-sm">+</button>
             </div>
-            <button onclick="addQuickViewToCart()" class="flex-grow btn-primary-boutique py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2">
+            <button onclick="addQuickViewToCart()" class="flex-grow btn-primary-boutique py-2.5 sm:py-3 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 sm:gap-2">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
               </svg>
-              Anadir a mi Pedido
+              <span>Anadir a mi Pedido</span>
             </button>
           </div>
 
-          <button onclick="buyDirectWhatsApp('${prod.id}')" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-sm transition-all">
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <button onclick="buyDirectWhatsApp('${prod.id}')" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2.5 sm:py-3 rounded-xl text-xs flex items-center justify-center gap-2 shadow-sm transition-all">
+            <svg class="w-4 h-4 fill-current flex-shrink-0" viewBox="0 0 24 24">
               <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.668-.699c.974.53 1.83.82 2.792.82 3.183 0 5.77-2.587 5.77-5.768.001-3.182-2.585-5.804-5.77-5.804zm8.286 5.768c0 4.568-3.719 8.286-8.286 8.286-1.42 0-2.75-.36-3.92-.99l-4.35 1.14 1.16-4.24c-.73-1.23-1.16-2.67-1.16-4.196 0-4.567 3.719-8.286 8.27-8.286 4.567 0 8.286 3.719 8.286 8.286z"/>
             </svg>
-            Consultar este producto por WhatsApp
+            <span>Consultar este producto por WhatsApp</span>
           </button>
         </div>
       </div>
@@ -1225,6 +1226,7 @@ function resetFilters() {
   STATE.searchQuery = '';
   STATE.sortBy = 'featured';
   if (elements.searchInput) elements.searchInput.value = '';
+  if (elements.mobileSearchInput) elements.mobileSearchInput.value = '';
   if (elements.sortSelect) elements.sortSelect.value = 'featured';
   elements.categoryPills.forEach(pill => {
     if (pill.dataset.category === 'all') pill.classList.add('active');
@@ -1310,13 +1312,33 @@ document.addEventListener('DOMContentLoaded', () => {
   updateCartCounters();
   renderProducts();
 
+  const handleSearchInput = (val) => {
+    STATE.searchQuery = val;
+    if (elements.searchInput && elements.searchInput.value !== val) {
+      elements.searchInput.value = val;
+    }
+    if (elements.mobileSearchInput && elements.mobileSearchInput.value !== val) {
+      elements.mobileSearchInput.value = val;
+    }
+    renderProducts();
+  };
+
   if (elements.searchInput) {
     let timeout = null;
     elements.searchInput.addEventListener('input', (e) => {
       clearTimeout(timeout);
       timeout = setTimeout(() => {
-        STATE.searchQuery = e.target.value;
-        renderProducts();
+        handleSearchInput(e.target.value);
+      }, 250);
+    });
+  }
+
+  if (elements.mobileSearchInput) {
+    let timeoutMobile = null;
+    elements.mobileSearchInput.addEventListener('input', (e) => {
+      clearTimeout(timeoutMobile);
+      timeoutMobile = setTimeout(() => {
+        handleSearchInput(e.target.value);
       }, 250);
     });
   }

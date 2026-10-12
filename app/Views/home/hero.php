@@ -88,28 +88,28 @@
           </div>
 
           <!-- Floating badge 1: Delivery Barquisimeto with SVG icon -->
-          <div class="absolute -top-4 -left-4 sm:-left-6 bg-white/95 backdrop-blur-md border border-pink-200 p-3 rounded-2xl shadow-xl flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center">
-              <svg class="w-5 h-5 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="absolute -top-3 left-1 xs:left-2 sm:-top-4 sm:-left-6 bg-white/95 backdrop-blur-md border border-pink-200 p-2.5 sm:p-3 rounded-2xl shadow-xl flex items-center gap-2 sm:gap-3">
+            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center flex-shrink-0">
+              <svg class="w-4 h-4 sm:w-5 sm:h-5 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
               </svg>
             </div>
             <div>
-              <div class="text-xs font-bold text-gray-800">Delivery en Barquisimeto</div>
-              <div class="text-[10px] text-gray-500">Directo a tu cabina o salon</div>
+              <div class="text-[11px] sm:text-xs font-bold text-gray-800">Delivery en Barquisimeto</div>
+              <div class="text-[9px] sm:text-[10px] text-gray-500">Directo a tu cabina o salon</div>
             </div>
           </div>
 
           <!-- Floating badge 2: WhatsApp Verified with SVG icon -->
-          <div class="absolute -bottom-4 -right-4 sm:-right-6 bg-white/95 backdrop-blur-md border border-emerald-200 p-3 rounded-2xl shadow-xl flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center">
-              <svg class="w-5 h-5 text-emerald-600" fill="currentColor" viewBox="0 0 24 24">
+          <div class="absolute -bottom-3 right-1 xs:right-2 sm:-bottom-4 sm:-right-6 bg-white/95 backdrop-blur-md border border-emerald-200 p-2.5 sm:p-3 rounded-2xl shadow-xl flex items-center gap-2 sm:gap-3">
+            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center flex-shrink-0">
+              <svg class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.668-.699c.974.53 1.83.82 2.792.82 3.183 0 5.77-2.587 5.77-5.768.001-3.182-2.585-5.804-5.77-5.804zm8.286 5.768c0 4.568-3.719 8.286-8.286 8.286-1.42 0-2.75-.36-3.92-.99l-4.35 1.14 1.16-4.24c-.73-1.23-1.16-2.67-1.16-4.196 0-4.567 3.719-8.286 8.27-8.286 4.567 0 8.286 3.719 8.286 8.286z"/>
               </svg>
             </div>
             <div>
-              <div class="text-xs font-bold text-gray-800">Atencion Personalizada</div>
-              <div class="text-[10px] text-emerald-600 font-semibold">Respuesta inmediata</div>
+              <div class="text-[11px] sm:text-xs font-bold text-gray-800">Atencion Personalizada</div>
+              <div class="text-[9px] sm:text-[10px] text-emerald-600 font-semibold">Respuesta inmediata</div>
             </div>
           </div>
 
