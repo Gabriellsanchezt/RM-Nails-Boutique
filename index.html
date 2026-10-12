@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RM Nails Boutique | La boutique de las uñas - Insumos Profesionales de Belleza</title>
+  <meta name="description" content="Insumos profesionales para manicuristas, brows artists y lashistas en Barquisimeto y toda Venezuela. Esmaltes gel, pestañas pelo a pelo, lámparas, kits y más. Envíos nacionales y delivery rápido." />
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23E57399'/><text x='50' y='64' font-size='42' font-family='serif' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'>RM</text></svg>" />
+
+  <!-- Google Fonts: Playfair Display & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            boutique: {
+              pink: '#E57399',
+              'pink-dark': '#C84B75',
+              'pink-light': '#FDE8EF',
+              'pink-soft': '#FFF1F5',
+              gold: '#D4AF37',
+              'gold-light': '#F6E6B4',
+              'gold-dark': '#B08D24',
+              dark: '#1F191E',
+              gray: '#6B6168',
+              cream: '#FCF8F9'
+            }
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="bg-[#FCF8F9] text-gray-800 antialiased font-sans flex flex-col min-h-screen">
+
+  <!-- =========================================================================
+       1. TOP NOTIFICATION BAR (Barra Superior Promocional)
+       ========================================================================= -->
+  <div class="bg-gradient-to-r from-[#D0537B] via-[#E57399] to-[#D4AF37] text-white text-xs py-2 px-4 shadow-sm z-50">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+      <!-- Announcement Message -->
+      <div class="flex items-center gap-2 overflow-hidden text-center sm:text-left font-medium">
+        <span class="inline-block animate-pulse">🚚</span>
+        <span class="tracking-wide">
+          <strong>Envíos a nivel nacional en Venezuela 🇻🇪</strong> | Servicio de Delivery Express en <strong>Barquisimeto 🛵</strong>
+        </span>
+      </div>
+
+      <!-- Action Toggles (Currency & Instagram Link) -->
+      <div class="flex items-center gap-4 text-[11px] font-semibold">
+        <!-- Live Tasa Indicator & Currency Switcher -->
+        <button 
+          id="currency-toggle-btn"
+          onclick="toggleCurrency()"
+          class="flex items-center gap-1.5 bg-black/15 hover:bg-black/25 px-2.5 py-1 rounded-full transition-all border border-white/20"
+          title="Alternar moneda de visualización (USD / Bs)"
+        >
+          <span>💱</span>
+          <span id="current-currency-label">USD ($)</span>
+          <span class="opacity-60">|</span>
+          <span id="current-rate-label" class="opacity-90">Tasa: Bs. 46.50</span>
+        </button>
+
+        <!-- Edit rate button -->
+        <button onclick="openRateModal()" class="text-white/80 hover:text-white underline text-[10px]" title="Ajustar tasa referencial">
+          Ajustar Tasa
+        </button>
+
+        <!-- Instagram Direct -->
+        <a 
+          href="https://www.instagram.com/rmnailsboutique/" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="hidden md:flex items-center gap-1 hover:text-pink-100 transition-colors"
+        >
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+          </svg>
+          <span>@rmnailsboutique</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       2. HEADER & NAVEGACIÓN PRINCIPAL
+       ========================================================================= -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-pink-100 shadow-sm transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20 gap-4">
+        
+        <!-- Mobile Menu Toggle Button -->
+        <button 
+          onclick="toggleMobileMenu()" 
+          class="lg:hidden p-2 rounded-xl text-gray-700 hover:text-pink-600 hover:bg-pink-50 transition-colors"
+          aria-label="Abrir menú"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+
+        <!-- Brand Logo (Isotipo RM + Tipografía limpia chic) -->
+        <a href="#inicio" class="flex items-center gap-3 group flex-shrink-0">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#E57399] via-[#F29AB6] to-[#D4AF37] p-0.5 shadow-md group-hover:scale-105 transition-transform">
+            <div class="w-full h-full bg-white rounded-[14px] flex items-center justify-center">
+              <span class="font-serif font-black text-xl text-[#E57399] tracking-tighter">RM</span>
+            </div>
+          </div>
+          <div class="flex flex-col">
+            <span class="font-serif font-bold text-lg sm:text-xl text-gray-900 tracking-tight leading-none group-hover:text-[#E57399] transition-colors">
+              RM Nails Boutique
+            </span>
+            <span class="text-[10px] sm:text-[11px] font-medium text-gray-400 tracking-wider uppercase mt-1">
+              La boutique de las uñas
+            </span>
+          </div>
+        </a>
+
+        <!-- Smart Search Bar (Barra de Búsqueda Inteligente) -->
+        <div class="hidden md:flex flex-1 max-w-md mx-4">
+          <div class="relative w-full">
+            <input 
+              id="search-input"
+              type="text" 
+              placeholder="Buscar geles, pestañas, limas, aceites, lámparas..." 
+              class="w-full bg-[#FCF8F9] border border-pink-200/80 rounded-full py-2.5 pl-11 pr-4 text-xs focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-100 transition-all placeholder-gray-400 shadow-inner"
+            />
+            <div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+              <svg class="w-4 h-4 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Quick Actions (Wishlist, Cart, Contact) -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          <!-- WhatsApp Fast Contact -->
+          <button 
+            onclick="openGeneralWhatsApp()"
+            class="hidden sm:flex items-center gap-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3.5 py-2 rounded-full transition-all"
+          >
+            <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.668-.699c.974.53 1.83.82 2.792.82 3.183 0 5.77-2.587 5.77-5.768.001-3.182-2.585-5.804-5.77-5.804zm8.286 5.768c0 4.568-3.719 8.286-8.286 8.286-1.42 0-2.75-.36-3.92-.99l-4.35 1.14 1.16-4.24c-.73-1.23-1.16-2.67-1.16-4.196 0-4.567 3.719-8.286 8.27-8.286 4.567 0 8.286 3.719 8.286 8.286z"/>
+            </svg>
+            <span class="hidden xl:inline">Asesoría Directa</span>
+          </button>
+
+          <!-- Wishlist Button -->
+          <button 
+            onclick="openWishlistModal()"
+            class="relative p-2.5 rounded-full text-gray-600 hover:text-pink-600 hover:bg-pink-50 transition-colors"
+            title="Ver favoritos"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+            </svg>
+            <span class="wishlist-count-badge hidden absolute -top-1 -right-1 bg-pink-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center shadow-sm">
+              0
+            </span>
+          </button>
+
+          <!-- Cart Slide-Over Trigger Button -->
+          <button 
+            onclick="openCartDrawer()"
+            class="relative flex items-center gap-2 bg-[#FFF1F5] hover:bg-[#FDE2EC] text-[#C84B75] border border-pink-200 px-3.5 py-2 rounded-full font-semibold text-xs transition-all shadow-sm group"
+            title="Ver carrito de compras"
+          >
+            <div class="relative">
+              <svg class="w-5 h-5 text-[#E57399] group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+              </svg>
+              <span class="cart-count-badge hidden absolute -top-2 -right-2 bg-[#D4AF37] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center shadow-sm">
+                0
+              </span>
+            </div>
+            <span class="hidden sm:inline">Carrito</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Categories Sub-Navigation Bar -->
+      <nav class="hidden lg:flex items-center justify-center border-t border-pink-100/60 py-2.5 gap-8 text-xs font-semibold text-gray-600">
+        <a href="#catalogo" onclick="setCategory('all')" class="hover:text-pink-600 transition-colors flex items-center gap-1.5">
+          <span>✨</span> Todos los Insumos
+        </a>
+        <a href="#catalogo" onclick="setCategory('unas')" class="hover:text-pink-600 transition-colors flex items-center gap-1.5">
+          <span>💅</span> Uñas / Manicura (Geles, Limas, Lámparas)
+        </a>
+        <a href="#catalogo" onclick="setCategory('cejas-pestanas')" class="hover:text-pink-600 transition-colors flex items-center gap-1.5">
+          <span>👁️</span> Cejas & Pestañas (Brows & Lashes)
+        </a>
+        <a href="#catalogo" onclick="setCategory('cuidado-herramientas')" class="hover:text-pink-600 transition-colors flex items-center gap-1.5">
+          <span>🌸</span> Cuidado & Herramientas
+        </a>
+        <a href="#catalogo" onclick="setCategory('combos')" class="hover:text-pink-600 transition-colors flex items-center gap-1.5 text-pink-600 font-bold">
+          <span>🎁</span> Kits & Combos de Inicio
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile Search Bar (under header for small devices) -->
+  <div class="md:hidden bg-white px-4 py-2.5 border-b border-pink-100">
+    <div class="relative w-full">
+      <input 
+        type="text" 
+        oninput="STATE.searchQuery = this.value; renderProducts();"
+        placeholder="Buscar insumos (geles, pestañas, lámparas...)" 
+        class="w-full bg-[#FCF8F9] border border-pink-200 rounded-full py-2 pl-9 pr-4 text-xs focus:outline-none focus:border-pink-500"
+      />
+      <div class="absolute left-3 top-1/2 -translate-y-1/2 text-pink-400">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <main class="flex-grow">
+    <!-- =========================================================================
+         3. HERO SECTION (Banner Principal E-commerce)
+         ========================================================================= -->
+    <section id="inicio" class="relative overflow-hidden bg-gradient-to-b from-[#FFF0F5] via-[#FFF8FA] to-[#FCF8F9] py-12 lg:py-20 border-b border-pink-100/60">
+      <!-- Glow orbs decor -->
+      <div class="absolute top-10 left-1/4 w-72 h-72 bg-pink-300/20 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute bottom-10 right-10 w-96 h-96 bg-[#D4AF37]/15 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+          
+          <!-- Left Column: Copy & High-Converting CTAs -->
+          <div class="lg:col-span-7 text-center lg:text-left">
+            <!-- Boutique Tag -->
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-pink-200 shadow-sm text-pink-600 text-xs font-bold tracking-wide uppercase mb-6">
+              <span class="w-2 h-2 rounded-full bg-pink-500 animate-ping"></span>
+              <span>Stock Disponible • Barquisimeto & Venezuela</span>
+            </div>
+
+            <!-- Main Heading -->
+            <h1 class="font-serif font-extrabold text-3xl sm:text-5xl lg:text-6xl text-gray-900 leading-[1.15] mb-6">
+              Todo lo que necesitas para tu <span class="gold-text-gradient">estudio o salón</span> de belleza.
+            </h1>
+
+            <!-- Subtitle -->
+            <p class="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto lg:mx-0 leading-relaxed mb-8">
+              Insumos profesionales para <strong>Manicuristas</strong>, <strong>Brows Artists</strong> y <strong>Lashistas</strong>. Calidad certificada, asesoría técnica personalizada y los mejores precios para potenciar tu mesa de trabajo.
+            </p>
+
+            <!-- Buttons -->
+            <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 mb-10">
+              <a 
+                href="#catalogo" 
+                class="w-full sm:w-auto btn-primary-boutique px-8 py-3.5 rounded-full text-sm font-bold flex items-center justify-center gap-2 text-center"
+              >
+                <span>Ver Catálogo Completo</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </a>
+
+              <button 
+                onclick="openGeneralWhatsApp()" 
+                class="w-full sm:w-auto bg-white hover:bg-pink-50 text-gray-800 border-2 border-pink-300 px-7 py-3.5 rounded-full text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-sm"
+              >
+                <svg class="w-4 h-4 text-emerald-500" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.668-.699c.974.53 1.83.82 2.792.82 3.183 0 5.77-2.587 5.77-5.768.001-3.182-2.585-5.804-5.77-5.804zm8.286 5.768c0 4.568-3.719 8.286-8.286 8.286-1.42 0-2.75-.36-3.92-.99l-4.35 1.14 1.16-4.24c-.73-1.23-1.16-2.67-1.16-4.196 0-4.567 3.719-8.286 8.27-8.286 4.567 0 8.286 3.719 8.286 8.286z"/>
+                </svg>
+                <span>Pedir Asesoría al WhatsApp</span>
+              </button>
+            </div>
+
+            <!-- Trust Stats Pill Grid -->
+            <div class="grid grid-cols-3 gap-3 max-w-lg mx-auto lg:mx-0 pt-4 border-t border-pink-200/60">
+              <div class="text-center lg:text-left">
+                <div class="font-serif font-black text-xl sm:text-2xl text-pink-600">+5,000</div>
+                <div class="text-[11px] text-gray-500 font-medium">Pedidos Entregados</div>
+              </div>
+              <div class="text-center lg:text-left border-x border-pink-200/60 px-2">
+                <div class="font-serif font-black text-xl sm:text-2xl text-amber-600">100%</div>
+                <div class="text-[11px] text-gray-500 font-medium">Productos Originales</div>
+              </div>
+              <div class="text-center lg:text-left">
+                <div class="font-serif font-black text-xl sm:text-2xl text-pink-600">24/48h</div>
+                <div class="text-[11px] text-gray-500 font-medium">Envíos Rápidos Vzla</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Visual Boutique Showcase -->
+          <div class="lg:col-span-5 relative">
+            <div class="relative mx-auto max-w-md lg:max-w-none">
+              
+              <!-- Luxury Card Frame -->
+              <div class="relative bg-white p-4 rounded-3xl shadow-2xl border border-pink-200/80 overflow-hidden transform hover:-rotate-1 transition-transform duration-500">
+                <!-- Background Image of professional salon / nail art supplies -->
+                <div class="relative h-96 w-full rounded-2xl overflow-hidden bg-pink-100">
+                  <img 
+                    src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=800&q=80" 
+                    alt="Insumos profesionales RM Nails Boutique" 
+                    class="w-full h-full object-cover"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                  
+                  <div class="absolute bottom-4 left-4 right-4 text-white">
+                    <span class="inline-block bg-[#D4AF37] text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full mb-1">
+                      Colección Boutique 2026
+                    </span>
+                    <h3 class="font-serif font-bold text-lg text-white">
+                      Esmaltes Gel M&Y & Kits Profesionales
+                    </h3>
+                    <p class="text-xs text-white/80">Todo para manicura rusa, cejas HD y extensiones de pestañas.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Floating badge 1: Delivery Barquisimeto -->
+              <div class="absolute -top-4 -left-4 sm:-left-6 bg-white/95 backdrop-blur-md border border-pink-200 p-3 rounded-2xl shadow-xl flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-xl">
+                  🛵
+                </div>
+                <div>
+                  <div class="text-xs font-bold text-gray-800">Delivery en Barquisimeto</div>
+                  <div class="text-[10px] text-gray-500">Directo a tu cabina o salón</div>
+                </div>
+              </div>
+
+              <!-- Floating badge 2: WhatsApp Verified -->
+              <div class="absolute -bottom-4 -right-4 sm:-right-6 bg-white/95 backdrop-blur-md border border-emerald-200 p-3 rounded-2xl shadow-xl flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl">
+                  💬
+                </div>
+                <div>
+                  <div class="text-xs font-bold text-gray-800">Pedidos al Mayor & Detal</div>
+                  <div class="text-[10px] text-emerald-600 font-semibold">Respuesta en minutos</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         4. BANNERS INFORMATIVOS / VENTAJAS DE COMPRA (3 - 4 Columnas)
+         ========================================================================= -->
+    <section class="py-8 bg-white border-b border-pink-100">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          
+          <!-- Ventaja 1 -->
+          <div class="flex items-start gap-4 p-4 rounded-2xl bg-[#FCF8F9] border border-pink-100/60 hover:border-pink-300 transition-colors">
+            <div class="w-12 h-12 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-2xl flex-shrink-0">
+              📍
+            </div>
+            <div>
+              <h4 class="text-sm font-bold text-gray-900 mb-1">Tienda Física & Online</h4>
+              <p class="text-xs text-gray-500 leading-relaxed">
+                Ubicados en Barquisimeto, Edo. Lara. Retiro inmediato en punto céntrico.
+              </p>
+            </div>
+          </div>
+
+          <!-- Ventaja 2 -->
+          <div class="flex items-start gap-4 p-4 rounded-2xl bg-[#FCF8F9] border border-pink-100/60 hover:border-pink-300 transition-colors">
+            <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-2xl flex-shrink-0">
+              🛵
+            </div>
+            <div>
+              <h4 class="text-sm font-bold text-gray-900 mb-1">Delivery Rápido</h4>
+              <p class="text-xs text-gray-500 leading-relaxed">
+                Despachos en moto el mismo día directo a tu estudio en Barquisimeto y Cabudare.
+              </p>
+            </div>
+          </div>
+
+          <!-- Ventaja 3 -->
+          <div class="flex items-start gap-4 p-4 rounded-2xl bg-[#FCF8F9] border border-pink-100/60 hover:border-pink-300 transition-colors">
+            <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-2xl flex-shrink-0">
+              🇻🇪
+            </div>
+            <div>
+              <h4 class="text-sm font-bold text-gray-900 mb-1">Envíos a Toda Venezuela</h4>
+              <p class="text-xs text-gray-500 leading-relaxed">
+                Envíos asegurados diarios por MRW, Zoom, Tealca y Domesa a cualquier estado.
+              </p>
+            </div>
+          </div>
+
+          <!-- Ventaja 4 -->
+          <div class="flex items-start gap-4 p-4 rounded-2xl bg-[#FCF8F9] border border-pink-100/60 hover:border-pink-300 transition-colors">
+            <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center text-2xl flex-shrink-0">
+              💳
+            </div>
+            <div>
+              <h4 class="text-sm font-bold text-gray-900 mb-1">Múltiples Métodos de Pago</h4>
+              <p class="text-xs text-gray-500 leading-relaxed">
+                Pago Móvil, Dólares en efectivo, Zelle, Transferencia Banesco/Mercantil y Binance.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         5. CATÁLOGO DE PRODUCTOS DESTACADOS (Grid E-commerce Interactivo)
+         ========================================================================= -->
+    <section id="catalogo" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      
+      <!-- Section Header -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-pink-600 block mb-1">
+            Catálogo Actualizado • Insumos 100% Profesionales
+          </span>
+          <h2 class="font-serif font-bold text-2xl sm:text-4xl text-gray-900">
+            Nuestros Productos Más Vendidos
+          </h2>
+          <p id="product-count" class="text-xs text-gray-500 mt-1">
+            Cargando inventario...
+          </p>
+        </div>
+
+        <!-- Sort Select -->
+        <div class="flex items-center gap-3">
+          <label for="sort-select" class="text-xs font-semibold text-gray-500 whitespace-nowrap">Ordenar por:</label>
+          <select 
+            id="sort-select"
+            class="bg-white border border-pink-200 rounded-xl px-3 py-2 text-xs font-semibold text-gray-700 focus:outline-none focus:border-pink-500 shadow-sm"
+          >
+            <option value="featured">Destacados RM</option>
+            <option value="price-asc">Precio: Menor a Mayor</option>
+            <option value="price-desc">Precio: Mayor a Menor</option>
+            <option value="rating">Mejor Calificados ★</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Category Filter Pills -->
+      <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-8 no-scrollbar">
+        <button 
+          data-category="all"
+          class="cat-pill active px-4 py-2 rounded-full text-xs font-semibold border border-pink-200 bg-white text-gray-700 whitespace-nowrap transition-all"
+        >
+          ✨ Todos
+        </button>
+        <button 
+          data-category="unas"
+          class="cat-pill px-4 py-2 rounded-full text-xs font-semibold border border-pink-200 bg-white text-gray-700 whitespace-nowrap transition-all"
+        >
+          💅 Uñas / Manicura
+        </button>
+        <button 
+          data-category="cejas-pestanas"
+          class="cat-pill px-4 py-2 rounded-full text-xs font-semibold border border-pink-200 bg-white text-gray-700 whitespace-nowrap transition-all"
+        >
+          👁️ Cejas & Pestañas
+        </button>
+        <button 
+          data-category="cuidado-herramientas"
+          class="cat-pill px-4 py-2 rounded-full text-xs font-semibold border border-pink-200 bg-white text-gray-700 whitespace-nowrap transition-all"
+        >
+          🌸 Cuidado & Herramientas
+        </button>
+        <button 
+          data-category="combos"
+          class="cat-pill px-4 py-2 rounded-full text-xs font-semibold border border-pink-200 bg-white text-gray-700 whitespace-nowrap transition-all"
+        >
+          🎁 Kits & Promociones
+        </button>
+      </div>
+
+      <!-- Products Grid Container (populated by app.js) -->
+      <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <!-- Rendered via JavaScript -->
+      </div>
+
+    </section>
+
+    <!-- =========================================================================
+         6. BANNER DESTACADO PARA ACADEMIAS & KITS DE INICIO
+         ========================================================================= -->
+    <section class="py-12 bg-gradient-to-r from-[#FFF1F5] via-[#FDE8EF] to-[#FFF8FA] border-y border-pink-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-3xl p-8 lg:p-12 shadow-xl border border-pink-200/80 flex flex-col lg:flex-row items-center justify-between gap-8">
+          
+          <div class="max-w-2xl">
+            <span class="inline-block bg-[#D4AF37] text-white text-[11px] font-black uppercase px-3 py-1 rounded-full mb-3 tracking-wider">
+              Especial para Academias, Instructor@s y Alumnas
+            </span>
+            <h3 class="font-serif font-bold text-2xl sm:text-3xl lg:text-4xl text-gray-900 mb-3">
+              ¿Dictas cursos o estás iniciando tu salón de belleza?
+            </h3>
+            <p class="text-sm text-gray-600 leading-relaxed mb-6">
+              Armamos combos personalizados para tus cursos de uñas acrílicas, manicura rusa, extensiones de pestañas y diseño de cejas con <strong>precios especiales al mayor</strong> y empaque de obsequio.
+            </p>
+            <div class="flex flex-wrap gap-4 text-xs font-semibold text-gray-700">
+              <span class="flex items-center gap-1.5"><span class="text-emerald-500 font-bold">✓</span> Descuentos por volumen</span>
+              <span class="flex items-center gap-1.5"><span class="text-emerald-500 font-bold">✓</span> Marcas 100% aprobadas por educadores</span>
+              <span class="flex items-center gap-1.5"><span class="text-emerald-500 font-bold">✓</span> Entrega garantizada en tu fecha de taller</span>
+            </div>
+          </div>
+
+          <div class="flex-shrink-0 w-full lg:w-auto text-center">
+            <button 
+              onclick="openGeneralWhatsApp()" 
+              class="w-full lg:w-auto btn-gold-boutique px-8 py-4 rounded-full text-sm font-bold flex items-center justify-center gap-2 shadow-lg"
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.668-.699c.974.53 1.83.82 2.792.82 3.183 0 5.77-2.587 5.77-5.768.001-3.182-2.585-5.804-5.77-5.804zm8.286 5.768c0 4.568-3.719 8.286-8.286 8.286-1.42 0-2.75-.36-3.92-.99l-4.35 1.14 1.16-4.24c-.73-1.23-1.16-2.67-1.16-4.196 0-4.567 3.719-8.286 8.27-8.286 4.567 0 8.286 3.719 8.286 8.286z"/>
+              </svg>
+              <span>Cotizar Kits al Mayor por WhatsApp</span>
+            </button>
+            <span class="block text-[11px] text-gray-400 mt-2">Atención prioritaria para educadoras</span>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         7. TESTIMONIOS DE MANICURISTAS & CLIENTAS REALES
+         ========================================================================= -->
+    <section class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="text-xs font-bold uppercase tracking-wider text-pink-600 block mb-1">
+          Opiniones Reales
+        </span>
+        <h2 class="font-serif font-bold text-2xl sm:text-3xl text-gray-900">
+          Lo que dicen las profesionales de la belleza
+        </h2>
+        <p class="text-xs sm:text-sm text-gray-500 mt-2">
+          Cientos de manicuristas y lashistas confían en RM Nails Boutique para sus mesas de trabajo día a día.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Testimonio 1 -->
+        <div class="bg-white p-6 rounded-2xl border border-pink-100 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="text-amber-400 text-sm mb-3">★★★★★</div>
+            <p class="text-xs text-gray-600 leading-relaxed mb-4 italic">
+              "Los geles M&Y son de otro nivel, tienen una cobertura increíble en una sola capa. El delivery en Barquisimeto me llegó en menos de 2 horas a mi estudio en el este. ¡100% recomendados!"
+            </p>
+          </div>
+          <div class="flex items-center gap-3 pt-3 border-t border-pink-50">
+            <div class="w-9 h-9 rounded-full bg-pink-100 text-pink-600 font-bold flex items-center justify-center text-xs">
+              VA
+            </div>
+            <div>
+              <div class="text-xs font-bold text-gray-900">Valeria Alvarado</div>
+              <div class="text-[10px] text-gray-400">Master Nail Artist • Barquisimeto</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimonio 2 -->
+        <div class="bg-white p-6 rounded-2xl border border-pink-100 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="text-amber-400 text-sm mb-3">★★★★★</div>
+            <p class="text-xs text-gray-600 leading-relaxed mb-4 italic">
+              "Pido mis insumos de pestañas Nagaraku y pegamento Lady Black desde Caracas. El envío por Tealca llegó perfecto y súper bien embalado. La atención por WhatsApp es súper amable."
+            </p>
+          </div>
+          <div class="flex items-center gap-3 pt-3 border-t border-pink-50">
+            <div class="w-9 h-9 rounded-full bg-pink-100 text-pink-600 font-bold flex items-center justify-center text-xs">
+              DM
+            </div>
+            <div>
+              <div class="text-xs font-bold text-gray-900">Daniela Mendoza</div>
+              <div class="text-[10px] text-gray-400">Lash & Brow Artist • Caracas</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimonio 3 -->
+        <div class="bg-white p-6 rounded-2xl border border-pink-100 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="text-amber-400 text-sm mb-3">★★★★★</div>
+            <p class="text-xs text-gray-600 leading-relaxed mb-4 italic">
+              "Compré el kit de inicio con la lámpara Sun X5 y las fresas de diamante para mi primer curso de uñas. La asesoría que me dieron para elegir los productos fue impecable."
+            </p>
+          </div>
+          <div class="flex items-center gap-3 pt-3 border-t border-pink-50">
+            <div class="w-9 h-9 rounded-full bg-pink-100 text-pink-600 font-bold flex items-center justify-center text-xs">
+              GR
+            </div>
+            <div>
+              <div class="text-xs font-bold text-gray-900">Gabriela Rivas</div>
+              <div class="text-[10px] text-gray-400">Manicurista Profesional • Cabudare</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         8. SECCIÓN INSTAGRAM FEED / COMUNIDAD (@rmnailsboutique)
+         ========================================================================= -->
+    <section class="py-12 bg-white border-t border-pink-100">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <span class="text-xs font-bold uppercase tracking-wider text-pink-600 block mb-1">
+          Únete a nuestra comunidad
+        </span>
+        <h3 class="font-serif font-bold text-2xl text-gray-900 mb-2">
+          Síguenos en Instagram <a href="https://www.instagram.com/rmnailsboutique/" target="_blank" rel="noopener noreferrer" class="text-pink-600 hover:underline">@rmnailsboutique</a>
+        </h3>
+        <p class="text-xs text-gray-500 mb-8 max-w-lg mx-auto">
+          Descubre tutoriales, tips para el cuidado de uñas, novedades de productos y ofertas flash exclusivas para seguidoras.
+        </p>
+
+        <!-- Visual Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+          <a href="https://www.instagram.com/rmnailsboutique/" target="_blank" class="group relative rounded-2xl overflow-hidden aspect-square bg-pink-100 shadow-sm">
+            <img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=500&q=80" alt="Nail Art" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+            <div class="absolute inset-0 bg-pink-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white font-bold text-xs">
+              Ver en Instagram
+            </div>
+          </a>
+
+          <a href="https://www.instagram.com/rmnailsboutique/" target="_blank" class="group relative rounded-2xl overflow-hidden aspect-square bg-pink-100 shadow-sm">
+            <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=500&q=80" alt="Brows & Lashes" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+            <div class="absolute inset-0 bg-pink-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white font-bold text-xs">
+              Ver en Instagram
+            </div>
+          </a>
+
+          <a href="https://www.instagram.com/rmnailsboutique/" target="_blank" class="group relative rounded-2xl overflow-hidden aspect-square bg-pink-100 shadow-sm">
+            <img src="https://images.unsplash.com/photo-1608248597359-50953a393fb6?auto=format&fit=crop&w=500&q=80" alt="Cuticle oils" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+            <div class="absolute inset-0 bg-pink-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white font-bold text-xs">
+              Ver en Instagram
+            </div>
+          </a>
+
+          <a href="https://www.instagram.com/rmnailsboutique/" target="_blank" class="group relative rounded-2xl overflow-hidden aspect-square bg-pink-100 shadow-sm">
+            <img src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=500&q=80" alt="Brushes & Acrylic" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+            <div class="absolute inset-0 bg-pink-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white font-bold text-xs">
+              Ver en Instagram
+            </div>
+          </a>
+        </div>
+
+        <a 
+          href="https://www.instagram.com/rmnailsboutique/" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="inline-flex items-center gap-2 btn-outline-boutique px-6 py-2.5 rounded-full text-xs font-bold"
+        >
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+          </svg>
+          <span>Seguir @rmnailsboutique en Instagram</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================================================================
+       9. FOOTER / PIE DE PÁGINA PROFESIONAL
+       ========================================================================= -->
+  <footer class="bg-[#1F191E] text-white pt-16 pb-10 border-t border-pink-900/40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
+        
+        <!-- Col 1: Brand & Concept -->
+        <div class="lg:col-span-2">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#E57399] to-[#D4AF37] p-0.5">
+              <div class="w-full h-full bg-[#1F191E] rounded-[10px] flex items-center justify-center">
+                <span class="font-serif font-black text-lg text-[#E57399]">RM</span>
+              </div>
+            </div>
+            <div>
+              <span class="font-serif font-bold text-lg text-white block">RM Nails Boutique</span>
+              <span class="text-[10px] text-pink-300 uppercase tracking-widest">La boutique de las uñas</span>
+            </div>
+          </div>
+          <p class="text-xs text-gray-400 leading-relaxed mb-6 max-w-sm">
+            Especialistas en la distribución de insumos profesionales de alta calidad para manicuristas, lashistas y diseñadoras de cejas. Envíos garantizados a toda Venezuela y atención cálida e inmediata.
+          </p>
+          <div class="flex items-center gap-3">
+            <a href="https://www.instagram.com/rmnailsboutique/" target="_blank" class="w-9 h-9 rounded-full bg-white/10 hover:bg-[#E57399] text-white flex items-center justify-center transition-colors">
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href="https://wa.me/584120549526" target="_blank" class="w-9 h-9 rounded-full bg-white/10 hover:bg-emerald-500 text-white flex items-center justify-center transition-colors">
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.668-.699c.974.53 1.83.82 2.792.82 3.183 0 5.77-2.587 5.77-5.768.001-3.182-2.585-5.804-5.77-5.804zm8.286 5.768c0 4.568-3.719 8.286-8.286 8.286-1.42 0-2.75-.36-3.92-.99l-4.35 1.14 1.16-4.24c-.73-1.23-1.16-2.67-1.16-4.196 0-4.567 3.719-8.286 8.27-8.286 4.567 0 8.286 3.719 8.286 8.286z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Col 2: Categorías -->
+        <div>
+          <h4 class="text-sm font-bold text-white mb-4 uppercase tracking-wider text-[#E57399]">Categorías</h4>
+          <ul class="space-y-2 text-xs text-gray-400">
+            <li><a href="#catalogo" onclick="setCategory('unas')" class="hover:text-white transition-colors">Uñas & Manicura</a></li>
+            <li><a href="#catalogo" onclick="setCategory('cejas-pestanas')" class="hover:text-white transition-colors">Cejas & Pestañas</a></li>
+            <li><a href="#catalogo" onclick="setCategory('cuidado-herramientas')" class="hover:text-white transition-colors">Cuidado & Sanitización</a></li>
+            <li><a href="#catalogo" onclick="setCategory('combos')" class="hover:text-white transition-colors">Kits de Inicio</a></li>
+            <li><a href="#catalogo" onclick="resetFilters()" class="hover:text-white transition-colors">Ver Todo el Inventario</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Ubicación y Horarios -->
+        <div>
+          <h4 class="text-sm font-bold text-white mb-4 uppercase tracking-wider text-[#D4AF37]">Ubicación & Envíos</h4>
+          <ul class="space-y-2 text-xs text-gray-400 leading-relaxed">
+            <li class="flex items-start gap-2">
+              <span>📍</span> <span>Barquisimeto, Estado Lara, Venezuela.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span>🛵</span> <span>Delivery Express en Bqto & Cabudare.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span>📦</span> <span>Envíos Nacionales: MRW, Tealca, Zoom, Domesa.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span>🕒</span> <span>Lunes a Sábado: 8:30 AM - 6:00 PM</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Métodos de Pago Aceptados -->
+        <div>
+          <h4 class="text-sm font-bold text-white mb-4 uppercase tracking-wider text-pink-400">Métodos de Pago</h4>
+          <p class="text-[11px] text-gray-400 mb-3">Aceptamos transacciones seguras en Bolívares y Divisas:</p>
+          <div class="flex flex-wrap gap-1.5 text-[11px] font-semibold">
+            <span class="bg-white/10 px-2 py-1 rounded text-white">Pago Móvil</span>
+            <span class="bg-white/10 px-2 py-1 rounded text-white">Zelle</span>
+            <span class="bg-white/10 px-2 py-1 rounded text-white">Efectivo ($)</span>
+            <span class="bg-white/10 px-2 py-1 rounded text-white">Banesco</span>
+            <span class="bg-white/10 px-2 py-1 rounded text-white">Mercantil</span>
+            <span class="bg-white/10 px-2 py-1 rounded text-white">Binance Pay</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer Bottom Bar -->
+      <div class="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+        <div>
+          © 2026 <strong>RM Nails Boutique</strong>. "La boutique de las uñas" - Todos los derechos reservados.
+        </div>
+        <div class="flex items-center gap-4">
+          <a href="https://wa.me/584120549526" target="_blank" class="hover:text-pink-400 transition-colors">WhatsApp Oficial: +58 412-0549526</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =========================================================================
+       10. CART DRAWER (Slide-Over lateral del Carrito)
+       ========================================================================= -->
+  <div id="cart-drawer-backdrop" onclick="closeCartDrawer()" class="drawer-backdrop fixed inset-0 bg-black/60 z-50 backdrop-blur-sm"></div>
+  <aside id="cart-drawer" class="drawer-content fixed top-0 right-0 bottom-0 w-full max-w-md bg-white shadow-2xl z-50 flex flex-col justify-between">
+    
+    <!-- Drawer Header -->
+    <div class="p-5 border-b border-pink-100 flex items-center justify-between bg-[#FFF1F5]">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-full bg-[#E57399] text-white flex items-center justify-center font-serif font-bold text-xs">
+          RM
+        </div>
+        <div>
+          <h3 class="font-serif font-bold text-base text-gray-900">Tu Carrito de Compras</h3>
+          <p class="text-[10px] text-pink-600 font-medium">Revisa tus insumos seleccionados</p>
+        </div>
+      </div>
+      <button onclick="closeCartDrawer()" class="text-gray-400 hover:text-gray-700 p-1.5 rounded-lg hover:bg-white/80 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
+
+    <!-- Free Delivery Progress Bar -->
+    <div class="bg-pink-50/70 px-5 py-3 border-b border-pink-100">
+      <div id="free-delivery-text" class="text-xs text-gray-700 mb-1.5 font-medium">
+        Calculando delivery...
+      </div>
+      <div class="w-full bg-pink-200/60 rounded-full h-1.5 overflow-hidden">
+        <div id="free-delivery-progress" class="bg-[#E57399] h-1.5 rounded-full transition-all duration-300" style="width: 0%;"></div>
+      </div>
+    </div>
+
+    <!-- Drawer Body / Item List -->
+    <div class="flex-grow overflow-y-auto p-5">
+      <!-- Empty state -->
+      <div id="cart-empty-state" class="text-center py-12">
+        <div class="w-16 h-16 mx-auto mb-4 bg-pink-50 text-pink-300 rounded-full flex items-center justify-center text-3xl">
+          🛍️
+        </div>
+        <h4 class="font-serif font-bold text-gray-800 text-base mb-1">Tu carrito está vacío</h4>
+        <p class="text-xs text-gray-500 mb-6 max-w-xs mx-auto">Explora nuestro catálogo y agrega los insumos que necesitas para tu salón.</p>
+        <button onclick="closeCartDrawer()" class="btn-primary-boutique px-6 py-2.5 rounded-full text-xs font-semibold">
+          Explorar Productos
+        </button>
+      </div>
+
+      <!-- Items Container -->
+      <div id="cart-items-list" class="space-y-1"></div>
+    </div>
+
+    <!-- Drawer Footer / Checkout Actions -->
+    <div id="cart-checkout-footer" class="p-5 border-t border-pink-100 bg-white">
+      <!-- Shipping Method Selector in Drawer -->
+      <div class="mb-4 bg-[#FCF8F9] p-3 rounded-xl border border-pink-100 text-xs">
+        <span class="font-bold text-gray-800 block mb-2 text-[11px] uppercase tracking-wider">Método de Entrega:</span>
+        <div class="space-y-1.5">
+          <label class="flex items-center justify-between cursor-pointer">
+            <span class="flex items-center gap-2">
+              <input type="radio" name="drawer_delivery" value="delivery-bqto" checked class="text-pink-600 focus:ring-pink-500" />
+              <span>🛵 Delivery en Barquisimeto</span>
+            </span>
+            <span class="text-gray-500 text-[11px]">$2.50 (Gratis > $35)</span>
+          </label>
+          <label class="flex items-center justify-between cursor-pointer">
+            <span class="flex items-center gap-2">
+              <input type="radio" name="drawer_delivery" value="tienda-bqto" class="text-pink-600 focus:ring-pink-500" />
+              <span>📍 Retiro en Tienda (Barquisimeto)</span>
+            </span>
+            <span class="text-emerald-600 font-bold text-[11px]">Gratis</span>
+          </label>
+          <label class="flex items-center justify-between cursor-pointer">
+            <span class="flex items-center gap-2">
+              <input type="radio" name="drawer_delivery" value="nacional-vzla" class="text-pink-600 focus:ring-pink-500" />
+              <span>🇻🇪 Envío Nacional (MRW/Zoom/Tealca)</span>
+            </span>
+            <span class="text-gray-500 text-[11px]">Cobro en Destino</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Totals Breakdown -->
+      <div class="space-y-1.5 text-xs mb-4">
+        <div class="flex justify-between text-gray-500">
+          <span>Subtotal:</span>
+          <div>
+            <span id="cart-subtotal-usd" class="font-semibold text-gray-800">$0.00</span>
+            <span id="cart-subtotal-ves" class="text-[10px] text-gray-400 block text-right">Bs. 0.00</span>
+          </div>
+        </div>
+        <div class="flex justify-between text-gray-500">
+          <span>Envío estimado:</span>
+          <span id="cart-shipping-text" class="font-semibold text-gray-800">$2.50</span>
+        </div>
+        <div class="flex justify-between items-baseline pt-2 border-t border-pink-100 font-bold text-gray-900 text-sm">
+          <span>TOTAL ESTIMADO:</span>
+          <div class="text-right">
+            <span id="cart-total-usd" class="text-lg text-pink-700 font-serif">$0.00</span>
+            <span id="cart-total-ves" class="text-xs text-gray-500 font-normal block">Bs. 0.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="space-y-2">
+        <button 
+          onclick="openCheckoutModal()"
+          class="w-full btn-primary-boutique py-3.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-md"
+        >
+          <span>Continuar y Ordenar por WhatsApp</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </button>
+
+        <button 
+          onclick="clearCart()" 
+          class="w-full py-1 text-center text-[11px] text-gray-400 hover:text-red-500 transition-colors"
+        >
+          Vaciar carrito
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- =========================================================================
+       11. CHECKOUT MODAL (WhatsApp Order Form)
+       ========================================================================= -->
+  <div id="checkout-modal" class="modal-overlay fixed inset-0 bg-black/60 z-50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="modal-container bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-pink-100 max-h-[90vh] flex flex-col">
+      
+      <!-- Modal Header -->
+      <div class="p-5 border-b border-pink-100 bg-gradient-to-r from-pink-50 to-white flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center text-sm">
+            ✓
+          </div>
+          <div>
+            <h3 class="font-serif font-bold text-base text-gray-900">Finalizar Orden por WhatsApp</h3>
+            <p class="text-[11px] text-gray-500">RM Nails Boutique • wa.me/584120549526</p>
+          </div>
+        </div>
+        <button onclick="closeCheckoutModal()" class="text-gray-400 hover:text-gray-700 p-1 rounded-lg">✕</button>
+      </div>
+
+      <!-- Modal Body (Form) -->
+      <form id="checkout-form" class="p-6 overflow-y-auto space-y-4">
+        
+        <!-- Summary Box -->
+        <div class="bg-[#FCF8F9] p-3.5 rounded-2xl border border-pink-100">
+          <span class="text-[10px] font-black uppercase text-pink-600 tracking-wider block mb-1.5">Resumen de Insumos:</span>
+          <div id="checkout-summary-items" class="max-h-24 overflow-y-auto space-y-1 mb-2 pr-1"></div>
+          <div class="border-t border-pink-100 pt-2 flex justify-between items-baseline font-bold text-xs text-gray-900">
+            <span>Monto Total a Transferir / Pagar:</span>
+            <div class="text-right">
+              <span id="checkout-total-usd" class="text-sm text-pink-700">$0.00</span>
+              <span id="checkout-total-ves" class="text-[10px] text-gray-500 font-normal block">Bs. 0.00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Customer Name & Phone -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1">Nombre Completo *</label>
+            <input 
+              id="customer-name" 
+              type="text" 
+              required 
+              placeholder="Ej. María Pérez" 
+              class="w-full bg-[#FCF8F9] border border-pink-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-pink-500" 
+            />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1">Teléfono / WhatsApp *</label>
+            <input 
+              id="customer-phone" 
+              type="tel" 
+              required 
+              placeholder="Ej. 0412 1234567" 
+              class="w-full bg-[#FCF8F9] border border-pink-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-pink-500" 
+            />
+          </div>
+        </div>
+
+        <!-- Delivery Option -->
+        <div>
+          <label class="block text-xs font-bold text-gray-700 mb-1.5">Método de Envío / Entrega *</label>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+            <label class="border border-pink-200 rounded-xl p-2.5 flex items-center gap-2 cursor-pointer hover:bg-pink-50 transition-colors">
+              <input type="radio" name="shipping_method" value="Delivery en Barquisimeto" checked class="text-pink-600 focus:ring-pink-500" />
+              <span>🛵 Delivery Bqto</span>
+            </label>
+            <label class="border border-pink-200 rounded-xl p-2.5 flex items-center gap-2 cursor-pointer hover:bg-pink-50 transition-colors">
+              <input type="radio" name="shipping_method" value="Retiro en Tienda Barquisimeto" class="text-pink-600 focus:ring-pink-500" />
+              <span>📍 Retiro Tienda</span>
+            </label>
+            <label class="border border-pink-200 rounded-xl p-2.5 flex items-center gap-2 cursor-pointer hover:bg-pink-50 transition-colors">
+              <input type="radio" name="shipping_method" value="Envío Nacional (MRW/Zoom/Tealca)" class="text-pink-600 focus:ring-pink-500" />
+              <span>🇻🇪 Envío Nacional</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- City & Address -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1">Ciudad / Estado</label>
+            <input 
+              id="customer-city" 
+              type="text" 
+              placeholder="Ej. Barquisimeto / Caracas" 
+              class="w-full bg-[#FCF8F9] border border-pink-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-pink-500" 
+            />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1">Dirección / Salón / Agencia</label>
+            <input 
+              id="customer-address" 
+              type="text" 
+              placeholder="Ej. Urb. Del Este, Salón Glamour / MRW Centro" 
+              class="w-full bg-[#FCF8F9] border border-pink-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-pink-500" 
+            />
+          </div>
+        </div>
+
+        <!-- Payment Method -->
+        <div>
+          <label class="block text-xs font-bold text-gray-700 mb-1">Método de Pago Preferido *</label>
+          <select 
+            id="payment-method"
+            class="w-full bg-[#FCF8F9] border border-pink-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-pink-500 font-medium"
+          >
+            <option value="Pago Móvil (Tasa Oficial)">Pago Móvil (Bolívares)</option>
+            <option value="Zelle">Zelle (USD)</option>
+            <option value="Dólares en Efectivo (Contra entrega o en tienda)">Dólares en Efectivo (Barquisimeto)</option>
+            <option value="Transferencia Banesco o Mercantil">Transferencia Bancaria Nacional</option>
+            <option value="Binance Pay (USDT)">Binance Pay (USDT)</option>
+          </select>
+        </div>
+
+        <!-- Extra Notes -->
+        <div>
+          <label class="block text-xs font-bold text-gray-700 mb-1">Notas especiales o especificaciones</label>
+          <textarea 
+            id="customer-notes" 
+            rows="2" 
+            placeholder="Ej. Por favor confirmar tonos de esmaltes antes de enviar o especificar horario de entrega en mi salón..." 
+            class="w-full bg-[#FCF8F9] border border-pink-200 rounded-xl p-2.5 text-xs focus:outline-none focus:border-pink-500"
+          ></textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <button 
+          type="submit" 
+          class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg transition-all"
+        >
+          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+            <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.668-.699c.974.53 1.83.82 2.792.82 3.183 0 5.77-2.587 5.77-5.768.001-3.182-2.585-5.804-5.77-5.804zm8.286 5.768c0 4.568-3.719 8.286-8.286 8.286-1.42 0-2.75-.36-3.92-.99l-4.35 1.14 1.16-4.24c-.73-1.23-1.16-2.67-1.16-4.196 0-4.567 3.719-8.286 8.27-8.286 4.567 0 8.286 3.719 8.286 8.286z"/>
+          </svg>
+          <span>Enviar Pedido Directo a WhatsApp</span>
+        </button>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       12. QUICK VIEW MODAL
+       ========================================================================= -->
+  <div id="quickview-modal" class="modal-overlay fixed inset-0 bg-black/60 z-50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="modal-container bg-white rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl border border-pink-100 relative">
+      <button onclick="closeQuickView()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 bg-white/80 p-2 rounded-full z-20 shadow-sm">
+        ✕
+      </button>
+      <div id="quickview-content"></div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       13. WISHLIST MODAL
+       ========================================================================= -->
+  <div id="wishlist-modal" class="modal-overlay fixed inset-0 bg-black/60 z-50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="modal-container bg-white rounded-3xl max-w-md w-full overflow-hidden shadow-2xl border border-pink-100 p-6">
+      <div class="flex items-center justify-between pb-3 border-b border-pink-100 mb-4">
+        <h4 class="font-serif font-bold text-gray-900 text-base">Tus Favoritos ❤️</h4>
+        <button onclick="closeWishlistModal()" class="text-gray-400 hover:text-gray-700">✕</button>
+      </div>
+
+      <div id="wishlist-empty-state" class="text-center py-8">
+        <div class="text-3xl mb-2">🤍</div>
+        <p class="text-xs text-gray-500">Aún no has guardado productos en favoritos.</p>
+      </div>
+
+      <div id="wishlist-items-list" class="space-y-2 max-h-80 overflow-y-auto"></div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       14. CUSTOM RATE MODAL (Ajustar Tasa Oficial / BCV)
+       ========================================================================= -->
+  <div id="rate-modal" class="modal-overlay fixed inset-0 bg-black/60 z-50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="modal-container bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-pink-100 text-center">
+      <div class="w-12 h-12 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center mx-auto mb-3 text-xl">
+        💱
+      </div>
+      <h4 class="font-serif font-bold text-gray-900 text-base mb-1">Ajustar Tasa de Cambio</h4>
+      <p class="text-xs text-gray-500 mb-4">Configura la tasa de Bolívares por Dólar (USD) para recalcular los precios en todo el catálogo:</p>
+      <div class="flex items-center gap-2 mb-4 justify-center">
+        <span class="text-xs font-bold text-gray-500">1 USD = Bs.</span>
+        <input 
+          id="custom-rate-input" 
+          type="number" 
+          step="0.01" 
+          class="w-28 text-center bg-pink-50 border border-pink-200 rounded-xl py-2 font-bold text-sm text-gray-900 focus:outline-none focus:border-pink-500" 
+        />
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <button onclick="closeRateModal()" class="py-2.5 rounded-xl border border-gray-200 text-xs font-semibold text-gray-600 hover:bg-gray-50">
+          Cancelar
+        </button>
+        <button onclick="saveCustomRate()" class="btn-primary-boutique py-2.5 rounded-xl text-xs font-bold">
+          Actualizar Tasa
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       15. MOBILE NAVIGATION DRAWER
+       ========================================================================= -->
+  <div id="mobile-menu-backdrop" onclick="toggleMobileMenu()" class="drawer-backdrop fixed inset-0 bg-black/60 z-50 backdrop-blur-sm lg:hidden"></div>
+  <aside id="mobile-menu-drawer" class="drawer-content fixed top-0 left-0 bottom-0 w-72 bg-white z-50 flex flex-col justify-between shadow-2xl lg:hidden">
+    <div class="p-6 border-b border-pink-100 bg-[#FFF1F5] flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#E57399] to-[#D4AF37] p-0.5">
+          <div class="w-full h-full bg-white rounded-[10px] flex items-center justify-center font-serif font-bold text-xs text-pink-600">
+            RM
+          </div>
+        </div>
+        <div>
+          <span class="font-serif font-bold text-sm text-gray-900 block">RM Nails Boutique</span>
+          <span class="text-[9px] text-gray-400 uppercase tracking-wider">Menú Principal</span>
+        </div>
+      </div>
+      <button onclick="toggleMobileMenu()" class="text-gray-400 hover:text-gray-700">✕</button>
+    </div>
+
+    <div class="p-6 space-y-4 text-xs font-semibold text-gray-700">
+      <a href="#inicio" onclick="toggleMobileMenu()" class="block py-2 hover:text-pink-600 border-b border-gray-50">🏠 Inicio</a>
+      <a href="#catalogo" onclick="setCategory('all'); toggleMobileMenu()" class="block py-2 hover:text-pink-600 border-b border-gray-50">✨ Todos los Productos</a>
+      <a href="#catalogo" onclick="setCategory('unas'); toggleMobileMenu()" class="block py-2 hover:text-pink-600 border-b border-gray-50">💅 Uñas / Manicura</a>
+      <a href="#catalogo" onclick="setCategory('cejas-pestanas'); toggleMobileMenu()" class="block py-2 hover:text-pink-600 border-b border-gray-50">👁️ Cejas & Pestañas</a>
+      <a href="#catalogo" onclick="setCategory('cuidado-herramientas'); toggleMobileMenu()" class="block py-2 hover:text-pink-600 border-b border-gray-50">🌸 Cuidado & Herramientas</a>
+      <a href="#catalogo" onclick="setCategory('combos'); toggleMobileMenu()" class="block py-2 text-pink-600 font-bold border-b border-gray-50">🎁 Kits & Promociones</a>
+      <a href="https://www.instagram.com/rmnailsboutique/" target="_blank" class="block py-2 text-pink-500">📸 Instagram @rmnailsboutique</a>
+    </div>
+
+    <div class="p-6 border-t border-pink-100 bg-pink-50/40">
+      <button onclick="openGeneralWhatsApp(); toggleMobileMenu();" class="w-full bg-emerald-500 text-white font-bold py-3 rounded-xl text-xs flex items-center justify-center gap-2">
+        <span>💬 Contactar por WhatsApp</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- =========================================================================
+       16. FLOATING WHATSAPP BUTTON (Acceso Rápido Permanente)
+       ========================================================================= -->
+  <div class="fixed bottom-6 right-6 z-40 flex items-center gap-2">
+    <!-- Tooltip -->
+    <div class="hidden sm:flex bg-white text-gray-800 text-[11px] font-bold px-3 py-1.5 rounded-full shadow-lg border border-emerald-200 items-center gap-1.5 animate-bounce">
+      <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+      <span>¡Estamos en línea! Escríbenos</span>
+    </div>
+
+    <!-- Pulsing Action Button -->
+    <a 
+      href="https://wa.me/584120549526?text=%C2%A1Hola%20RM%20Nails%20Boutique!%20%F0%9F%8C%B8%20Deseo%20informaci%C3%B3n%20sobre%20insumos%20profesionales." 
+      target="_blank" 
+      rel="noopener noreferrer"
+      class="whatsapp-pulse w-14 h-14 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full flex items-center justify-center shadow-2xl transition-all transform hover:scale-110 active:scale-95"
+      aria-label="Abrir WhatsApp oficial"
+      title="Chat directo con asesora RM Nails Boutique"
+    >
+      <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24">
+        <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.668-.699c.974.53 1.83.82 2.792.82 3.183 0 5.77-2.587 5.77-5.768.001-3.182-2.585-5.804-5.77-5.804zm8.286 5.768c0 4.568-3.719 8.286-8.286 8.286-1.42 0-2.75-.36-3.92-.99l-4.35 1.14 1.16-4.24c-.73-1.23-1.16-2.67-1.16-4.196 0-4.567 3.719-8.286 8.27-8.286 4.567 0 8.286 3.719 8.286 8.286z"/>
+      </svg>
+    </a>
+  </div>
+
+  <!-- =========================================================================
+       17. TOAST NOTIFICATION CONTAINER
+       ========================================================================= -->
+  <div id="toast-container"></div>
+
+  <!-- Core App Logic -->
+  <script src="app.js"></script>
+</body>
+</html>

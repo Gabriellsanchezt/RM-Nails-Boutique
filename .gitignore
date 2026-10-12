@@ -1,0 +1,23 @@
+# Composer
+/vendor/
+composer.phar
+
+# Environment secrets
+.env
+.env.backup
+.env.local
+
+# IDE & Editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Operating System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs & temp
+*.log
