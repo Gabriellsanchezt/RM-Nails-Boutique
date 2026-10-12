@@ -1,5 +1,5 @@
 <!-- Testimonios de Manicuristas & Clientas -->
-<section class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<section id="opiniones" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-24">
   <div class="text-center max-w-2xl mx-auto mb-12">
     <span class="text-xs font-bold uppercase tracking-wider text-pink-600 block mb-1">
       Opiniones Reales

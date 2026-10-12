@@ -19,8 +19,11 @@
     </div>
 
     <!-- Modal Body (Form) -->
-    <form id="checkout-form" class="p-6 overflow-y-auto space-y-4">
+    <form id="checkout-form" class="p-6 overflow-y-auto space-y-4" novalidate>
       
+      <!-- Alert Message Box -->
+      <div id="checkout-form-alert" class="hidden p-3 rounded-xl text-xs font-semibold bg-rose-50 border border-rose-200 text-rose-700"></div>
+
       <!-- Summary Box -->
       <div class="bg-[#FCF8F9] p-3.5 rounded-2xl border border-pink-100">
         <span class="text-[10px] font-black uppercase text-pink-600 tracking-wider block mb-1.5">Lista de Insumos Seleccionados:</span>
@@ -37,74 +40,97 @@
       <!-- Customer Name & Phone -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
-          <label class="block text-xs font-bold text-gray-700 mb-1">Nombre Completo *</label>
+          <label for="customer-name" class="block text-xs font-bold text-gray-700 mb-1">
+            Nombre Completo <span class="text-rose-500">*</span>
+          </label>
           <input 
             id="customer-name" 
+            name="customer_name"
             type="text" 
             required 
             placeholder="Ej. Maria Perez" 
-            class="w-full bg-[#FCF8F9] border border-pink-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-pink-500" 
+            class="w-full bg-[#FCF8F9] border border-pink-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-pink-500 transition-colors" 
           />
+          <p id="error-customer-name" class="hidden text-[11px] text-rose-600 mt-1 font-medium"></p>
         </div>
         <div>
-          <label class="block text-xs font-bold text-gray-700 mb-1">Telefono / WhatsApp *</label>
+          <label for="customer-phone" class="block text-xs font-bold text-gray-700 mb-1">
+            Telefono / WhatsApp <span class="text-rose-500">*</span>
+          </label>
           <input 
             id="customer-phone" 
+            name="customer_phone"
             type="tel" 
             required 
             placeholder="Ej. 0412 1234567" 
-            class="w-full bg-[#FCF8F9] border border-pink-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-pink-500" 
+            class="w-full bg-[#FCF8F9] border border-pink-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-pink-500 transition-colors" 
           />
+          <p id="error-customer-phone" class="hidden text-[11px] text-rose-600 mt-1 font-medium"></p>
         </div>
       </div>
 
       <!-- Delivery Option -->
       <div>
-        <label class="block text-xs font-bold text-gray-700 mb-1.5">Metodo de Envio / Entrega *</label>
+        <label class="block text-xs font-bold text-gray-700 mb-1.5">
+          Metodo de Envio / Entrega <span class="text-rose-500">*</span>
+        </label>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
-          <label class="border border-pink-200 rounded-xl p-2.5 flex items-center gap-2 cursor-pointer hover:bg-pink-50 transition-colors">
+          <label class="shipping-method-option border border-pink-200 rounded-xl p-2.5 flex items-center gap-2 cursor-pointer hover:bg-pink-50 transition-colors bg-[#FCF8F9]">
             <input type="radio" name="shipping_method" value="Delivery en Barquisimeto" checked class="text-pink-600 focus:ring-pink-500" />
-            <span>Delivery Bqto</span>
+            <span class="font-medium text-gray-800">Delivery Bqto</span>
           </label>
-          <label class="border border-pink-200 rounded-xl p-2.5 flex items-center gap-2 cursor-pointer hover:bg-pink-50 transition-colors">
+          <label class="shipping-method-option border border-pink-200 rounded-xl p-2.5 flex items-center gap-2 cursor-pointer hover:bg-pink-50 transition-colors bg-[#FCF8F9]">
             <input type="radio" name="shipping_method" value="Retiro en Tienda Barquisimeto" class="text-pink-600 focus:ring-pink-500" />
-            <span>Retiro Tienda</span>
+            <span class="font-medium text-gray-800">Retiro Tienda</span>
           </label>
-          <label class="border border-pink-200 rounded-xl p-2.5 flex items-center gap-2 cursor-pointer hover:bg-pink-50 transition-colors">
+          <label class="shipping-method-option border border-pink-200 rounded-xl p-2.5 flex items-center gap-2 cursor-pointer hover:bg-pink-50 transition-colors bg-[#FCF8F9]">
             <input type="radio" name="shipping_method" value="Envio Nacional (MRW/Zoom/Tealca)" class="text-pink-600 focus:ring-pink-500" />
-            <span>Envio Nacional</span>
+            <span class="font-medium text-gray-800">Envio Nacional</span>
           </label>
         </div>
+        <p id="error-shipping-method" class="hidden text-[11px] text-rose-600 mt-1 font-medium"></p>
       </div>
 
       <!-- City & Address -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
-          <label class="block text-xs font-bold text-gray-700 mb-1">Ciudad / Estado</label>
+          <label for="customer-city" class="block text-xs font-bold text-gray-700 mb-1">
+            Ciudad / Estado <span class="text-rose-500">*</span>
+          </label>
           <input 
             id="customer-city" 
+            name="customer_city"
             type="text" 
+            required
             placeholder="Ej. Barquisimeto / Caracas" 
-            class="w-full bg-[#FCF8F9] border border-pink-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-pink-500" 
+            class="w-full bg-[#FCF8F9] border border-pink-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-pink-500 transition-colors" 
           />
+          <p id="error-customer-city" class="hidden text-[11px] text-rose-600 mt-1 font-medium"></p>
         </div>
         <div>
-          <label class="block text-xs font-bold text-gray-700 mb-1">Direccion / Salon / Agencia</label>
+          <label for="customer-address" class="block text-xs font-bold text-gray-700 mb-1">
+            <span id="label-address-text">Direccion / Salon / Agencia</span> <span id="label-address-req" class="text-rose-500">*</span>
+          </label>
           <input 
             id="customer-address" 
+            name="customer_address"
             type="text" 
             placeholder="Ej. Urb. Del Este, Salon Glamour" 
-            class="w-full bg-[#FCF8F9] border border-pink-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-pink-500" 
+            class="w-full bg-[#FCF8F9] border border-pink-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-pink-500 transition-colors" 
           />
+          <p id="error-customer-address" class="hidden text-[11px] text-rose-600 mt-1 font-medium"></p>
         </div>
       </div>
 
       <!-- Payment Method -->
       <div>
-        <label class="block text-xs font-bold text-gray-700 mb-1">Metodo de Pago Preferido *</label>
+        <label for="payment-method" class="block text-xs font-bold text-gray-700 mb-1">
+          Metodo de Pago Preferido <span class="text-rose-500">*</span>
+        </label>
         <select 
           id="payment-method"
-          class="w-full bg-[#FCF8F9] border border-pink-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-pink-500 font-medium"
+          name="payment_method"
+          class="w-full bg-[#FCF8F9] border border-pink-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-pink-500 font-medium transition-colors"
         >
           <option value="Pago Movil (Tasa Oficial)">Pago Movil (Bolivares)</option>
           <option value="Zelle">Zelle (USD)</option>
@@ -112,28 +138,35 @@
           <option value="Transferencia Banesco o Mercantil">Transferencia Bancaria Nacional</option>
           <option value="Binance Pay (USDT)">Binance Pay (USDT)</option>
         </select>
+        <p id="error-payment-method" class="hidden text-[11px] text-rose-600 mt-1 font-medium"></p>
       </div>
 
       <!-- Extra Notes -->
       <div>
-        <label class="block text-xs font-bold text-gray-700 mb-1">Consulta o Especificaciones para la Asesora</label>
+        <label for="customer-notes" class="block text-xs font-bold text-gray-700 mb-1">Consulta o Especificaciones para la Asesora</label>
         <textarea 
           id="customer-notes" 
+          name="customer_notes"
           rows="2" 
           placeholder="Consultar tonos especificos de esmaltes, disponibilidad inmediata o coordinar horario de entrega..." 
-          class="w-full bg-[#FCF8F9] border border-pink-200 rounded-xl p-2.5 text-xs focus:outline-none focus:border-pink-500"
+          class="w-full bg-[#FCF8F9] border border-pink-200 rounded-xl p-2.5 text-xs focus:outline-none focus:border-pink-500 transition-colors"
         ></textarea>
       </div>
 
-      <!-- Submit Button -->
+      <!-- Submit Button con Estado de Carga -->
       <button 
+        id="checkout-submit-btn"
         type="submit" 
-        class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg transition-all"
+        class="w-full bg-emerald-500 hover:bg-emerald-600 disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold py-3.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg transition-all"
       >
-        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+        <svg id="checkout-btn-icon" class="w-5 h-5 fill-current" viewBox="0 0 24 24">
           <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.668-.699c.974.53 1.83.82 2.792.82 3.183 0 5.77-2.587 5.77-5.768.001-3.182-2.585-5.804-5.77-5.804zm8.286 5.768c0 4.568-3.719 8.286-8.286 8.286-1.42 0-2.75-.36-3.92-.99l-4.35 1.14 1.16-4.24c-.73-1.23-1.16-2.67-1.16-4.196 0-4.567 3.719-8.286 8.27-8.286 4.567 0 8.286 3.719 8.286 8.286z"/>
         </svg>
-        <span>Enviar Lista de Pedido a WhatsApp</span>
+        <svg id="checkout-btn-spinner" class="hidden animate-spin w-5 h-5 text-white" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span id="checkout-btn-text">Enviar Lista de Pedido a WhatsApp</span>
       </button>
 
     </form>

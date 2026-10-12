@@ -206,10 +206,19 @@ function loadPersistedState() {
   }
 }
 
+// Helper para resolver rutas API relativas a subcarpetas de Apache o raiz
+function getApiUrl(endpoint) {
+  const path = window.location.pathname;
+  if (path.includes('/rm-nails-boutique')) {
+    return '/rm-nails-boutique' + endpoint;
+  }
+  return endpoint;
+}
+
 // Consultar API de tasa oficial y congelar en caso de fallo
 async function fetchOfficialRate() {
   try {
-    const res = await fetch('/api/rate', { cache: 'no-store' });
+    const res = await fetch(getApiUrl('/api/rate'), { cache: 'no-store' });
     if (res.ok) {
       const json = await res.json();
       if (json.status === 'success' && json.data && json.data.rate) {
@@ -818,29 +827,199 @@ function closeCheckoutModal() {
   document.body.style.overflow = '';
 }
 
+// Validacion de campos del formulario de Checkout
+const CHECKOUT_VALIDATORS = {
+  name: (val) => {
+    const v = (val || '').trim();
+    if (!v) return { valid: false, message: 'Por favor ingresa tu nombre completo.' };
+    if (v.length < 3) return { valid: false, message: 'El nombre debe tener al menos 3 caracteres.' };
+    if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s\.\-]+$/.test(v)) {
+      return { valid: false, message: 'El nombre solo debe contener letras y espacios.' };
+    }
+    return { valid: true };
+  },
+
+  phone: (val) => {
+    const v = (val || '').trim();
+    if (!v) return { valid: false, message: 'Por favor ingresa tu numero de telefono o WhatsApp.' };
+    const digits = v.replace(/\D/g, '');
+    if (digits.length < 10) {
+      return { valid: false, message: 'Ingresa un telefono valido con al menos 10 digitos (ej. 0412 1234567).' };
+    }
+    if (digits.length > 15) {
+      return { valid: false, message: 'El numero de telefono no puede tener mas de 15 digitos.' };
+    }
+    return { valid: true };
+  },
+
+  city: (val) => {
+    const v = (val || '').trim();
+    if (!v) return { valid: false, message: 'Por favor indica la ciudad o estado (ej. Barquisimeto, Caracas).' };
+    if (v.length < 3) return { valid: false, message: 'La ciudad o estado debe tener al menos 3 caracteres.' };
+    return { valid: true };
+  },
+
+  address: (val, deliveryMethod) => {
+    const v = (val || '').trim();
+    if (deliveryMethod === 'Retiro en Tienda Barquisimeto') {
+      return { valid: true };
+    }
+    if (!v) {
+      return { valid: false, message: 'Por favor indica la direccion de entrega o nombre de tu salon.' };
+    }
+    if (v.length < 5) {
+      return { valid: false, message: 'La direccion debe tener al menos 5 caracteres (calle, sector o punto de referencia).' };
+    }
+    return { valid: true };
+  }
+};
+
+function setFieldValidationState(inputEl, errorEl, res) {
+  if (!inputEl) return;
+  if (res.valid) {
+    inputEl.classList.remove('border-pink-200', 'border-rose-500', 'bg-rose-50/20');
+    inputEl.classList.add('border-emerald-500', 'bg-emerald-50/20');
+    if (errorEl) {
+      errorEl.textContent = '';
+      errorEl.classList.add('hidden');
+    }
+  } else {
+    inputEl.classList.remove('border-pink-200', 'border-emerald-500', 'bg-emerald-50/20');
+    inputEl.classList.add('border-rose-500', 'bg-rose-50/20');
+    if (errorEl) {
+      errorEl.textContent = res.message;
+      errorEl.classList.remove('hidden');
+    }
+  }
+}
+
+function clearFieldValidationState(inputEl, errorEl) {
+  if (!inputEl) return;
+  inputEl.classList.remove('border-rose-500', 'bg-rose-50/20', 'border-emerald-500', 'bg-emerald-50/20');
+  inputEl.classList.add('border-pink-200');
+  if (errorEl) {
+    errorEl.textContent = '';
+    errorEl.classList.add('hidden');
+  }
+}
+
+function updateCheckoutAddressRequirement() {
+  const deliveryType = document.querySelector('input[name="shipping_method"]:checked')?.value || 'Delivery en Barquisimeto';
+  const labelText = document.getElementById('label-address-text');
+  const labelReq = document.getElementById('label-address-req');
+  const addressInput = document.getElementById('customer-address');
+  const addressError = document.getElementById('error-customer-address');
+
+  if (!labelText || !addressInput) return;
+
+  if (deliveryType === 'Retiro en Tienda Barquisimeto') {
+    labelText.textContent = 'Direccion o Punto de Retiro (Opcional)';
+    if (labelReq) labelReq.classList.add('hidden');
+    addressInput.placeholder = 'Punto de entrega en Barquisimeto (coordinar por WhatsApp)';
+    clearFieldValidationState(addressInput, addressError);
+  } else if (deliveryType === 'Envio Nacional (MRW/Zoom/Tealca)') {
+    labelText.textContent = 'Direccion de Agencia o Domicilio Nacional';
+    if (labelReq) labelReq.classList.remove('hidden');
+    addressInput.placeholder = 'Ej. Agencia MRW Este, Av. Venezuela c/c 22';
+  } else {
+    labelText.textContent = 'Direccion / Salon en Barquisimeto';
+    if (labelReq) labelReq.classList.remove('hidden');
+    addressInput.placeholder = 'Ej. Urb. Del Este, Calle 8, Salon Glamour';
+  }
+}
+
 // Enviar lista del pedido a WhatsApp formateada sin emojis
 async function handleCheckoutSubmit(event) {
   event.preventDefault();
 
-  const customerName = document.getElementById('customer-name').value.trim();
-  const customerPhone = document.getElementById('customer-phone').value.trim();
-  const customerCity = document.getElementById('customer-city').value.trim();
-  const customerAddress = document.getElementById('customer-address').value.trim();
-  const deliveryType = document.querySelector('input[name="shipping_method"]:checked')?.value || 'Delivery en Barquisimeto';
-  const paymentMethod = document.getElementById('payment-method').value;
-  const customerNotes = document.getElementById('customer-notes').value.trim();
+  const nameInput = document.getElementById('customer-name');
+  const phoneInput = document.getElementById('customer-phone');
+  const cityInput = document.getElementById('customer-city');
+  const addressInput = document.getElementById('customer-address');
+  const paymentSelect = document.getElementById('payment-method');
+  const notesInput = document.getElementById('customer-notes');
+  const formAlert = document.getElementById('checkout-form-alert');
+  const submitBtn = document.getElementById('checkout-submit-btn');
+  const btnIcon = document.getElementById('checkout-btn-icon');
+  const btnSpinner = document.getElementById('checkout-btn-spinner');
+  const btnText = document.getElementById('checkout-btn-text');
 
-  if (!customerName || !customerPhone) {
-    showToast('Por favor completa tu nombre y telefono.', 'warning');
+  const errorName = document.getElementById('error-customer-name');
+  const errorPhone = document.getElementById('error-customer-phone');
+  const errorCity = document.getElementById('error-customer-city');
+  const errorAddress = document.getElementById('error-customer-address');
+
+  if (formAlert) {
+    formAlert.classList.add('hidden');
+    formAlert.textContent = '';
+  }
+
+  // 1. Validar que el carrito no este vacio
+  if (!STATE.cart || STATE.cart.length === 0) {
+    if (formAlert) {
+      formAlert.textContent = 'Tu carrito esta vacio. Por favor agrega productos del catalogo antes de enviar la orden.';
+      formAlert.classList.remove('hidden');
+    }
+    showToast('El carrito de compras esta vacio.', 'warning');
     return;
   }
 
-  showToast('Generando lista de pedido para atencion al cliente...', 'info');
+  // 2. Obtener valores
+  const customerName = nameInput ? nameInput.value.trim() : '';
+  const customerPhone = phoneInput ? phoneInput.value.trim() : '';
+  const customerCity = cityInput ? cityInput.value.trim() : '';
+  const customerAddress = addressInput ? addressInput.value.trim() : '';
+  const deliveryType = document.querySelector('input[name="shipping_method"]:checked')?.value || 'Delivery en Barquisimeto';
+  const paymentMethod = paymentSelect ? paymentSelect.value : 'Pago Movil (Tasa Oficial)';
+  const customerNotes = notesInput ? notesInput.value.trim() : '';
+
+  // 3. Ejecutar validaciones en cada campo
+  const resName = CHECKOUT_VALIDATORS.name(customerName);
+  const resPhone = CHECKOUT_VALIDATORS.phone(customerPhone);
+  const resCity = CHECKOUT_VALIDATORS.city(customerCity);
+  const resAddress = CHECKOUT_VALIDATORS.address(customerAddress, deliveryType);
+
+  setFieldValidationState(nameInput, errorName, resName);
+  setFieldValidationState(phoneInput, errorPhone, resPhone);
+  setFieldValidationState(cityInput, errorCity, resCity);
+  setFieldValidationState(addressInput, errorAddress, resAddress);
+
+  if (!resName.valid || !resPhone.valid || !resCity.valid || !resAddress.valid) {
+    if (formAlert) {
+      formAlert.textContent = 'Por favor corrige los campos marcados en rojo antes de continuar con tu pedido.';
+      formAlert.classList.remove('hidden');
+    }
+    showToast('Por favor completa los campos requeridos correctamente.', 'warning');
+    
+    // Enfocar primer campo invalido
+    if (!resName.valid && nameInput) nameInput.focus();
+    else if (!resPhone.valid && phoneInput) phoneInput.focus();
+    else if (!resCity.valid && cityInput) cityInput.focus();
+    else if (!resAddress.valid && addressInput) addressInput.focus();
+    return;
+  }
+
+  function resetSubmitBtn() {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      if (btnIcon) btnIcon.classList.remove('hidden');
+      if (btnSpinner) btnSpinner.classList.add('hidden');
+      if (btnText) btnText.textContent = 'Enviar Lista de Pedido a WhatsApp';
+    }
+  }
+
+  // 4. Activar estado de carga en el boton
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    if (btnIcon) btnIcon.classList.add('hidden');
+    if (btnSpinner) btnSpinner.classList.remove('hidden');
+    if (btnText) btnText.textContent = 'Generando orden...';
+  }
 
   const payload = {
     name: customerName,
     phone: customerPhone,
-    city: customerCity || 'Barquisimeto',
+    city: customerCity,
     address: customerAddress,
     deliveryMethod: deliveryType,
     paymentMethod: paymentMethod,
@@ -852,17 +1031,33 @@ async function handleCheckoutSubmit(event) {
   let targetWaUrl = '';
 
   try {
-    const res = await fetch('/api/order/whatsapp', {
+    const res = await fetch(getApiUrl('/api/order/whatsapp'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
 
-    if (res.ok) {
-      const result = await res.json();
-      if (result.status === 'success' && result.data?.whatsAppUrl) {
-        targetWaUrl = result.data.whatsAppUrl;
+    const result = await res.json();
+
+    if (res.status === 422) {
+      // Manejar errores de validacion del servidor
+      if (result.errors) {
+        if (result.errors.name) setFieldValidationState(nameInput, errorName, { valid: false, message: result.errors.name });
+        if (result.errors.phone) setFieldValidationState(phoneInput, errorPhone, { valid: false, message: result.errors.phone });
+        if (result.errors.city) setFieldValidationState(cityInput, errorCity, { valid: false, message: result.errors.city });
+        if (result.errors.address) setFieldValidationState(addressInput, errorAddress, { valid: false, message: result.errors.address });
       }
+      if (formAlert) {
+        formAlert.textContent = result.message || 'Error de validacion en el servidor.';
+        formAlert.classList.remove('hidden');
+      }
+      showToast('Revisa los datos del formulario.', 'warning');
+      resetSubmitBtn();
+      return;
+    }
+
+    if (res.ok && result.status === 'success' && result.data?.whatsAppUrl) {
+      targetWaUrl = result.data.whatsAppUrl;
     }
   } catch (err) {
     console.info('Backend API request skipped, using client-side list generator.', err);
@@ -888,7 +1083,7 @@ async function handleCheckoutSubmit(event) {
     msg += `*DATOS DE LA CLIENTA:*\n`;
     msg += `- Nombre: ${customerName}\n`;
     msg += `- Telefono: ${customerPhone}\n`;
-    msg += `- Ciudad: ${customerCity || 'Barquisimeto'}\n`;
+    msg += `- Ciudad: ${customerCity}\n`;
     if (customerAddress) msg += `- Direccion / Salon: ${customerAddress}\n`;
     msg += `- Metodo de Entrega: ${deliveryType}\n`;
     msg += `- Metodo de Pago: ${paymentMethod}\n`;
@@ -898,6 +1093,7 @@ async function handleCheckoutSubmit(event) {
     targetWaUrl = `https://wa.me/584120549526?text=${encodeURIComponent(msg)}`;
   }
 
+  resetSubmitBtn();
   closeCheckoutModal();
   showToast('Abriendo WhatsApp oficial para atender tu orden...', 'success');
 
@@ -1119,5 +1315,77 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (elements.checkoutForm) {
     elements.checkoutForm.addEventListener('submit', handleCheckoutSubmit);
+
+    const nameInput = document.getElementById('customer-name');
+    const phoneInput = document.getElementById('customer-phone');
+    const cityInput = document.getElementById('customer-city');
+    const addressInput = document.getElementById('customer-address');
+
+    if (nameInput) {
+      nameInput.addEventListener('blur', () => {
+        const res = CHECKOUT_VALIDATORS.name(nameInput.value);
+        setFieldValidationState(nameInput, document.getElementById('error-customer-name'), res);
+      });
+      nameInput.addEventListener('input', () => {
+        if (nameInput.classList.contains('border-rose-500')) {
+          const res = CHECKOUT_VALIDATORS.name(nameInput.value);
+          setFieldValidationState(nameInput, document.getElementById('error-customer-name'), res);
+        }
+      });
+    }
+
+    if (phoneInput) {
+      phoneInput.addEventListener('blur', () => {
+        const res = CHECKOUT_VALIDATORS.phone(phoneInput.value);
+        setFieldValidationState(phoneInput, document.getElementById('error-customer-phone'), res);
+      });
+      phoneInput.addEventListener('input', () => {
+        if (phoneInput.classList.contains('border-rose-500')) {
+          const res = CHECKOUT_VALIDATORS.phone(phoneInput.value);
+          setFieldValidationState(phoneInput, document.getElementById('error-customer-phone'), res);
+        }
+      });
+    }
+
+    if (cityInput) {
+      cityInput.addEventListener('blur', () => {
+        const res = CHECKOUT_VALIDATORS.city(cityInput.value);
+        setFieldValidationState(cityInput, document.getElementById('error-customer-city'), res);
+      });
+      cityInput.addEventListener('input', () => {
+        if (cityInput.classList.contains('border-rose-500')) {
+          const res = CHECKOUT_VALIDATORS.city(cityInput.value);
+          setFieldValidationState(cityInput, document.getElementById('error-customer-city'), res);
+        }
+      });
+    }
+
+    if (addressInput) {
+      addressInput.addEventListener('blur', () => {
+        const deliveryType = document.querySelector('input[name="shipping_method"]:checked')?.value || 'Delivery en Barquisimeto';
+        const res = CHECKOUT_VALIDATORS.address(addressInput.value, deliveryType);
+        setFieldValidationState(addressInput, document.getElementById('error-customer-address'), res);
+      });
+      addressInput.addEventListener('input', () => {
+        if (addressInput.classList.contains('border-rose-500')) {
+          const deliveryType = document.querySelector('input[name="shipping_method"]:checked')?.value || 'Delivery en Barquisimeto';
+          const res = CHECKOUT_VALIDATORS.address(addressInput.value, deliveryType);
+          setFieldValidationState(addressInput, document.getElementById('error-customer-address'), res);
+        }
+      });
+    }
+
+    document.querySelectorAll('input[name="shipping_method"]').forEach(radio => {
+      radio.addEventListener('change', () => {
+        updateCheckoutAddressRequirement();
+        if (addressInput && addressInput.value.trim()) {
+          const deliveryType = radio.value;
+          const res = CHECKOUT_VALIDATORS.address(addressInput.value, deliveryType);
+          setFieldValidationState(addressInput, document.getElementById('error-customer-address'), res);
+        }
+      });
+    });
+
+    updateCheckoutAddressRequirement();
   }
 });

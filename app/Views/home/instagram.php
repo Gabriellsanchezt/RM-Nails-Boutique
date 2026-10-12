@@ -1,5 +1,5 @@
 <!-- Seccion Instagram Comunidad (@rmnailsboutique) -->
-<section class="py-12 bg-white border-t border-pink-100">
+<section id="comunidad" class="py-12 bg-white border-t border-pink-100 scroll-mt-24">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
     <span class="text-xs font-bold uppercase tracking-wider text-pink-600 block mb-1">
       Comunidad Oficial

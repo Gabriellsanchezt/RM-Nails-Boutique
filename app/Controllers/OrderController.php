@@ -12,24 +12,85 @@ class OrderController extends Controller
     {
         $input = $this->getJsonBody();
 
-        $customerName = trim($input['name'] ?? '');
-        $customerPhone = trim($input['phone'] ?? '');
-        $customerCity = trim($input['city'] ?? 'Barquisimeto');
-        $customerAddress = trim($input['address'] ?? '');
-        $deliveryMethod = trim($input['deliveryMethod'] ?? 'Delivery en Barquisimeto');
-        $paymentMethod = trim($input['paymentMethod'] ?? 'Pago Movil');
-        $notes = trim($input['notes'] ?? '');
-        $items = $input['items'] ?? [];
-        $rate = (float) ($input['rate'] ?? Setting::getExchangeRate());
+        $errors = [];
 
-        if (empty($customerName) || empty($customerPhone) || empty($items)) {
+        // 1. Validar Nombre
+        $customerName = trim($input['name'] ?? '');
+        if (empty($customerName) || mb_strlen($customerName) < 3) {
+            $errors['name'] = 'Por favor ingresa tu nombre completo (al menos 3 caracteres).';
+        } elseif (!preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s\.\-]+$/u', $customerName)) {
+            $errors['name'] = 'El nombre solo debe contener letras y espacios.';
+        }
+
+        // 2. Validar Telefono
+        $customerPhone = trim($input['phone'] ?? '');
+        $digitsOnly = preg_replace('/\D/', '', $customerPhone);
+        if (empty($customerPhone) || strlen($digitsOnly) < 10) {
+            $errors['phone'] = 'Por favor ingresa un numero de telefono valido con al menos 10 digitos (ej. 0412 1234567).';
+        }
+
+        // 3. Validar Metodo de Entrega
+        $deliveryMethod = trim($input['deliveryMethod'] ?? 'Delivery en Barquisimeto');
+        $validDeliveryMethods = [
+            'Delivery en Barquisimeto',
+            'Retiro en Tienda Barquisimeto',
+            'Envio Nacional (MRW/Zoom/Tealca)'
+        ];
+        if (!in_array($deliveryMethod, $validDeliveryMethods, true)) {
+            $deliveryMethod = 'Delivery en Barquisimeto';
+        }
+
+        // 4. Validar Ciudad
+        $customerCity = trim($input['city'] ?? '');
+        if (empty($customerCity) || mb_strlen($customerCity) < 3) {
+            $errors['city'] = 'Por favor indica la ciudad o estado de entrega (ej. Barquisimeto, Caracas).';
+        }
+
+        // 5. Validar Direccion segun metodo de entrega
+        $customerAddress = trim($input['address'] ?? '');
+        if ($deliveryMethod !== 'Retiro en Tienda Barquisimeto') {
+            if (empty($customerAddress) || mb_strlen($customerAddress) < 5) {
+                $errors['address'] = 'Por favor indica la direccion completa de entrega o salon de belleza (al menos 5 caracteres).';
+            }
+        }
+
+        // 6. Validar Metodo de Pago
+        $paymentMethod = trim($input['paymentMethod'] ?? 'Pago Movil (Tasa Oficial)');
+        $validPaymentMethods = [
+            'Pago Movil (Tasa Oficial)',
+            'Zelle',
+            'Dolares en Efectivo (Contra entrega o en tienda)',
+            'Transferencia Banesco o Mercantil',
+            'Binance Pay (USDT)'
+        ];
+        if (!in_array($paymentMethod, $validPaymentMethods, true)) {
+            $paymentMethod = 'Pago Movil (Tasa Oficial)';
+        }
+
+        // 7. Validar Items del Carrito
+        $items = $input['items'] ?? [];
+        if (!is_array($items) || empty($items)) {
+            $errors['cart'] = 'El carrito de compras esta vacio. Selecciona al menos un producto para continuar.';
+        }
+
+        // 8. Tasa de cambio
+        $rate = (float) ($input['rate'] ?? Setting::getExchangeRate());
+        if ($rate <= 0) {
+            $rate = Setting::getExchangeRate();
+        }
+
+        $notes = trim($input['notes'] ?? '');
+
+        // Si hay errores de validacion, responder con HTTP 422
+        if (!empty($errors)) {
             $this->json([
                 'status' => 'error',
-                'message' => 'Por favor complete su nombre, telefono y al menos un producto en el pedido.'
+                'message' => 'Por favor revisa y corrige los campos del formulario.',
+                'errors' => $errors
             ], 422);
         }
 
-        // Calcular totales en el backend
+        // Calcular totales de forma segura
         $subtotalUsd = 0.0;
         $orderLines = [];
 
@@ -59,7 +120,7 @@ class OrderController extends Controller
         $totalUsd = $subtotalUsd + $shippingCostUsd;
         $totalVes = $totalUsd * $rate;
 
-        // Construir mensaje en forma de lista clara para atencion al cliente sin emojis
+        // Construir mensaje en forma de lista ordenada sin emojis
         $msg = "*HOLA RM NAILS BOUTIQUE, DESEO CONFIRMAR EL SIGUIENTE PEDIDO:*\n\n";
         $msg .= "*LISTA DE PRODUCTOS SELECCIONADOS:*\n";
 
@@ -96,6 +157,7 @@ class OrderController extends Controller
 
         $this->json([
             'status' => 'success',
+            'message' => 'Orden validada exitosamente.',
             'data' => [
                 'subtotalUsd' => $subtotalUsd,
                 'shippingCostUsd' => $shippingCostUsd,

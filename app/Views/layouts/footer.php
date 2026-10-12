@@ -1,20 +1,22 @@
 <!-- Footer Profesional -->
-<footer class="bg-[#1F191E] text-white pt-16 pb-10 border-t border-pink-900/40">
+<footer id="contacto" class="bg-[#1F191E] text-white pt-16 pb-10 border-t border-pink-900/40 scroll-mt-24">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
       
       <!-- Col 1: Brand & Concept con Logo Oficial -->
       <div class="lg:col-span-2">
         <div class="flex items-center gap-3 mb-4">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#E57399] to-[#D4AF37] p-0.5 overflow-hidden">
-            <img 
-              src="<?= \App\Core\View::asset('assets/images/logo.jpg') ?>" 
-              alt="RM Nails Boutique Logo" 
-              class="w-full h-full object-cover rounded-[10px]"
-              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-            />
-            <div class="hidden w-full h-full bg-[#1F191E] rounded-[10px] items-center justify-center">
-              <span class="font-serif font-black text-lg text-[#E57399]">RM</span>
+          <div class="relative w-11 h-11 rounded-full p-0.5 bg-gradient-to-tr from-[#E57399] via-[#F29AB6] to-[#D4AF37] shadow-sm flex-shrink-0">
+            <div class="w-full h-full rounded-full bg-[#1F191E] overflow-hidden flex items-center justify-center">
+              <img 
+                src="<?= \App\Core\View::asset('assets/images/logo.jpg') ?>" 
+                alt="RM Nails Boutique Logo" 
+                class="w-full h-full object-cover rounded-full"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+              />
+              <div class="hidden w-full h-full bg-[#1F191E] rounded-full items-center justify-center">
+                <span class="font-serif font-black text-lg text-[#E57399]">RM</span>
+              </div>
             </div>
           </div>
           <div>
