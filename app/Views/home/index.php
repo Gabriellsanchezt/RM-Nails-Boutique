@@ -16,14 +16,14 @@
         'slogan' => $slogan
     ]); ?>
 
-    <?php \App\Core\View::component('home/features', [
-        'shipping' => $shipping
-    ]); ?>
-
     <?php \App\Core\View::component('home/catalog', [
         'products' => $products,
         'categories' => $categories,
         'exchangeRate' => $exchangeRate
+    ]); ?>
+
+    <?php \App\Core\View::component('home/features', [
+        'shipping' => $shipping
     ]); ?>
 
     <?php \App\Core\View::component('home/reviews'); ?>

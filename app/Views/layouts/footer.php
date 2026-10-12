@@ -96,13 +96,20 @@
 
     </div>
 
-    <!-- Footer Bottom Bar -->
-    <div class="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
-      <div>
-        <?= date('Y') ?> <strong><?= htmlspecialchars($appName ?? 'RM Nails Boutique') ?></strong>. "<?= htmlspecialchars($slogan ?? 'La boutique de las unas') ?>" - Todos los derechos reservados.
-      </div>
-      <div class="flex items-center gap-4">
-        <a href="https://wa.me/<?= htmlspecialchars($whatsApp ?? '584120549526') ?>" target="_blank" class="hover:text-pink-400 transition-colors">WhatsApp Oficial: +58 412-0549526</a>
+    <!-- Footer Bottom Bar (Derechos Reservados Centrados) -->
+    <div class="border-t border-white/10 pt-8 mt-4 flex flex-col items-center justify-center text-center gap-2.5 text-xs text-gray-400">
+      <p class="font-normal tracking-wide">
+        &copy; <?= date('Y') ?> <strong class="text-white font-semibold"><?= htmlspecialchars($appName ?? 'RM Nails Boutique') ?></strong> &mdash; &ldquo;<?= htmlspecialchars($slogan ?? 'La boutique de las unas') ?>&rdquo;. Todos los derechos reservados.
+      </p>
+      <div class="flex flex-wrap items-center justify-center gap-4 text-[11px] text-gray-500">
+        <a href="https://wa.me/<?= htmlspecialchars($whatsApp ?? '584120549526') ?>" target="_blank" class="hover:text-pink-400 transition-colors flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5 fill-current text-emerald-500" viewBox="0 0 24 24">
+            <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.668-.699c.974.53 1.83.82 2.792.82 3.183 0 5.77-2.587 5.77-5.768.001-3.182-2.585-5.804-5.77-5.804zm8.286 5.768c0 4.568-3.719 8.286-8.286 8.286-1.42 0-2.75-.36-3.92-.99l-4.35 1.14 1.16-4.24c-.73-1.23-1.16-2.67-1.16-4.196 0-4.567 3.719-8.286 8.27-8.286 4.567 0 8.286 3.719 8.286 8.286z"/>
+          </svg>
+          <span>WhatsApp Oficial: +58 412-0549526</span>
+        </a>
+        <span class="opacity-30">&bull;</span>
+        <span>Barquisimeto, Estado Lara, Venezuela</span>
       </div>
     </div>
   </div>
