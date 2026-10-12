@@ -38,4 +38,20 @@ class View
             require $fullPath;
         }
     }
+
+    public static function asset(string $path): string
+    {
+        $scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? ''));
+        $base = rtrim($scriptDir, '/');
+        
+        // If scriptDir does not include public but public exists
+        if (!str_ends_with($base, '/public') && file_exists(dirname(__DIR__, 2) . '/public/' . ltrim($path, '/'))) {
+            // When accessed via root redirect in XAMPP
+            if (file_exists(dirname(__DIR__, 2) . '/public/' . ltrim($path, '/'))) {
+                return ($base === '' ? '' : $base) . '/public/' . ltrim($path, '/');
+            }
+        }
+
+        return ($base === '' ? '' : $base) . '/' . ltrim($path, '/');
+    }
 }

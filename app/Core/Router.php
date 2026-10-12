@@ -30,8 +30,25 @@ class Router
         $requestMethod = $_SERVER['REQUEST_METHOD'] ?? 'GET';
         $requestUri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
 
-        // Normalize URI
-        $requestUri = rtrim($requestUri, '/');
+        // Normalize base path for subdirectories (e.g. XAMPP http://localhost/rm-nails-boutique/)
+        $scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? ''));
+        $baseFolder = preg_replace('#/public$#', '', $scriptDir);
+
+        if (!empty($baseFolder) && $baseFolder !== '/' && str_starts_with($requestUri, $baseFolder)) {
+            $requestUri = substr($requestUri, strlen($baseFolder));
+        }
+
+        if (!empty($scriptDir) && $scriptDir !== '/' && str_starts_with($requestUri, $scriptDir)) {
+            $requestUri = substr($requestUri, strlen($scriptDir));
+        }
+
+        // Also normalize if accessed via /public directly
+        if (str_starts_with($requestUri, '/public')) {
+            $requestUri = substr($requestUri, 7);
+        }
+
+        // Normalize slashes
+        $requestUri = '/' . trim($requestUri, '/');
         if ($requestUri === '') {
             $requestUri = '/';
         }
@@ -41,7 +58,7 @@ class Router
                 continue;
             }
 
-            // Simple pattern matching
+            // Pattern matching
             $pattern = preg_replace('/\{([a-zA-Z0-9_]+)\}/', '(?P<$1>[^/]+)', $route['path']);
             $pattern = '#^' . $pattern . '$#';
 
@@ -71,7 +88,8 @@ class Router
         header('Content-Type: application/json');
         echo json_encode([
             'status' => 'error',
-            'message' => 'Página no encontrada (404) - RM Nails Boutique'
+            'message' => 'Ruta no encontrada (404) - RM Nails Boutique',
+            'requested_uri' => $requestUri
         ]);
     }
 }

@@ -44,7 +44,7 @@
   </script>
 
   <!-- Custom Boutique Theme CSS -->
-  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="<?= \App\Core\View::asset('assets/css/styles.css') ?>" />
 </head>
 <body class="bg-[#FCF8F9] text-gray-800 antialiased font-sans flex flex-col min-h-screen">
 
@@ -81,6 +81,6 @@
   <div id="toast-container"></div>
 
   <!-- App Client-Side Logic -->
-  <script src="assets/js/app.js"></script>
+  <script src="<?= \App\Core\View::asset('assets/js/app.js') ?>"></script>
 </body>
 </html>
