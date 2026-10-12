@@ -1,75 +1,71 @@
 /**
- * RM NAILS BOUTIQUE - "La boutique de las uñas"
+ * RM Nails Boutique - La boutique de las unas
  * Core E-Commerce Logic & Application State
  * Official WhatsApp: wa.me/584120549526
  * Instagram: @rmnailsboutique
  */
 
-// --- PRODUCT CATALOG DATA ---
+// Catalogo de Insumos Profesionales (Sin Kits y Sin Manejo de Stock para Consulta Directa)
 const PRODUCTS = [
   {
     id: 'rm-01',
     name: 'Esmaltes Gel M&Y Collection (Gama 6 Tonos)',
     category: 'unas',
-    categoryName: 'Uñas / Manicura',
+    categoryName: 'Unas / Manicura',
     priceUsd: 14.50,
-    badge: 'MÁS VENDIDO',
+    badge: 'MAS VENDIDO',
     badgeType: 'badge-gold',
     rating: 4.9,
     reviews: 84,
     image: 'https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=700&q=80',
-    description: 'Colección de esmaltes semipermanentes de alta pigmentación, brillo espejo y duración de más de 21 días sin desprendimiento.',
-    features: ['Curado UV/LED en 60s', 'Fórmula libre de 9 tóxicos', 'Brocha plana de precisión', 'Tonos nudes y vibrantes de temporada'],
-    stock: 28
+    description: 'Coleccion de esmaltes semipermanentes de alta pigmentacion, brillo espejo y duracion prolongada sin desprendimiento.',
+    features: ['Curado UV/LED en 60s', 'Formula libre de toxicos', 'Brocha plana de precision', 'Tonos nudes y vibrantes de temporada']
   },
   {
     id: 'rm-02',
-    name: 'Lámpara Profesional UV/LED Sun X5 Max 120W',
+    name: 'Lampara Profesional UV/LED Sun X5 Max 120W',
     category: 'unas',
-    categoryName: 'Uñas / Manicura',
+    categoryName: 'Unas / Manicura',
     priceUsd: 22.00,
     badge: 'INDISPENSABLE',
     badgeType: 'badge-pink',
     rating: 5.0,
     reviews: 112,
     image: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=700&q=80',
-    description: 'Lámpara de secado rápido con sensor inteligente, temporizador 10s/30s/60s/99s modo bajo calor para evitar molestias.',
-    features: ['Potencia real de 120 Watts', '45 diodos LED estratégicamente distribuidos', 'Base removible para pedicura', 'Display digital LED'],
-    stock: 14
+    description: 'Lampara de secado rapido con sensor inteligente, temporizador digital y modo bajo calor para evitar molestias.',
+    features: ['Potencia de 120 Watts', '45 diodos LED estrategicamente distribuidos', 'Base removible para pedicura', 'Display digital LED']
   },
   {
     id: 'rm-03',
-    name: 'Serum & Kit Laminado de Cejas Iconsign Pro',
+    name: 'Serum & Laminado de Cejas Iconsign Pro',
     category: 'cejas-pestanas',
-    categoryName: 'Cejas & Pestañas',
+    categoryName: 'Cejas & Pestanas',
     priceUsd: 18.00,
     badge: 'TOP BROWS',
     badgeType: 'badge-gold',
     rating: 4.8,
     reviews: 67,
     image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=700&q=80',
-    description: 'Kit profesional completo para laminado y direccionamiento de cejas rebeldes. Rinde para más de 15 aplicaciones en cabina.',
-    features: ['Efecto cejas orgánicas por 6 a 8 semanas', 'Lociones con colágeno nutritivo', 'Incluye herramientas de peinado y almohadillas', 'Resultados naturales e indoloros'],
-    stock: 19
+    description: 'Tratamiento profesional para direccionamiento y nutricion de cejas rebeldes en cabina.',
+    features: ['Efecto cejas organicas de larga duracion', 'Lociones con colageno nutritivo', 'Incluye herramientas de peinado y almohadillas', 'Resultados definidos']
   },
   {
     id: 'rm-04',
-    name: 'Pestañas Nagaraku Mix Volumen Ruso (0.07 C/D)',
+    name: 'Pestanas Nagaraku Mix Volumen Ruso (0.07 C/D)',
     category: 'cejas-pestanas',
-    categoryName: 'Cejas & Pestañas',
+    categoryName: 'Cejas & Pestanas',
     priceUsd: 7.50,
-    badge: 'FAVORITO LASHISTAS',
+    badge: 'LASH ARTIST',
     badgeType: 'badge-trend',
     rating: 4.9,
     reviews: 95,
     image: 'https://images.unsplash.com/photo-1583001809873-a128495da465?auto=format&fit=crop&w=700&q=80',
-    description: 'Blíster de extensiones de pestañas de fibra de visón sintético de alta gama. Suaves, ligeras y con curvatura indeformable.',
-    features: ['Mix de longitudes (7mm a 15mm)', 'Color negro mate profundo sin reflejos plásticos', 'Fácil despegue de la tira adhesiva', 'Ideales para abanicos de volumen'],
-    stock: 45
+    description: 'Blister de extensiones de pestanas de fibra suave de alta gama. Ligeras y con curvatura estable.',
+    features: ['Mix de longitudes (7mm a 15mm)', 'Color negro mate profundo sin reflejos plasticos', 'Facil despegue de la tira adhesiva', 'Ideales para abanicos de volumen']
   },
   {
     id: 'rm-05',
-    name: 'Aceite Nutritivo para Cutículas Gold 24k (30ml)',
+    name: 'Aceite Nutritivo para Cuticulas Gold 24k (30ml)',
     category: 'cuidado-herramientas',
     categoryName: 'Cuidado & Herramientas',
     priceUsd: 6.00,
@@ -78,73 +74,54 @@ const PRODUCTS = [
     rating: 4.9,
     reviews: 53,
     image: 'https://images.unsplash.com/photo-1608248597359-50953a393fb6?auto=format&fit=crop&w=700&q=80',
-    description: 'Elixir regenerador con micro-partículas doradas, aceite de almendras dulces y vitamina E. El toque final de lujo para tus clientas.',
-    features: ['Hidratación profunda sin sensación grasosa', 'Aroma irresistible a rosas y vainilla', 'Gotero higiénico dosificador', 'Previene padrastros y resequedad'],
-    stock: 36
+    description: 'Elixir regenerador con micro-particulas doradas, aceite de almendras dulces y vitamina E.',
+    features: ['Hidratacion profunda sin sensacion grasa', 'Aroma floral suave', 'Gotero higienico dosificador', 'Previene resequedad']
   },
   {
     id: 'rm-06',
-    name: 'Pincel Kolinsky #8 Profesional para Acrílico',
+    name: 'Pincel Kolinsky #8 Profesional para Acrilico',
     category: 'unas',
-    categoryName: 'Uñas / Manicura',
+    categoryName: 'Unas / Manicura',
     priceUsd: 19.50,
     badge: 'CALIDAD PREMIUM',
     badgeType: 'badge-gold',
     rating: 5.0,
     reviews: 42,
     image: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=700&q=80',
-    description: 'Pelo 100% Kolinsky puro con punta ovalada perfecta. Mango de metal oro rosa ergonómico y balanceado para el control de la perla.',
-    features: ['Cerdas compactas de alta retención de monómero', 'Resistente a la acetona pura', 'Tapa protectora metálica incluida', 'Calidad de nivel competencia'],
-    stock: 11
+    description: 'Pelo 100% Kolinsky con punta ovalada calibrada. Mango de metal oro rosa balanceado para control de la perla.',
+    features: ['Cerdas compactas de alta retencion de monomero', 'Resistente a la acetona pura', 'Tapa protectora metalica incluida', 'Nivel profesional']
   },
   {
     id: 'rm-07',
     name: 'Limas Profesionales Spongee 100/180 (Pack x10)',
     category: 'unas',
-    categoryName: 'Uñas / Manicura',
+    categoryName: 'Unas / Manicura',
     priceUsd: 8.00,
-    badge: 'PACK AHORRO',
+    badge: 'PACK PROFESIONAL',
     badgeType: 'badge-trend',
     rating: 4.8,
     reviews: 61,
     image: 'https://images.unsplash.com/photo-1599305090598-fe179d501227?auto=format&fit=crop&w=700&q=80',
-    description: 'Limas pulidoras acolchadas de doble grano. Suavizan la superficie de la uña artificial antes de esmaltar o sellar el brillo.',
-    features: ['Grano 100/180 de larga duración', 'Espuma interior de memoria que no corta la cutícula', 'Lavables y desinfectables', 'Empaque sellado de 10 unidades'],
-    stock: 50
+    description: 'Limas pulidoras acolchadas de doble grano. Suavizan la superficie de la una antes de esmaltar o sellar brillo.',
+    features: ['Grano 100/180 de durabilidad extendida', 'Espuma interior flexible', 'Desinfectables', 'Empaque de 10 unidades']
   },
   {
     id: 'rm-08',
-    name: 'Pegamento de Pestañas Lady Black Ultra (5ml)',
+    name: 'Pegamento de Pestanas Lady Black Ultra (5ml)',
     category: 'cejas-pestanas',
-    categoryName: 'Cejas & Pestañas',
+    categoryName: 'Cejas & Pestanas',
     priceUsd: 16.50,
-    badge: 'SECADO RÁPIDO',
+    badge: 'SECADO RAPIDO',
     badgeType: 'badge-pink',
     rating: 4.9,
     reviews: 78,
     image: 'https://images.unsplash.com/photo-1526045612212-70caf35c14df?auto=format&fit=crop&w=700&q=80',
-    description: 'Adhesivo médico de grado profesional para extensiones. Secado en 1 a 2 segundos con retención insuperable de 5 a 7 semanas.',
-    features: ['Bajo nivel de vapores hipoalergénico', 'Color negro carbón para acabado continuo', 'Fórmula de alta viscosidad y elasticidad', 'Bolsa térmica con gel de sílice'],
-    stock: 22
-  },
-  {
-    id: 'rm-09',
-    name: 'Kit de Inicio Manicurista Pro (Combo Mesa Completa)',
-    category: 'combos',
-    categoryName: 'Kits & Promos',
-    priceUsd: 49.99,
-    badge: 'SUPER COMBO',
-    badgeType: 'badge-gold',
-    rating: 5.0,
-    reviews: 39,
-    image: 'https://images.unsplash.com/photo-1634942537034-2531766767d1?auto=format&fit=crop&w=700&q=80',
-    description: 'El combo ideal para iniciar tu negocio o salón. Incluye lámpara Sun X5, 6 geles, top coat, base coat, limas, wipes y aceite cutícula.',
-    features: ['Ahorras más del 25% respecto a compra individual', 'Incluye guía rápida de aplicación de semipermanente', 'Caja de presentación boutique RM', 'Asesoría directa para dudas de uso'],
-    stock: 8
+    description: 'Adhesivo de grado profesional para extensiones de pestanas con tiempo de fijacion de 1 a 2 segundos.',
+    features: ['Bajo nivel de vapores', 'Color negro carbon para acabado limpio', 'Formula de alta retencion', 'Bolsa termica sellada']
   },
   {
     id: 'rm-10',
-    name: 'Kit de Fresas/Brocas Rusas de Diamante (7 piezas)',
+    name: 'Set de Fresas de Diamante para Manicura Rusa (7 piezas)',
     category: 'cuidado-herramientas',
     categoryName: 'Cuidado & Herramientas',
     priceUsd: 12.00,
@@ -153,66 +130,60 @@ const PRODUCTS = [
     rating: 4.9,
     reviews: 44,
     image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=700&q=80',
-    description: 'Set de fresas de precisión diamantadas para limpieza profunda de cutícula, remoción de piel seca y preparación perfecta de la placa ungueal.',
-    features: ['Vástago estándar de 3/32" compatible con todos los drills', 'Resistentes al autoclave y calor seco', 'Brocas llama, esfera, cono y cilindro', 'Estuche acrílico organizador'],
-    stock: 25
+    description: 'Brocas de precision diamantadas para limpieza de cuticula y preparacion de la placa ungueal.',
+    features: ['Vastago estandar de 3/32 compatible con drills', 'Esterilizables en calor seco o autoclave', 'Formas llama, esfera, cono y cilindro', 'Estuche organizador']
   },
   {
     id: 'rm-11',
-    name: 'Pinza Curva de Precisión para Volumen Ruso Gold',
+    name: 'Pinza Curva de Precision para Volumen Ruso Gold',
     category: 'cejas-pestanas',
-    categoryName: 'Cejas & Pestañas',
+    categoryName: 'Cejas & Pestanas',
     priceUsd: 9.50,
     badge: 'ORO ROSA',
     badgeType: 'badge-gold',
     rating: 4.8,
     reviews: 31,
     image: 'https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?auto=format&fit=crop&w=700&q=80',
-    description: 'Pinza de acero inoxidable con calibración manual y agarre suave para armar abanicos perfectos sin cansar la mano del lashista.',
-    features: ['Cierre 100% hermético de punta a punta', 'Acabado en oro rosado de titanio anti-óxido', 'Puntas afiladas a mano', 'Peso ultraligero de 17 gramos'],
-    stock: 18
+    description: 'Pinza de acero inoxidable con calibracion manual para armado de abanicos precisos.',
+    features: ['Cierre hermetico de punta a punta', 'Acabado en titanio oro rosa', 'Puntas afiladas a mano', 'Peso ultraligero']
   },
   {
     id: 'rm-12',
-    name: 'Extractor Colector de Polvo 80W para Uñas',
+    name: 'Extractor Colector de Polvo 80W para Mesa de Unas',
     category: 'cuidado-herramientas',
     categoryName: 'Cuidado & Herramientas',
     priceUsd: 34.00,
-    badge: 'SALUD & HIGIENE',
+    badge: 'HIGIENE Y SALUD',
     badgeType: 'badge-pink',
     rating: 4.9,
     reviews: 29,
     image: 'https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?auto=format&fit=crop&w=700&q=80',
-    description: 'Potente extractor con filtro HEPA reutilizable. Protege tus pulmones y mantiene tu mesa de trabajo impecable libre de polvillo de acrílico.',
-    features: ['Motor silencioso de alta succión 80W', 'Filtro extraíble de fácil limpieza', 'Diseño ergonómico con almohadilla de descanso para la clienta', 'Control de potencia progresivo'],
-    stock: 9
+    description: 'Extractor con filtro HEPA reutilizable para mantener el area de trabajo libre de polvillo.',
+    features: ['Motor de alta succion de 80W', 'Filtro lavable extraible', 'Diseno ergonomico para descanso de la mano', 'Control de potencia']
   }
 ];
 
-// --- APP STATE ---
+// Estado de la Aplicacion
 const STATE = {
-  // Exchange rate USD -> VES (Bolívares)
-  exchangeRate: 46.50, // Tasa referencial oficial
-  currency: 'USD',    // 'USD' or 'VES'
+  exchangeRate: 875.65, // Tasa de respaldo inicial, se actualiza via API
+  rateSource: 'BCV Oficial',
+  isRateFrozen: false,
+  currency: 'USD',
   
-  // Shopping Cart & Wishlist
   cart: [],
   wishlist: [],
   
-  // Filtering & Search
   category: 'all',
   searchQuery: '',
   sortBy: 'featured',
   
-  // Delivery selected for checkout
-  deliveryMethod: 'delivery-bqto', // 'delivery-bqto', 'tienda-bqto', 'nacional-vzla'
+  deliveryMethod: 'delivery-bqto',
   deliveryCost: 2.50,
   
-  // Quick View selected product
   quickViewProduct: null
 };
 
-// --- LOCAL STORAGE HELPERS ---
+// Cargar estado persistente
 function loadPersistedState() {
   try {
     const savedCart = localStorage.getItem('rm_cart');
@@ -224,11 +195,42 @@ function loadPersistedState() {
     const savedCurrency = localStorage.getItem('rm_currency');
     if (savedCurrency) STATE.currency = savedCurrency;
 
-    const savedRate = localStorage.getItem('rm_rate');
-    if (savedRate) STATE.exchangeRate = parseFloat(savedRate) || 46.50;
+    // Recuperar tasa congelada en caso de conexion fallida
+    const frozenRate = localStorage.getItem('rm_frozen_rate');
+    if (frozenRate) {
+      STATE.exchangeRate = parseFloat(frozenRate) || 875.65;
+      STATE.isRateFrozen = true;
+    }
   } catch (e) {
-    console.warn('Error reading from localStorage', e);
+    console.warn('Error leyendo localStorage', e);
   }
+}
+
+// Consultar API de tasa oficial y congelar en caso de fallo
+async function fetchOfficialRate() {
+  try {
+    const res = await fetch('/api/rate', { cache: 'no-store' });
+    if (res.ok) {
+      const json = await res.json();
+      if (json.status === 'success' && json.data && json.data.rate) {
+        STATE.exchangeRate = parseFloat(json.data.rate);
+        STATE.rateSource = json.data.source || 'BCV Oficial';
+        STATE.isRateFrozen = Boolean(json.data.frozen);
+
+        // Congelar en localStorage para contingencia de conexion
+        localStorage.setItem('rm_frozen_rate', STATE.exchangeRate.toString());
+        updateCurrencyDisplay();
+        renderProducts();
+        renderCartDrawer();
+        return;
+      }
+    }
+  } catch (err) {
+    console.info('Problema consultando la API en vivo. Congelando tasa en ultimo valor registrado.', err);
+    STATE.isRateFrozen = true;
+  }
+
+  updateCurrencyDisplay();
 }
 
 function persistCart() {
@@ -247,7 +249,7 @@ function persistWishlist() {
   }
 }
 
-// --- CURRENCY FORMATTER ---
+// Formateador de precios (USD / Bs)
 function formatPrice(usdAmount) {
   const usdFormatted = `$${usdAmount.toFixed(2)}`;
   const vesAmount = usdAmount * STATE.exchangeRate;
@@ -259,12 +261,7 @@ function formatPrice(usdAmount) {
   return `<span class="font-bold text-gray-900">${usdFormatted}</span> <span class="text-xs text-gray-400 font-normal">(${vesFormatted})</span>`;
 }
 
-function getSimplePriceStr(usdAmount) {
-  const vesAmount = usdAmount * STATE.exchangeRate;
-  return `$${usdAmount.toFixed(2)} USD / Bs. ${vesAmount.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-}
-
-// --- DOM ELEMENTS CACHE ---
+// Elementos del DOM
 let elements = {};
 
 function initElements() {
@@ -288,36 +285,32 @@ function initElements() {
     currencyToggleBtn: document.getElementById('currency-toggle-btn'),
     currentCurrencyLabel: document.getElementById('current-currency-label'),
     currentRateLabel: document.getElementById('current-rate-label'),
+    rateFrozenBadge: document.getElementById('rate-frozen-badge'),
     rateModal: document.getElementById('rate-modal'),
     customRateInput: document.getElementById('custom-rate-input'),
     
-    // Quick View Modal
     quickViewModal: document.getElementById('quickview-modal'),
     quickViewContainer: document.getElementById('quickview-content'),
     
-    // Checkout Modal
     checkoutModal: document.getElementById('checkout-modal'),
     checkoutForm: document.getElementById('checkout-form'),
     checkoutSummaryItems: document.getElementById('checkout-summary-items'),
     checkoutTotalUsd: document.getElementById('checkout-total-usd'),
     checkoutTotalVes: document.getElementById('checkout-total-ves'),
     
-    // Mobile Navigation Drawer
     mobileMenuDrawer: document.getElementById('mobile-menu-drawer'),
     mobileMenuBackdrop: document.getElementById('mobile-menu-backdrop'),
     
-    // Wishlist Modal
     wishlistModal: document.getElementById('wishlist-modal'),
     wishlistItemsList: document.getElementById('wishlist-items-list'),
     wishlistEmptyState: document.getElementById('wishlist-empty-state')
   };
 }
 
-// --- RENDER PRODUCTS GRID ---
+// Renderizado de Catalogo
 function renderProducts() {
   if (!elements.productsGrid) return;
   
-  // Filter products
   let filtered = PRODUCTS.filter(prod => {
     const matchesCat = STATE.category === 'all' || prod.category === STATE.category;
     const query = STATE.searchQuery.trim().toLowerCase();
@@ -330,7 +323,6 @@ function renderProducts() {
     return matchesCat && matchesSearch;
   });
 
-  // Sort
   if (STATE.sortBy === 'price-asc') {
     filtered.sort((a, b) => a.priceUsd - b.priceUsd);
   } else if (STATE.sortBy === 'price-desc') {
@@ -339,21 +331,17 @@ function renderProducts() {
     filtered.sort((a, b) => b.rating - a.rating);
   }
 
-  // Update counts
   if (elements.productCount) {
-    elements.productCount.textContent = `${filtered.length} productos disponibles`;
+    elements.productCount.textContent = `${filtered.length} insumos disponibles`;
   }
 
   if (filtered.length === 0) {
     elements.productsGrid.innerHTML = `
       <div class="col-span-full py-16 text-center bg-white rounded-3xl border border-dashed border-pink-200 p-8">
-        <div class="w-16 h-16 mx-auto mb-4 bg-pink-50 text-pink-400 rounded-full flex items-center justify-center text-2xl">
-          🔍
-        </div>
         <h3 class="text-xl font-serif font-bold text-gray-800 mb-2">No encontramos insumos con ese criterio</h3>
-        <p class="text-gray-500 max-w-md mx-auto text-sm mb-6">Prueba con palabras como "gel", "pestañas", "limas", "aceite" o limpia los filtros activos.</p>
+        <p class="text-gray-500 max-w-md mx-auto text-sm mb-6">Prueba con palabras como "gel", "pestanas", "limas", "aceite" o muestra todo el catalogo.</p>
         <button onclick="resetFilters()" class="btn-primary-boutique px-6 py-2.5 rounded-full text-sm font-semibold">
-          Restablecer Catálogo
+          Mostrar Todo el Catalogo
         </button>
       </div>
     `;
@@ -366,7 +354,6 @@ function renderProducts() {
     
     return `
       <div class="product-card bg-white rounded-2xl overflow-hidden flex flex-col justify-between group relative" data-product-id="${product.id}">
-        <!-- Image Container -->
         <div class="relative w-full pt-[95%] overflow-hidden bg-pink-50/50">
           <img 
             src="${product.image}" 
@@ -375,25 +362,22 @@ function renderProducts() {
             loading="lazy"
           />
           
-          <!-- Top Badges -->
           <div class="absolute top-3 left-3 flex flex-col gap-1 z-10">
             <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full ${product.badgeType}">
               ${product.badge}
             </span>
           </div>
 
-          <!-- Wishlist Button -->
           <button 
             onclick="toggleWishlist('${product.id}')"
             class="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md shadow-md flex items-center justify-center transition-all hover:scale-110 active:scale-95 z-10 text-gray-400 hover:text-pink-500"
-            title="Añadir a lista de deseos"
+            title="Anadir a lista de deseos"
           >
             <svg class="w-5 h-5 ${isWishlisted ? 'text-pink-600 fill-current' : 'text-gray-400'}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
             </svg>
           </button>
 
-          <!-- Quick View Hover Button -->
           <button 
             onclick="openQuickView('${product.id}')"
             class="absolute bottom-3 left-1/2 -translate-x-1/2 bg-white/95 hover:bg-white text-gray-800 text-xs font-semibold px-4 py-2 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-200 transform translate-y-2 group-hover:translate-y-0 whitespace-nowrap flex items-center gap-1.5"
@@ -402,35 +386,32 @@ function renderProducts() {
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
             </svg>
-            Vista Rápida
+            Vista Rapida
           </button>
         </div>
 
-        <!-- Details -->
         <div class="p-5 flex flex-col flex-grow justify-between">
           <div>
-            <!-- Category and Rating -->
             <div class="flex items-center justify-between text-xs text-gray-400 mb-1.5">
               <span class="font-medium text-pink-600 uppercase tracking-wider text-[11px]">${product.categoryName}</span>
               <div class="flex items-center text-amber-500 font-semibold gap-1">
-                <span>★</span>
+                <svg class="w-3.5 h-3.5 fill-current text-amber-500" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
                 <span>${product.rating.toFixed(1)}</span>
                 <span class="text-gray-300 font-normal">(${product.reviews})</span>
               </div>
             </div>
 
-            <!-- Title -->
             <h4 class="font-semibold text-gray-900 text-base leading-snug line-clamp-2 mb-2 group-hover:text-pink-600 transition-colors">
               ${product.name}
             </h4>
 
-            <!-- Short description -->
             <p class="text-gray-500 text-xs line-clamp-2 mb-4 leading-relaxed">
               ${product.description}
             </p>
           </div>
 
-          <!-- Pricing & Actions -->
           <div class="pt-3 border-t border-gray-100">
             <div class="mb-3 flex items-baseline justify-between">
               <div>
@@ -438,12 +419,11 @@ function renderProducts() {
                   ${formatPrice(product.priceUsd)}
                 </div>
               </div>
-              <span class="text-[11px] px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-medium">
-                Stock listo
+              <span class="text-[11px] px-2 py-0.5 rounded bg-pink-50 text-pink-700 font-medium">
+                Consultar disponibilidad
               </span>
             </div>
 
-            <!-- Buttons Grid -->
             <div class="grid grid-cols-2 gap-2">
               <button 
                 onclick="addToCart('${product.id}')"
@@ -452,18 +432,18 @@ function renderProducts() {
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
                 </svg>
-                <span>${inCartQty > 0 ? `En Carrito (${inCartQty})` : 'Añadir'}</span>
+                <span>${inCartQty > 0 ? `En Carrito (${inCartQty})` : 'Anadir'}</span>
               </button>
 
               <button 
                 onclick="buyDirectWhatsApp('${product.id}')"
                 class="w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 py-2.5 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors"
-                title="Comprar directo por WhatsApp"
+                title="Consultar por WhatsApp"
               >
                 <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.668-.699c.974.53 1.83.82 2.792.82 3.183 0 5.77-2.587 5.77-5.768.001-3.182-2.585-5.804-5.77-5.804zm8.286 5.768c0 4.568-3.719 8.286-8.286 8.286-1.42 0-2.75-.36-3.92-.99l-4.35 1.14 1.16-4.24c-.73-1.23-1.16-2.67-1.16-4.196 0-4.567 3.719-8.286 8.27-8.286 4.567 0 8.286 3.719 8.286 8.286z"/>
                 </svg>
-                <span>WhatsApp</span>
+                <span>Consultar</span>
               </button>
             </div>
           </div>
@@ -473,7 +453,7 @@ function renderProducts() {
   }).join('');
 }
 
-// --- CART MANAGEMENT ---
+// Gestion de Carrito
 function addToCart(productId, qty = 1) {
   const product = PRODUCTS.find(p => p.id === productId);
   if (!product) return;
@@ -495,7 +475,7 @@ function addToCart(productId, qty = 1) {
   persistCart();
   updateCartCounters();
   renderProducts();
-  showToast(`¡Añadido! ${product.name.slice(0, 26)}... se agregó a tu pedido.`, 'success');
+  showToast(`Anadido: ${product.name.slice(0, 26)}... a tu orden.`, 'success');
 }
 
 function updateCartQuantity(productId, delta) {
@@ -531,7 +511,7 @@ function clearCart() {
   updateCartCounters();
   renderCartDrawer();
   renderProducts();
-  showToast('Vaciaste tu carrito de compras.', 'info');
+  showToast('Has vaciado tu carrito de compras.', 'info');
 }
 
 function updateCartCounters() {
@@ -561,12 +541,10 @@ function calculateCartTotals() {
   
   let shippingCostUsd = 0;
   if (STATE.deliveryMethod === 'delivery-bqto') {
-    // Delivery Barquisimeto: Gratis si la compra supera $35, de lo contrario $2.50
     shippingCostUsd = subtotalUsd >= 35 ? 0 : 2.50;
   } else if (STATE.deliveryMethod === 'tienda-bqto') {
     shippingCostUsd = 0;
   } else if (STATE.deliveryMethod === 'nacional-vzla') {
-    // Cobro a Destino por agencia
     shippingCostUsd = 0;
   }
 
@@ -583,7 +561,6 @@ function calculateCartTotals() {
   };
 }
 
-// --- CART DRAWER RENDERING ---
 function renderCartDrawer() {
   const totals = calculateCartTotals();
 
@@ -598,7 +575,6 @@ function renderCartDrawer() {
   elements.cartItemsList.classList.remove('hidden');
   document.getElementById('cart-checkout-footer').classList.remove('hidden');
 
-  // Render items
   elements.cartItemsList.innerHTML = STATE.cart.map(item => {
     const itemTotalUsd = item.priceUsd * item.quantity;
     const itemTotalVes = itemTotalUsd * STATE.exchangeRate;
@@ -609,13 +585,11 @@ function renderCartDrawer() {
           <h5 class="text-xs font-semibold text-gray-800 truncate">${item.name}</h5>
           <p class="text-[11px] text-gray-400 mb-1.5">${item.categoryName} • $${item.priceUsd.toFixed(2)} c/u</p>
           <div class="flex items-center justify-between">
-            <!-- Quantity buttons -->
             <div class="flex items-center border border-pink-200 rounded-lg bg-pink-50/40 overflow-hidden">
               <button onclick="updateCartQuantity('${item.id}', -1)" class="w-6 h-6 flex items-center justify-center text-gray-600 hover:bg-pink-100 text-xs font-bold">-</button>
               <span class="px-2.5 text-xs font-bold text-gray-800">${item.quantity}</span>
               <button onclick="updateCartQuantity('${item.id}', 1)" class="w-6 h-6 flex items-center justify-center text-gray-600 hover:bg-pink-100 text-xs font-bold">+</button>
             </div>
-            <!-- Item Total -->
             <div class="text-right">
               <div class="text-xs font-bold text-pink-700">$${itemTotalUsd.toFixed(2)}</div>
               <div class="text-[10px] text-gray-400">Bs. ${itemTotalVes.toFixed(2)}</div>
@@ -631,7 +605,6 @@ function renderCartDrawer() {
     `;
   }).join('');
 
-  // Update Progress to Free Delivery
   const freeThreshold = 35;
   const progressElem = document.getElementById('free-delivery-progress');
   const progressText = document.getElementById('free-delivery-text');
@@ -639,34 +612,31 @@ function renderCartDrawer() {
     if (totals.subtotalUsd >= freeThreshold) {
       progressElem.style.width = '100%';
       progressElem.className = 'h-1.5 rounded-full bg-emerald-500 transition-all duration-300';
-      progressText.innerHTML = '🎉 ¡Felicidades! Tienes <strong>Delivery GRATIS en Barquisimeto</strong>';
+      progressText.innerHTML = 'Delivery GRATIS en Barquisimeto alcanzado';
     } else {
       const remaining = (freeThreshold - totals.subtotalUsd).toFixed(2);
       const percent = Math.min(100, Math.round((totals.subtotalUsd / freeThreshold) * 100));
       progressElem.style.width = `${percent}%`;
       progressElem.className = 'h-1.5 rounded-full bg-pink-500 transition-all duration-300';
-      progressText.innerHTML = `Agrega <strong>$${remaining}</strong> más para tener Delivery Gratis en Bqto 🛵`;
+      progressText.innerHTML = `Agrega <strong>$${remaining}</strong> mas para delivery gratis en Bqto`;
     }
   }
 
-  // Subtotal & Totals
   elements.cartSubtotalUsd.textContent = `$${totals.subtotalUsd.toFixed(2)}`;
   elements.cartSubtotalVes.textContent = `Bs. ${totals.subtotalVes.toLocaleString('es-VE', { minimumFractionDigits: 2 })}`;
 
-  // Shipping representation
   if (STATE.deliveryMethod === 'delivery-bqto') {
-    elements.cartShippingText.textContent = totals.shippingCostUsd === 0 ? '¡GRATIS!' : `$${totals.shippingCostUsd.toFixed(2)}`;
+    elements.cartShippingText.textContent = totals.shippingCostUsd === 0 ? 'Gratis' : `$${totals.shippingCostUsd.toFixed(2)}`;
   } else if (STATE.deliveryMethod === 'tienda-bqto') {
     elements.cartShippingText.textContent = 'Gratis (Retiro)';
   } else {
-    elements.cartShippingText.textContent = 'Cobro en Destino (MRW/Zoom/Tealca)';
+    elements.cartShippingText.textContent = 'Cobro en Destino (Encomienda)';
   }
 
   elements.cartTotalUsd.textContent = `$${totals.totalUsd.toFixed(2)}`;
   elements.cartTotalVes.textContent = `Bs. ${totals.totalVes.toLocaleString('es-VE', { minimumFractionDigits: 2 })}`;
 }
 
-// Drawer Toggle Handlers
 function openCartDrawer() {
   renderCartDrawer();
   elements.cartDrawerBackdrop.classList.add('active');
@@ -680,7 +650,6 @@ function closeCartDrawer() {
   document.body.style.overflow = '';
 }
 
-// --- WISHLIST MANAGEMENT ---
 function toggleWishlist(productId) {
   const index = STATE.wishlist.indexOf(productId);
   const product = PRODUCTS.find(p => p.id === productId);
@@ -690,7 +659,7 @@ function toggleWishlist(productId) {
     showToast(`Removiste ${product?.name?.slice(0, 20)} de favoritos.`, 'info');
   } else {
     STATE.wishlist.push(productId);
-    showToast(`¡Añadido a tus favoritos! ❤️`, 'success');
+    showToast(`Anadido a tus favoritos.`, 'success');
   }
 
   persistWishlist();
@@ -732,7 +701,6 @@ function closeWishlistModal() {
   document.body.style.overflow = '';
 }
 
-// --- QUICK VIEW MODAL ---
 function openQuickView(productId) {
   const prod = PRODUCTS.find(p => p.id === productId);
   if (!prod) return;
@@ -751,7 +719,7 @@ function openQuickView(productId) {
         <div>
           <div class="flex items-center justify-between text-xs text-gray-400 mb-2">
             <span class="font-bold text-pink-600 uppercase">${prod.categoryName}</span>
-            <span class="text-amber-500 font-bold">★ ${prod.rating} (${prod.reviews} reseñas)</span>
+            <span class="text-amber-500 font-bold">${prod.rating} (${prod.reviews} resenas)</span>
           </div>
           <h3 class="text-xl font-serif font-bold text-gray-900 mb-2">${prod.name}</h3>
           <div class="text-xl mb-3">
@@ -760,7 +728,7 @@ function openQuickView(productId) {
           <p class="text-xs text-gray-600 leading-relaxed mb-4">${prod.description}</p>
           
           <div class="bg-pink-50/50 rounded-xl p-3 border border-pink-100 mb-4">
-            <h6 class="text-[11px] font-bold uppercase text-pink-900 mb-2 tracking-wider">Características Profesionales:</h6>
+            <h6 class="text-[11px] font-bold uppercase text-pink-900 mb-2 tracking-wider">Caracteristicas Profesionales:</h6>
             <ul class="text-xs text-gray-700 space-y-1">
               ${prod.features.map(f => `<li class="flex items-center gap-1.5"><span class="text-pink-500">✓</span> ${f}</li>`).join('')}
             </ul>
@@ -778,7 +746,7 @@ function openQuickView(productId) {
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
               </svg>
-              Añadir a mi Pedido
+              Anadir a mi Pedido
             </button>
           </div>
 
@@ -786,7 +754,7 @@ function openQuickView(productId) {
             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.668-.699c.974.53 1.83.82 2.792.82 3.183 0 5.77-2.587 5.77-5.768.001-3.182-2.585-5.804-5.77-5.804zm8.286 5.768c0 4.568-3.719 8.286-8.286 8.286-1.42 0-2.75-.36-3.92-.99l-4.35 1.14 1.16-4.24c-.73-1.23-1.16-2.67-1.16-4.196 0-4.567 3.719-8.286 8.27-8.286 4.567 0 8.286 3.719 8.286 8.286z"/>
             </svg>
-            Comprar este producto directo por WhatsApp
+            Consultar este producto por WhatsApp
           </button>
         </div>
       </div>
@@ -820,17 +788,15 @@ function closeQuickView() {
   STATE.quickViewProduct = null;
 }
 
-// --- CHECKOUT & WHATSAPP INTEGRATION ---
 function openCheckoutModal() {
   if (STATE.cart.length === 0) {
-    showToast('Tu carrito está vacío. Agrega productos para ordenar.', 'warning');
+    showToast('Tu carrito esta vacio. Agrega productos para ordenar.', 'warning');
     return;
   }
 
   closeCartDrawer();
   const totals = calculateCartTotals();
 
-  // Render review items
   elements.checkoutSummaryItems.innerHTML = STATE.cart.map(i => `
     <div class="flex justify-between items-center text-xs py-1.5 border-b border-gray-100 last:border-0">
       <div class="truncate pr-2">
@@ -852,6 +818,7 @@ function closeCheckoutModal() {
   document.body.style.overflow = '';
 }
 
+// Enviar lista del pedido a WhatsApp formateada sin emojis
 async function handleCheckoutSubmit(event) {
   event.preventDefault();
 
@@ -864,11 +831,11 @@ async function handleCheckoutSubmit(event) {
   const customerNotes = document.getElementById('customer-notes').value.trim();
 
   if (!customerName || !customerPhone) {
-    showToast('Por favor completa tu nombre y teléfono.', 'warning');
+    showToast('Por favor completa tu nombre y telefono.', 'warning');
     return;
   }
 
-  showToast('Generando orden verificada con el servidor...', 'info');
+  showToast('Generando lista de pedido para atencion al cliente...', 'info');
 
   const payload = {
     name: customerName,
@@ -898,75 +865,77 @@ async function handleCheckoutSubmit(event) {
       }
     }
   } catch (err) {
-    console.info('Backend API request skipped or offline, using client-side generator.', err);
+    console.info('Backend API request skipped, using client-side list generator.', err);
   }
 
-  // Fallback if running statically without PHP server
+  // Generador local en formato de lista para atencion al cliente sin emojis
   if (!targetWaUrl) {
     const totals = calculateCartTotals();
-    let msg = `✨ *¡HOLA RM NAILS BOUTIQUE! Deseo confirmar un nuevo pedido:* ✨\n\n`;
-    msg += `🛒 *DETALLE DE LA ORDEN:*\n`;
-    STATE.cart.forEach((item) => {
+    let msg = `*HOLA RM NAILS BOUTIQUE, DESEO CONFIRMAR EL SIGUIENTE PEDIDO:*\n\n`;
+    msg += `*LISTA DE PRODUCTOS SELECCIONADOS:*\n`;
+
+    STATE.cart.forEach((item, index) => {
       const lineTotal = (item.priceUsd * item.quantity).toFixed(2);
-      msg += `• *${item.quantity}x* ${item.name} ($${item.priceUsd.toFixed(2)} c/u) = *$${lineTotal}*\n`;
+      msg += `${index + 1}. *${item.quantity}x* ${item.name} ($${item.priceUsd.toFixed(2)} c/u) = *${lineTotal}*\n`;
     });
-    msg += `\n💰 *TOTAL A PAGAR:*\n`;
-    msg += `👉 *Subtotal:* $${totals.subtotalUsd.toFixed(2)} USD\n`;
-    msg += `👉 *Costo Envio/Delivery:* $${totals.shippingCostUsd.toFixed(2)} USD\n`;
-    msg += `🔥 *TOTAL GENERAL:* *$${totals.totalUsd.toFixed(2)} USD* / *Bs. ${totals.totalVes.toLocaleString('es-VE', { minimumFractionDigits: 2 })}*\n`;
-    msg += `(Tasa del día calculada: Bs. ${STATE.exchangeRate.toFixed(2)})\n\n`;
-    msg += `👤 *DATOS DE LA CLIENTA:*\n`;
-    msg += `• *Nombre:* ${customerName}\n`;
-    msg += `• *Teléfono:* ${customerPhone}\n`;
-    msg += `• *Ciudad:* ${customerCity || 'Barquisimeto'}\n`;
-    if (customerAddress) msg += `• *Dirección / Salón:* ${customerAddress}\n`;
-    msg += `• *Método de Entrega:* ${deliveryType}\n`;
-    msg += `• *Forma de Pago:* ${paymentMethod}\n`;
-    if (customerNotes) msg += `• *Notas:* ${customerNotes}\n`;
-    msg += `\n💅 _Generado desde la tienda web oficial RM Nails Boutique_`;
+
+    msg += `\n*RESUMEN DEL PEDIDO:*\n`;
+    msg += `- Subtotal: $${totals.subtotalUsd.toFixed(2)} USD\n`;
+    msg += `- Costo de Envio/Delivery: $${totals.shippingCostUsd.toFixed(2)} USD\n`;
+    msg += `- Total General: *$${totals.totalUsd.toFixed(2)} USD* / *Bs. ${totals.totalVes.toLocaleString('es-VE', { minimumFractionDigits: 2 })}*\n`;
+    msg += `(Tasa calculada: Bs. ${STATE.exchangeRate.toFixed(2)})\n\n`;
+
+    msg += `*DATOS DE LA CLIENTA:*\n`;
+    msg += `- Nombre: ${customerName}\n`;
+    msg += `- Telefono: ${customerPhone}\n`;
+    msg += `- Ciudad: ${customerCity || 'Barquisimeto'}\n`;
+    if (customerAddress) msg += `- Direccion / Salon: ${customerAddress}\n`;
+    msg += `- Metodo de Entrega: ${deliveryType}\n`;
+    msg += `- Metodo de Pago: ${paymentMethod}\n`;
+    if (customerNotes) msg += `- Consulta o Notas: ${customerNotes}\n`;
+    msg += `\nNota: Pedido generado desde la tienda web oficial RM Nails Boutique. Consultando disponibilidad.`;
 
     targetWaUrl = `https://wa.me/584120549526?text=${encodeURIComponent(msg)}`;
   }
 
   closeCheckoutModal();
-  showToast('¡Redirigiendo a WhatsApp oficial para despachar tu orden!', 'success');
+  showToast('Abriendo WhatsApp oficial para atender tu orden...', 'success');
 
   setTimeout(() => {
     window.open(targetWaUrl, '_blank');
   }, 500);
 }
 
-// Buy single item directly via WhatsApp
+// Consulta de producto individual sin emojis
 function buyDirectWhatsApp(productId) {
   const prod = PRODUCTS.find(p => p.id === productId);
   if (!prod) return;
 
   const bsTotal = (prod.priceUsd * STATE.exchangeRate).toLocaleString('es-VE', { minimumFractionDigits: 2 });
   
-  let msg = `Hola *RM Nails Boutique* 💕, me interesa comprar directamente este producto que vi en la tienda web:\n\n`;
-  msg += `✨ *${prod.name}*\n`;
-  msg += `💲 *Precio:* $${prod.priceUsd.toFixed(2)} USD / Bs. ${bsTotal}\n`;
-  msg += `📦 *Categoría:* ${prod.categoryName}\n\n`;
-  msg += `¿Tienen disponibilidad inmediata para entrega en Barquisimeto o envío nacional? ¡Gracias!`;
+  let msg = `Hola RM Nails Boutique, deseo consultar disponibilidad inmediata de este producto que vi en la tienda web:\n\n`;
+  msg += `Producto: ${prod.name}\n`;
+  msg += `Precio: $${prod.priceUsd.toFixed(2)} USD / Bs. ${bsTotal}\n`;
+  msg += `Categoria: ${prod.categoryName}\n\n`;
+  msg += `Por favor confirmarme disponibilidad para entrega en Barquisimeto o envio nacional. Gracias.`;
 
   const waUrl = `https://wa.me/584120549526?text=${encodeURIComponent(msg)}`;
   window.open(waUrl, '_blank');
 }
 
-// General Inquiry via WhatsApp
+// Consulta general sin emojis
 function openGeneralWhatsApp() {
-  const msg = `¡Hola *RM Nails Boutique*! 🌸 Me gustaría solicitar información sobre insumos profesionales para mi salón / estudio de belleza.`;
+  const msg = `Hola RM Nails Boutique, me gustaria solicitar asesoria y consultar disponibilidad de insumos profesionales para mi salon de belleza.`;
   window.open(`https://wa.me/584120549526?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
-// --- CURRENCY & TASA MANAGEMENT ---
 function toggleCurrency() {
   STATE.currency = STATE.currency === 'USD' ? 'VES' : 'USD';
   localStorage.setItem('rm_currency', STATE.currency);
   updateCurrencyDisplay();
   renderProducts();
   renderCartDrawer();
-  showToast(`Moneda cambiada a ${STATE.currency === 'USD' ? 'Dólares ($)' : 'Bolívares (Bs.)'}`, 'info');
+  showToast(`Moneda cambiada a ${STATE.currency === 'USD' ? 'Dolares ($)' : 'Bolivares (Bs.)'}`, 'info');
 }
 
 function updateCurrencyDisplay() {
@@ -974,13 +943,20 @@ function updateCurrencyDisplay() {
     elements.currentCurrencyLabel.textContent = STATE.currency === 'USD' ? 'USD ($)' : 'VES (Bs.)';
   }
   if (elements.currentRateLabel) {
-    elements.currentRateLabel.textContent = `Tasa: Bs. ${STATE.exchangeRate.toFixed(2)}`;
+    elements.currentRateLabel.textContent = `Tasa Oficial: Bs. ${STATE.exchangeRate.toFixed(2)}`;
+  }
+  if (elements.rateFrozenBadge) {
+    if (STATE.isRateFrozen) {
+      elements.rateFrozenBadge.classList.remove('hidden');
+    } else {
+      elements.rateFrozenBadge.classList.add('hidden');
+    }
   }
 }
 
 function openRateModal() {
   if (elements.customRateInput) {
-    elements.customRateInput.value = STATE.exchangeRate;
+    elements.customRateInput.value = STATE.exchangeRate.toFixed(2);
   }
   elements.rateModal.classList.add('active');
   document.body.style.overflow = 'hidden';
@@ -995,18 +971,18 @@ function saveCustomRate() {
   const newRate = parseFloat(elements.customRateInput.value);
   if (newRate && newRate > 0) {
     STATE.exchangeRate = newRate;
-    localStorage.setItem('rm_rate', newRate);
+    STATE.isRateFrozen = true;
+    localStorage.setItem('rm_frozen_rate', newRate);
     updateCurrencyDisplay();
     renderProducts();
     renderCartDrawer();
     closeRateModal();
-    showToast(`Tasa actualizada a Bs. ${newRate.toFixed(2)} por USD`, 'success');
+    showToast(`Tasa congelada guardada en Bs. ${newRate.toFixed(2)} por USD`, 'success');
   } else {
-    showToast('Ingresa un valor de tasa válido.', 'warning');
+    showToast('Ingresa un valor de tasa valido.', 'warning');
   }
 }
 
-// --- FILTER & SEARCH EVENTS ---
 function setCategory(cat) {
   STATE.category = cat;
   elements.categoryPills.forEach(pill => {
@@ -1019,6 +995,7 @@ function setCategory(cat) {
   renderProducts();
 }
 
+// Boton Mostrar Todo el Catalogo
 function resetFilters() {
   STATE.category = 'all';
   STATE.searchQuery = '';
@@ -1030,9 +1007,15 @@ function resetFilters() {
     else pill.classList.remove('active');
   });
   renderProducts();
+
+  // Scroll suave al catalogo
+  const catalogoElem = document.getElementById('catalogo');
+  if (catalogoElem) {
+    catalogoElem.scrollIntoView({ behavior: 'smooth' });
+  }
 }
 
-// --- TOAST NOTIFICATION SYSTEM ---
+// Toasts de notificacion con iconos SVG limpios (sin emojis)
 function showToast(message, type = 'info') {
   const container = document.getElementById('toast-container');
   if (!container) return;
@@ -1040,22 +1023,32 @@ function showToast(message, type = 'info') {
   const toast = document.createElement('div');
   toast.className = 'toast';
 
-  let icon = '🌸';
   let borderColor = '#E57399';
+  let svgIcon = `
+    <svg class="w-5 h-5 text-pink-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+    </svg>
+  `;
+
   if (type === 'success') {
-    icon = '✨';
     borderColor = '#10B981';
+    svgIcon = `
+      <svg class="w-5 h-5 text-emerald-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+      </svg>
+    `;
   } else if (type === 'warning') {
-    icon = '⚠️';
     borderColor = '#F59E0B';
-  } else if (type === 'info') {
-    icon = '💡';
-    borderColor = '#D4AF37';
+    svgIcon = `
+      <svg class="w-5 h-5 text-amber-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+      </svg>
+    `;
   }
 
   toast.style.borderLeftColor = borderColor;
   toast.innerHTML = `
-    <span class="text-lg">${icon}</span>
+    ${svgIcon}
     <span class="text-xs font-medium text-gray-800">${message}</span>
   `;
 
@@ -1067,7 +1060,6 @@ function showToast(message, type = 'info') {
   }, 3200);
 }
 
-// --- MOBILE MENU ---
 function toggleMobileMenu() {
   const drawer = elements.mobileMenuDrawer;
   const backdrop = elements.mobileMenuBackdrop;
@@ -1085,15 +1077,15 @@ function toggleMobileMenu() {
   }
 }
 
-// --- INITIALIZATION ---
+// Inicializacion al cargar el DOM
 document.addEventListener('DOMContentLoaded', () => {
   loadPersistedState();
   initElements();
+  fetchOfficialRate();
   updateCurrencyDisplay();
   updateCartCounters();
   renderProducts();
 
-  // Search input with debounce
   if (elements.searchInput) {
     let timeout = null;
     elements.searchInput.addEventListener('input', (e) => {
@@ -1105,7 +1097,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Sort select
   if (elements.sortSelect) {
     elements.sortSelect.addEventListener('change', (e) => {
       STATE.sortBy = e.target.value;
@@ -1113,14 +1104,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Category pills
   elements.categoryPills.forEach(pill => {
     pill.addEventListener('click', () => {
       setCategory(pill.dataset.category);
     });
   });
 
-  // Delivery radio changes in Cart drawer
   document.querySelectorAll('input[name="drawer_delivery"]').forEach(radio => {
     radio.addEventListener('change', (e) => {
       STATE.deliveryMethod = e.target.value;
@@ -1128,7 +1117,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Checkout Form
   if (elements.checkoutForm) {
     elements.checkoutForm.addEventListener('submit', handleCheckoutSubmit);
   }

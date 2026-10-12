@@ -1,37 +1,37 @@
-<!-- =========================================================================
-     1. TOP NOTIFICATION BAR (Barra Superior Promocional)
-     ========================================================================= -->
+<!-- Top Notification Bar -->
 <div class="bg-gradient-to-r from-[#D0537B] via-[#E57399] to-[#D4AF37] text-white text-xs py-2 px-4 shadow-sm z-50">
   <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-    <!-- Announcement Message -->
+    <!-- Announcement Message with SVG icons -->
     <div class="flex items-center gap-2 overflow-hidden text-center sm:text-left font-medium">
-      <span class="inline-block animate-pulse">🚚</span>
+      <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1v2m0-2h4l3 3v3h-2m-4-1a2 2 0 11-4 0 2 2 0 014 0zm8 0a2 2 0 11-4 0 2 2 0 014 0z"></path>
+      </svg>
       <span class="tracking-wide">
-        <strong>Envíos a nivel nacional en Venezuela 🇻🇪</strong> | Servicio de Delivery Express en <strong>Barquisimeto 🛵</strong>
+        <strong>Envios a nivel nacional en Venezuela</strong> | Servicio de Delivery Express en <strong>Barquisimeto</strong>
       </span>
     </div>
 
-    <!-- Action Toggles (Currency & Instagram Link) -->
+    <!-- Live Tasa Indicator (Automatic API with Frozen fallback) -->
     <div class="flex items-center gap-4 text-[11px] font-semibold">
-      <!-- Live Tasa Indicator & Currency Switcher -->
       <button 
         id="currency-toggle-btn"
         onclick="toggleCurrency()"
         class="flex items-center gap-1.5 bg-black/15 hover:bg-black/25 px-2.5 py-1 rounded-full transition-all border border-white/20"
-        title="Alternar moneda de visualización (USD / Bs)"
+        title="Alternar moneda de visualizacion (USD / Bs)"
       >
-        <span>💱</span>
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+        </svg>
         <span id="current-currency-label">USD ($)</span>
         <span class="opacity-60">|</span>
-        <span id="current-rate-label" class="opacity-90">Tasa: Bs. <?= number_format($exchangeRate ?? 46.50, 2) ?></span>
+        <span id="current-rate-label" class="opacity-90">Tasa Oficial: Bs. <?= number_format($exchangeRate ?? 46.50, 2) ?></span>
       </button>
 
-      <!-- Edit rate button -->
-      <button onclick="openRateModal()" class="text-white/80 hover:text-white underline text-[10px]" title="Ajustar tasa referencial">
-        Ajustar Tasa
-      </button>
+      <span id="rate-frozen-badge" class="hidden text-[10px] bg-amber-500/80 text-white px-2 py-0.5 rounded-full font-bold">
+        Tasa Congelada
+      </span>
 
-      <!-- Instagram Direct -->
+      <!-- Instagram Direct Link -->
       <a 
         href="<?= htmlspecialchars($instagram['url'] ?? 'https://www.instagram.com/rmnailsboutique/') ?>" 
         target="_blank" 
@@ -47,9 +47,7 @@
   </div>
 </div>
 
-<!-- =========================================================================
-     2. HEADER & NAVEGACIÓN PRINCIPAL
-     ========================================================================= -->
+<!-- Main Header -->
 <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-pink-100 shadow-sm transition-all duration-300">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-20 gap-4">
@@ -58,18 +56,24 @@
       <button 
         onclick="toggleMobileMenu()" 
         class="lg:hidden p-2 rounded-xl text-gray-700 hover:text-pink-600 hover:bg-pink-50 transition-colors"
-        aria-label="Abrir menú"
+        aria-label="Abrir menu"
       >
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
         </svg>
       </button>
 
-      <!-- Brand Logo (Isotipo RM + Tipografía limpia chic) -->
+      <!-- Official Logo with image from Instagram -->
       <a href="#inicio" class="flex items-center gap-3 group flex-shrink-0">
-        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#E57399] via-[#F29AB6] to-[#D4AF37] p-0.5 shadow-md group-hover:scale-105 transition-transform">
-          <div class="w-full h-full bg-white rounded-[14px] flex items-center justify-center">
-            <span class="font-serif font-black text-xl text-[#E57399] tracking-tighter">RM</span>
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#E57399] via-[#F29AB6] to-[#D4AF37] p-0.5 shadow-md group-hover:scale-105 transition-transform overflow-hidden">
+          <img 
+            src="<?= \App\Core\View::asset('assets/images/logo.jpg') ?>" 
+            alt="RM Nails Boutique Logo Oficial" 
+            class="w-full h-full object-cover rounded-[14px]"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+          />
+          <div class="hidden w-full h-full bg-white rounded-[14px] items-center justify-center">
+            <span class="font-serif font-black text-xl text-[#E57399]">RM</span>
           </div>
         </div>
         <div class="flex flex-col">
@@ -77,7 +81,7 @@
             <?= htmlspecialchars($appName ?? 'RM Nails Boutique') ?>
           </span>
           <span class="text-[10px] sm:text-[11px] font-medium text-gray-400 tracking-wider uppercase mt-1">
-            <?= htmlspecialchars($slogan ?? 'La boutique de las uñas') ?>
+            <?= htmlspecialchars($slogan ?? 'La boutique de las unas') ?>
           </span>
         </div>
       </a>
@@ -88,7 +92,7 @@
           <input 
             id="search-input"
             type="text" 
-            placeholder="Buscar geles, pestañas, limas, aceites, lámparas..." 
+            placeholder="Buscar geles, pestanas, limas, aceites, lamparas..." 
             class="w-full bg-[#FCF8F9] border border-pink-200/80 rounded-full py-2.5 pl-11 pr-4 text-xs focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-100 transition-all placeholder-gray-400 shadow-inner"
           />
           <div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
@@ -109,7 +113,7 @@
           <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.668-.699c.974.53 1.83.82 2.792.82 3.183 0 5.77-2.587 5.77-5.768.001-3.182-2.585-5.804-5.77-5.804zm8.286 5.768c0 4.568-3.719 8.286-8.286 8.286-1.42 0-2.75-.36-3.92-.99l-4.35 1.14 1.16-4.24c-.73-1.23-1.16-2.67-1.16-4.196 0-4.567 3.719-8.286 8.27-8.286 4.567 0 8.286 3.719 8.286 8.286z"/>
           </svg>
-          <span class="hidden xl:inline">Asesoría Directa</span>
+          <span class="hidden xl:inline">Atencion WhatsApp</span>
         </button>
 
         <!-- Wishlist Button -->
@@ -145,28 +149,44 @@
       </div>
     </div>
 
-    <!-- Categories Sub-Navigation Bar -->
+    <!-- Categories Sub-Navigation Bar (Sin kits) -->
     <nav class="hidden lg:flex items-center justify-center border-t border-pink-100/60 py-2.5 gap-8 text-xs font-semibold text-gray-600">
-      <?php foreach ($categories as $cat): ?>
-        <a 
-          href="#catalogo" 
-          onclick="setCategory('<?= htmlspecialchars($cat['id']) ?>')" 
-          class="hover:text-pink-600 transition-colors flex items-center gap-1.5 <?= $cat['id'] === 'combos' ? 'text-pink-600 font-bold' : '' ?>"
-        >
-          <span><?= $cat['icon'] ?></span> <?= htmlspecialchars($cat['name']) ?>
-        </a>
-      <?php endforeach; ?>
+      <a href="#catalogo" onclick="resetFilters()" class="hover:text-pink-600 transition-colors flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
+        </svg>
+        <span>Todos los Insumos</span>
+      </a>
+      <a href="#catalogo" onclick="setCategory('unas')" class="hover:text-pink-600 transition-colors flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+        </svg>
+        <span>Unas / Manicura</span>
+      </a>
+      <a href="#catalogo" onclick="setCategory('cejas-pestanas')" class="hover:text-pink-600 transition-colors flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+        </svg>
+        <span>Cejas & Pestanas</span>
+      </a>
+      <a href="#catalogo" onclick="setCategory('cuidado-herramientas')" class="hover:text-pink-600 transition-colors flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+        </svg>
+        <span>Cuidado & Herramientas</span>
+      </a>
     </nav>
   </div>
 </header>
 
-<!-- Mobile Search Bar (under header for small devices) -->
+<!-- Mobile Search Bar -->
 <div class="md:hidden bg-white px-4 py-2.5 border-b border-pink-100">
   <div class="relative w-full">
     <input 
       type="text" 
       oninput="STATE.searchQuery = this.value; renderProducts();"
-      placeholder="Buscar insumos (geles, pestañas, lámparas...)" 
+      placeholder="Buscar insumos (geles, pestanas, lamparas...)" 
       class="w-full bg-[#FCF8F9] border border-pink-200 rounded-full py-2 pl-9 pr-4 text-xs focus:outline-none focus:border-pink-500"
     />
     <div class="absolute left-3 top-1/2 -translate-y-1/2 text-pink-400">

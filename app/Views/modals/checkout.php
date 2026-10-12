@@ -1,18 +1,18 @@
-<!-- =========================================================================
-     CHECKOUT MODAL (WhatsApp Order Form)
-     ========================================================================= -->
+<!-- Checkout Modal -->
 <div id="checkout-modal" class="modal-overlay fixed inset-0 bg-black/60 z-50 backdrop-blur-sm flex items-center justify-center p-4">
   <div class="modal-container bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-pink-100 max-h-[90vh] flex flex-col">
     
     <!-- Modal Header -->
     <div class="p-5 border-b border-pink-100 bg-gradient-to-r from-pink-50 to-white flex items-center justify-between">
       <div class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center text-sm">
-          ✓
+        <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center text-sm font-bold">
+          <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
         </div>
         <div>
-          <h3 class="font-serif font-bold text-base text-gray-900">Finalizar Orden por WhatsApp</h3>
-          <p class="text-[11px] text-gray-500"><?= htmlspecialchars($appName ?? 'RM Nails Boutique') ?> • wa.me/<?= htmlspecialchars($whatsApp ?? '584120549526') ?></p>
+          <h3 class="font-serif font-bold text-base text-gray-900">Enviar Orden a WhatsApp</h3>
+          <p class="text-[11px] text-gray-500"><?= htmlspecialchars($appName ?? 'RM Nails Boutique') ?> | wa.me/<?= htmlspecialchars($whatsApp ?? '584120549526') ?></p>
         </div>
       </div>
       <button onclick="closeCheckoutModal()" class="text-gray-400 hover:text-gray-700 p-1 rounded-lg">✕</button>
@@ -23,10 +23,10 @@
       
       <!-- Summary Box -->
       <div class="bg-[#FCF8F9] p-3.5 rounded-2xl border border-pink-100">
-        <span class="text-[10px] font-black uppercase text-pink-600 tracking-wider block mb-1.5">Resumen de Insumos:</span>
+        <span class="text-[10px] font-black uppercase text-pink-600 tracking-wider block mb-1.5">Lista de Insumos Seleccionados:</span>
         <div id="checkout-summary-items" class="max-h-24 overflow-y-auto space-y-1 mb-2 pr-1"></div>
         <div class="border-t border-pink-100 pt-2 flex justify-between items-baseline font-bold text-xs text-gray-900">
-          <span>Monto Total a Transferir / Pagar:</span>
+          <span>Monto Total Estimado:</span>
           <div class="text-right">
             <span id="checkout-total-usd" class="text-sm text-pink-700">$0.00</span>
             <span id="checkout-total-ves" class="text-[10px] text-gray-500 font-normal block">Bs. 0.00</span>
@@ -42,12 +42,12 @@
             id="customer-name" 
             type="text" 
             required 
-            placeholder="Ej. María Pérez" 
+            placeholder="Ej. Maria Perez" 
             class="w-full bg-[#FCF8F9] border border-pink-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-pink-500" 
           />
         </div>
         <div>
-          <label class="block text-xs font-bold text-gray-700 mb-1">Teléfono / WhatsApp *</label>
+          <label class="block text-xs font-bold text-gray-700 mb-1">Telefono / WhatsApp *</label>
           <input 
             id="customer-phone" 
             type="tel" 
@@ -60,19 +60,19 @@
 
       <!-- Delivery Option -->
       <div>
-        <label class="block text-xs font-bold text-gray-700 mb-1.5">Método de Envío / Entrega *</label>
+        <label class="block text-xs font-bold text-gray-700 mb-1.5">Metodo de Envio / Entrega *</label>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
           <label class="border border-pink-200 rounded-xl p-2.5 flex items-center gap-2 cursor-pointer hover:bg-pink-50 transition-colors">
             <input type="radio" name="shipping_method" value="Delivery en Barquisimeto" checked class="text-pink-600 focus:ring-pink-500" />
-            <span>🛵 Delivery Bqto</span>
+            <span>Delivery Bqto</span>
           </label>
           <label class="border border-pink-200 rounded-xl p-2.5 flex items-center gap-2 cursor-pointer hover:bg-pink-50 transition-colors">
             <input type="radio" name="shipping_method" value="Retiro en Tienda Barquisimeto" class="text-pink-600 focus:ring-pink-500" />
-            <span>📍 Retiro Tienda</span>
+            <span>Retiro Tienda</span>
           </label>
           <label class="border border-pink-200 rounded-xl p-2.5 flex items-center gap-2 cursor-pointer hover:bg-pink-50 transition-colors">
-            <input type="radio" name="shipping_method" value="Envío Nacional (MRW/Zoom/Tealca)" class="text-pink-600 focus:ring-pink-500" />
-            <span>🇻🇪 Envío Nacional</span>
+            <input type="radio" name="shipping_method" value="Envio Nacional (MRW/Zoom/Tealca)" class="text-pink-600 focus:ring-pink-500" />
+            <span>Envio Nacional</span>
           </label>
         </div>
       </div>
@@ -89,11 +89,11 @@
           />
         </div>
         <div>
-          <label class="block text-xs font-bold text-gray-700 mb-1">Dirección / Salón / Agencia</label>
+          <label class="block text-xs font-bold text-gray-700 mb-1">Direccion / Salon / Agencia</label>
           <input 
             id="customer-address" 
             type="text" 
-            placeholder="Ej. Urb. Del Este, Salón Glamour / MRW Centro" 
+            placeholder="Ej. Urb. Del Este, Salon Glamour" 
             class="w-full bg-[#FCF8F9] border border-pink-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-pink-500" 
           />
         </div>
@@ -101,14 +101,14 @@
 
       <!-- Payment Method -->
       <div>
-        <label class="block text-xs font-bold text-gray-700 mb-1">Método de Pago Preferido *</label>
+        <label class="block text-xs font-bold text-gray-700 mb-1">Metodo de Pago Preferido *</label>
         <select 
           id="payment-method"
           class="w-full bg-[#FCF8F9] border border-pink-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-pink-500 font-medium"
         >
-          <option value="Pago Móvil (Tasa Oficial)">Pago Móvil (Bolívares)</option>
+          <option value="Pago Movil (Tasa Oficial)">Pago Movil (Bolivares)</option>
           <option value="Zelle">Zelle (USD)</option>
-          <option value="Dólares en Efectivo (Contra entrega o en tienda)">Dólares en Efectivo (Barquisimeto)</option>
+          <option value="Dolares en Efectivo (Contra entrega o en tienda)">Dolares en Efectivo</option>
           <option value="Transferencia Banesco o Mercantil">Transferencia Bancaria Nacional</option>
           <option value="Binance Pay (USDT)">Binance Pay (USDT)</option>
         </select>
@@ -116,11 +116,11 @@
 
       <!-- Extra Notes -->
       <div>
-        <label class="block text-xs font-bold text-gray-700 mb-1">Notas especiales o especificaciones</label>
+        <label class="block text-xs font-bold text-gray-700 mb-1">Consulta o Especificaciones para la Asesora</label>
         <textarea 
           id="customer-notes" 
           rows="2" 
-          placeholder="Ej. Por favor confirmar tonos de esmaltes antes de enviar o especificar horario de entrega en mi salón..." 
+          placeholder="Consultar tonos especificos de esmaltes, disponibilidad inmediata o coordinar horario de entrega..." 
           class="w-full bg-[#FCF8F9] border border-pink-200 rounded-xl p-2.5 text-xs focus:outline-none focus:border-pink-500"
         ></textarea>
       </div>
@@ -133,7 +133,7 @@
         <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
           <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.668-.699c.974.53 1.83.82 2.792.82 3.183 0 5.77-2.587 5.77-5.768.001-3.182-2.585-5.804-5.77-5.804zm8.286 5.768c0 4.568-3.719 8.286-8.286 8.286-1.42 0-2.75-.36-3.92-.99l-4.35 1.14 1.16-4.24c-.73-1.23-1.16-2.67-1.16-4.196 0-4.567 3.719-8.286 8.27-8.286 4.567 0 8.286 3.719 8.286 8.286z"/>
         </svg>
-        <span>Enviar Pedido Directo a WhatsApp</span>
+        <span>Enviar Lista de Pedido a WhatsApp</span>
       </button>
 
     </form>

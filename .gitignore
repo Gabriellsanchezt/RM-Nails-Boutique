@@ -7,6 +7,10 @@ composer.phar
 .env.backup
 .env.local
 
+# Cache storage
+storage/cache/*.json
+!storage/cache/.gitkeep
+
 # IDE & Editor files
 .idea/
 .vscode/

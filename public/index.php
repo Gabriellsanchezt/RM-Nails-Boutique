@@ -14,6 +14,7 @@ use App\Core\Router;
 use App\Controllers\HomeController;
 use App\Controllers\ProductController;
 use App\Controllers\OrderController;
+use App\Controllers\RateController;
 
 // Initialize Router
 $router = new Router();
@@ -22,6 +23,7 @@ $router = new Router();
 $router->get('/', [HomeController::class, 'index']);
 
 // --- REST API ROUTES ---
+$router->get('/api/rate', [RateController::class, 'getRate']);
 $router->get('/api/products', [ProductController::class, 'index']);
 $router->get('/api/products/{id}', [ProductController::class, 'show']);
 $router->post('/api/order/whatsapp', [OrderController::class, 'generateWhatsAppOrder']);

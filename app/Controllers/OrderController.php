@@ -17,7 +17,7 @@ class OrderController extends Controller
         $customerCity = trim($input['city'] ?? 'Barquisimeto');
         $customerAddress = trim($input['address'] ?? '');
         $deliveryMethod = trim($input['deliveryMethod'] ?? 'Delivery en Barquisimeto');
-        $paymentMethod = trim($input['paymentMethod'] ?? 'Pago Móvil');
+        $paymentMethod = trim($input['paymentMethod'] ?? 'Pago Movil');
         $notes = trim($input['notes'] ?? '');
         $items = $input['items'] ?? [];
         $rate = (float) ($input['rate'] ?? Setting::getExchangeRate());
@@ -25,11 +25,11 @@ class OrderController extends Controller
         if (empty($customerName) || empty($customerPhone) || empty($items)) {
             $this->json([
                 'status' => 'error',
-                'message' => 'Por favor complete su nombre, teléfono y al menos un producto en el pedido.'
+                'message' => 'Por favor complete su nombre, telefono y al menos un producto en el pedido.'
             ], 422);
         }
 
-        // Calculate totals on backend for safety
+        // Calcular totales en el backend
         $subtotalUsd = 0.0;
         $orderLines = [];
 
@@ -59,35 +59,37 @@ class OrderController extends Controller
         $totalUsd = $subtotalUsd + $shippingCostUsd;
         $totalVes = $totalUsd * $rate;
 
-        // Construct high-converting WhatsApp message
-        $msg = "✨ *¡HOLA RM NAILS BOUTIQUE! Deseo confirmar un nuevo pedido:* ✨\n\n";
-        $msg .= "🛒 *DETALLE DE LA ORDEN:*\n";
+        // Construir mensaje en forma de lista clara para atencion al cliente sin emojis
+        $msg = "*HOLA RM NAILS BOUTIQUE, DESEO CONFIRMAR EL SIGUIENTE PEDIDO:*\n\n";
+        $msg .= "*LISTA DE PRODUCTOS SELECCIONADOS:*\n";
 
+        $counter = 1;
         foreach ($orderLines as $line) {
-            $msg .= "• *{$line['qty']}x* {$line['name']} ($" . number_format($line['priceUsd'], 2) . " c/u) = *$" . number_format($line['totalUsd'], 2) . "*\n";
+            $msg .= "{$counter}. *{$line['qty']}x* {$line['name']} ($" . number_format($line['priceUsd'], 2) . " c/u) = *$" . number_format($line['totalUsd'], 2) . "*\n";
+            $counter++;
         }
 
-        $msg .= "\n💰 *TOTAL A PAGAR:*\n";
-        $msg .= "👉 *Subtotal:* $" . number_format($subtotalUsd, 2) . " USD\n";
-        $msg .= "👉 *Envío/Delivery:* $" . number_format($shippingCostUsd, 2) . " USD\n";
-        $msg .= "🔥 *TOTAL GENERAL:* *$" . number_format($totalUsd, 2) . " USD* / *Bs. " . number_format($totalVes, 2, ',', '.') . "*\n";
+        $msg .= "\n*RESUMEN DEL PEDIDO:*\n";
+        $msg .= "- Subtotal: $" . number_format($subtotalUsd, 2) . " USD\n";
+        $msg .= "- Costo de Envio/Delivery: $" . number_format($shippingCostUsd, 2) . " USD\n";
+        $msg .= "- Total General: *$" . number_format($totalUsd, 2) . " USD* / *Bs. " . number_format($totalVes, 2, ',', '.') . "*\n";
         $msg .= "(Tasa calculada: Bs. " . number_format($rate, 2, ',', '.') . ")\n\n";
 
-        $msg .= "👤 *DATOS DE LA CLIENTA:*\n";
-        $msg .= "• *Nombre:* {$customerName}\n";
-        $msg .= "• *Teléfono:* {$customerPhone}\n";
-        $msg .= "• *Ciudad:* {$customerCity}\n";
+        $msg .= "*DATOS DE LA CLIENTA:*\n";
+        $msg .= "- Nombre: {$customerName}\n";
+        $msg .= "- Telefono: {$customerPhone}\n";
+        $msg .= "- Ciudad: {$customerCity}\n";
         if (!empty($customerAddress)) {
-            $msg .= "• *Dirección / Salón:* {$customerAddress}\n";
+            $msg .= "- Direccion / Salon: {$customerAddress}\n";
         }
-        $msg .= "• *Método de Entrega:* {$deliveryMethod}\n";
-        $msg .= "• *Forma de Pago:* {$paymentMethod}\n";
+        $msg .= "- Metodo de Entrega: {$deliveryMethod}\n";
+        $msg .= "- Metodo de Pago: {$paymentMethod}\n";
 
         if (!empty($notes)) {
-            $msg .= "• *Notas Especiales:* {$notes}\n";
+            $msg .= "- Notas o Consulta: {$notes}\n";
         }
 
-        $msg .= "\n💅 _Generado desde la tienda web oficial RM Nails Boutique_";
+        $msg .= "\nNota: Pedido generado desde la tienda web oficial RM Nails Boutique. Consultando disponibilidad.";
 
         $officialPhone = Setting::getWhatsApp();
         $whatsAppUrl = "https://wa.me/{$officialPhone}?text=" . rawurlencode($msg);

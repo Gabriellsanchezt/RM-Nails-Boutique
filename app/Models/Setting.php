@@ -3,12 +3,19 @@
 namespace App\Models;
 
 use App\Core\Config;
+use App\Core\RateService;
 
 class Setting
 {
+    public static function getExchangeRateData(): array
+    {
+        return RateService::getRate();
+    }
+
     public static function getExchangeRate(): float
     {
-        return (float) Config::get('default_exchange_rate', 46.50);
+        $rateData = RateService::getRate();
+        return (float) ($rateData['rate'] ?? Config::get('default_exchange_rate', 46.50));
     }
 
     public static function getWhatsApp(): string

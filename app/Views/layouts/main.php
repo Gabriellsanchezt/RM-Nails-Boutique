@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title><?= htmlspecialchars($appName ?? 'RM Nails Boutique') ?> | <?= htmlspecialchars($slogan ?? 'La boutique de las uñas') ?></title>
-  <meta name="description" content="Insumos profesionales para manicuristas, brows artists y lashistas en Barquisimeto y toda Venezuela. Esmaltes gel, pestañas pelo a pelo, lámparas, kits y más. Envíos nacionales y delivery rápido." />
+  <title><?= htmlspecialchars($appName ?? 'RM Nails Boutique') ?> | <?= htmlspecialchars($slogan ?? 'La boutique de las unas') ?></title>
+  <meta name="description" content="Insumos profesionales para manicuristas, brows artists y lashistas en Barquisimeto y toda Venezuela. Esmaltes gel, pestanas pelo a pelo, lamparas y mas. Envios nacionales y delivery rapido." />
   
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23E57399'/><text x='50' y='64' font-size='42' font-family='serif' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'>RM</text></svg>" />
+  <!-- Favicon con Logo Oficial -->
+  <link rel="icon" type="image/jpeg" href="<?= \App\Core\View::asset('assets/images/logo.jpg') ?>" />
 
   <!-- Google Fonts: Playfair Display & Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -57,14 +57,14 @@
   <?php \App\Core\View::component('modals/wishlist', $data ?? []); ?>
   <?php \App\Core\View::component('modals/rate', $data ?? []); ?>
 
-  <!-- Floating WhatsApp Quick Button -->
+  <!-- Floating WhatsApp Quick Button con Icono SVG -->
   <div class="fixed bottom-6 right-6 z-40 flex items-center gap-2">
     <div class="hidden sm:flex bg-white text-gray-800 text-[11px] font-bold px-3 py-1.5 rounded-full shadow-lg border border-emerald-200 items-center gap-1.5 animate-bounce">
       <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-      <span>¡Estamos en línea! Escríbenos</span>
+      <span>Atencion directa en linea</span>
     </div>
     <a 
-      href="https://wa.me/<?= htmlspecialchars($whatsApp ?? '584120549526') ?>?text=<?= rawurlencode('¡Hola RM Nails Boutique! 🌸 Deseo información sobre insumos profesionales para mi estudio.') ?>" 
+      href="https://wa.me/<?= htmlspecialchars($whatsApp ?? '584120549526') ?>?text=<?= rawurlencode('Hola RM Nails Boutique, deseo consultar disponibilidad sobre insumos profesionales para mi estudio.') ?>" 
       target="_blank" 
       rel="noopener noreferrer"
       class="whatsapp-pulse w-14 h-14 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full flex items-center justify-center shadow-2xl transition-all transform hover:scale-110 active:scale-95"

@@ -26,10 +26,6 @@
         'exchangeRate' => $exchangeRate
     ]); ?>
 
-    <?php \App\Core\View::component('home/wholesale', [
-        'whatsApp' => $whatsApp
-    ]); ?>
-
     <?php \App\Core\View::component('home/reviews'); ?>
 
     <?php \App\Core\View::component('home/instagram', [

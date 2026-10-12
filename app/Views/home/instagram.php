@@ -1,16 +1,14 @@
-<!-- =========================================================================
-     8. SECCIÓN INSTAGRAM FEED / COMUNIDAD (@rmnailsboutique)
-     ========================================================================= -->
+<!-- Seccion Instagram Comunidad (@rmnailsboutique) -->
 <section class="py-12 bg-white border-t border-pink-100">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
     <span class="text-xs font-bold uppercase tracking-wider text-pink-600 block mb-1">
-      Únete a nuestra comunidad
+      Comunidad Oficial
     </span>
     <h3 class="font-serif font-bold text-2xl text-gray-900 mb-2">
-      Síguenos en Instagram <a href="<?= htmlspecialchars($instagram['url'] ?? 'https://www.instagram.com/rmnailsboutique/') ?>" target="_blank" rel="noopener noreferrer" class="text-pink-600 hover:underline">@<?= htmlspecialchars($instagram['handle'] ?? 'rmnailsboutique') ?></a>
+      Siguenos en Instagram <a href="<?= htmlspecialchars($instagram['url'] ?? 'https://www.instagram.com/rmnailsboutique/') ?>" target="_blank" rel="noopener noreferrer" class="text-pink-600 hover:underline">@<?= htmlspecialchars($instagram['handle'] ?? 'rmnailsboutique') ?></a>
     </h3>
     <p class="text-xs text-gray-500 mb-8 max-w-lg mx-auto">
-      Descubre tutoriales, tips para el cuidado de uñas, novedades de productos y ofertas flash exclusivas para seguidoras.
+      Descubre demostraciones, novedades de insumos para unas, cejas y pestanas en nuestra cuenta oficial.
     </p>
 
     <!-- Visual Grid -->
