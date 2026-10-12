@@ -66,15 +66,15 @@
       <!-- Official Logo with image from Instagram (Centrado y Proporcional) -->
       <a href="#inicio" class="flex items-center gap-2.5 sm:gap-3 group flex-shrink-0 my-auto">
         <div class="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full p-0.5 bg-gradient-to-tr from-[#E57399] via-[#F29AB6] to-[#D4AF37] shadow-sm group-hover:scale-105 transition-transform flex-shrink-0 flex items-center justify-center">
-          <div class="w-full h-full rounded-full bg-white overflow-hidden flex items-center justify-center">
+          <div class="w-full h-full rounded-full bg-[#EE8AA4] overflow-hidden flex items-center justify-center">
             <img 
               src="<?= \App\Core\View::asset('assets/images/logo.jpg') ?>" 
               alt="RM Nails Boutique Logo Oficial" 
-              class="w-full h-full object-cover object-center rounded-full transform group-hover:scale-110 transition-transform duration-300"
+              class="w-full h-full object-cover object-center rounded-full transform group-hover:scale-105 transition-transform duration-300"
               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
             />
-            <div class="hidden w-full h-full bg-pink-50 rounded-full items-center justify-center">
-              <span class="font-serif font-black text-sm text-[#E57399]">RM</span>
+            <div class="hidden w-full h-full bg-[#EE8AA4] rounded-full items-center justify-center">
+              <span class="font-serif font-black text-sm text-white">RM</span>
             </div>
           </div>
         </div>

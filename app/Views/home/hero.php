@@ -69,13 +69,24 @@
           <div class="relative bg-white p-4 rounded-3xl shadow-2xl border border-pink-200/80 overflow-hidden transform hover:-rotate-1 transition-transform duration-500">
             <div class="relative h-96 w-full rounded-2xl overflow-hidden bg-pink-100 flex items-center justify-center">
               <img 
-                src="<?= \App\Core\View::asset('assets/images/logo.jpg') ?>" 
-                alt="RM Nails Boutique Imagen Oficial" 
+                src="<?= \App\Core\View::asset('assets/images/hero-showcase.jpg') ?>" 
+                alt="RM Nails Boutique Estudio e Insumos" 
                 class="w-full h-full object-cover"
               />
-              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent"></div>
               
-              <div class="absolute bottom-4 left-4 right-4 text-white">
+              <!-- Floating Official RM Boutique Seal Badge -->
+              <div class="absolute top-4 left-4 z-10 flex items-center gap-2.5 bg-white/95 backdrop-blur-md py-1.5 px-3 rounded-full shadow-lg border border-pink-200">
+                <div class="w-7 h-7 rounded-full overflow-hidden p-0.5 bg-gradient-to-tr from-[#E57399] via-[#F29AB6] to-[#D4AF37] flex items-center justify-center flex-shrink-0">
+                  <img src="<?= \App\Core\View::asset('assets/images/logo.jpg') ?>" alt="RM Logo" class="w-full h-full object-cover rounded-full" />
+                </div>
+                <div>
+                  <span class="font-serif font-bold text-xs text-gray-900 block leading-tight">RM Nails Boutique</span>
+                  <span class="text-[8px] text-[#C84B75] font-semibold uppercase tracking-wider block">Estudio & Insumos</span>
+                </div>
+              </div>
+
+              <div class="absolute bottom-4 left-4 right-4 text-white z-10">
                 <span class="inline-block bg-[#D4AF37] text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full mb-1">
                   RM Nails Boutique
                 </span>
