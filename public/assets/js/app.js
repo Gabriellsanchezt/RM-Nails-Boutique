@@ -818,6 +818,25 @@ function openCheckoutModal() {
   elements.checkoutTotalUsd.textContent = `$${totals.totalUsd.toFixed(2)}`;
   elements.checkoutTotalVes.textContent = `Bs. ${totals.totalVes.toLocaleString('es-VE', { minimumFractionDigits: 2 })}`;
 
+  // Limpiar cualquier alerta previa
+  const formAlert = document.getElementById('checkout-form-alert');
+  if (formAlert) {
+    formAlert.classList.add('hidden');
+    formAlert.textContent = '';
+  }
+
+  const nameInput = document.getElementById('customer-name');
+  const phoneInput = document.getElementById('customer-phone');
+  const cityInput = document.getElementById('customer-city');
+  const addressInput = document.getElementById('customer-address');
+
+  if (nameInput && !nameInput.value) clearFieldValidationState(nameInput, document.getElementById('error-customer-name'));
+  if (phoneInput && !phoneInput.value) clearFieldValidationState(phoneInput, document.getElementById('error-customer-phone'));
+  if (cityInput && !cityInput.value) clearFieldValidationState(cityInput, document.getElementById('error-customer-city'));
+  if (addressInput && !addressInput.value) clearFieldValidationState(addressInput, document.getElementById('error-customer-address'));
+
+  updateCheckoutAddressRequirement();
+
   elements.checkoutModal.classList.add('active');
   document.body.style.overflow = 'hidden';
 }
@@ -827,13 +846,16 @@ function closeCheckoutModal() {
   document.body.style.overflow = '';
 }
 
-// Validacion de campos del formulario de Checkout
+// Validacion estricta de campos del formulario de Checkout
 const CHECKOUT_VALIDATORS = {
   name: (val) => {
     const v = (val || '').trim();
     if (!v) return { valid: false, message: 'Por favor ingresa tu nombre completo.' };
+    if (/[0-9]/.test(v)) {
+      return { valid: false, message: 'El nombre solo puede contener letras (no se permiten numeros).' };
+    }
     if (v.length < 3) return { valid: false, message: 'El nombre debe tener al menos 3 caracteres.' };
-    if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s\.\-]+$/.test(v)) {
+    if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s\.\-]+$/.test(v)) {
       return { valid: false, message: 'El nombre solo debe contener letras y espacios.' };
     }
     return { valid: true };
@@ -842,6 +864,9 @@ const CHECKOUT_VALIDATORS = {
   phone: (val) => {
     const v = (val || '').trim();
     if (!v) return { valid: false, message: 'Por favor ingresa tu numero de telefono o WhatsApp.' };
+    if (/[a-zA-Z]/.test(v)) {
+      return { valid: false, message: 'El telefono no debe contener letras. Solo numeros.' };
+    }
     const digits = v.replace(/\D/g, '');
     if (digits.length < 10) {
       return { valid: false, message: 'Ingresa un telefono valido con al menos 10 digitos (ej. 0412 1234567).' };
@@ -855,6 +880,9 @@ const CHECKOUT_VALIDATORS = {
   city: (val) => {
     const v = (val || '').trim();
     if (!v) return { valid: false, message: 'Por favor indica la ciudad o estado (ej. Barquisimeto, Caracas).' };
+    if (/[0-9]/.test(v)) {
+      return { valid: false, message: 'La ciudad no puede contener numeros. Solo letras.' };
+    }
     if (v.length < 3) return { valid: false, message: 'La ciudad o estado debe tener al menos 3 caracteres.' };
     return { valid: true };
   },
@@ -1320,58 +1348,143 @@ document.addEventListener('DOMContentLoaded', () => {
     const phoneInput = document.getElementById('customer-phone');
     const cityInput = document.getElementById('customer-city');
     const addressInput = document.getElementById('customer-address');
+    const errorName = document.getElementById('error-customer-name');
+    const errorPhone = document.getElementById('error-customer-phone');
+    const errorCity = document.getElementById('error-customer-city');
+    const errorAddress = document.getElementById('error-customer-address');
 
+    // 1. Nombre Completo: Bloqueo de numeros en keydown + sanitizacion en input
     if (nameInput) {
+      nameInput.addEventListener('keydown', (e) => {
+        // Bloquear teclas numericas directamente
+        if (e.key && e.key.length === 1 && /[0-9]/.test(e.key) && !e.ctrlKey && !e.metaKey) {
+          e.preventDefault();
+          setFieldValidationState(nameInput, errorName, {
+            valid: false,
+            message: 'No se permiten numeros en el nombre.'
+          });
+        }
+      });
+
+      nameInput.addEventListener('input', () => {
+        // Sanitizar si se pegan numeros
+        if (/[0-9]/.test(nameInput.value)) {
+          nameInput.value = nameInput.value.replace(/[0-9]/g, '');
+          setFieldValidationState(nameInput, errorName, {
+            valid: false,
+            message: 'El nombre solo puede contener letras (no se permiten numeros).'
+          });
+          return;
+        }
+
+        if (!nameInput.value.trim()) {
+          clearFieldValidationState(nameInput, errorName);
+          return;
+        }
+
+        const res = CHECKOUT_VALIDATORS.name(nameInput.value);
+        setFieldValidationState(nameInput, errorName, res);
+      });
+
       nameInput.addEventListener('blur', () => {
         const res = CHECKOUT_VALIDATORS.name(nameInput.value);
-        setFieldValidationState(nameInput, document.getElementById('error-customer-name'), res);
-      });
-      nameInput.addEventListener('input', () => {
-        if (nameInput.classList.contains('border-rose-500')) {
-          const res = CHECKOUT_VALIDATORS.name(nameInput.value);
-          setFieldValidationState(nameInput, document.getElementById('error-customer-name'), res);
-        }
+        setFieldValidationState(nameInput, errorName, res);
       });
     }
 
+    // 2. Telefono / WhatsApp: Bloqueo de letras en keydown + sanitizacion en input
     if (phoneInput) {
+      phoneInput.addEventListener('keydown', (e) => {
+        // Bloquear letras directamente
+        if (e.key && e.key.length === 1 && !/[\d\s\+\-()]/.test(e.key) && !e.ctrlKey && !e.metaKey) {
+          e.preventDefault();
+          setFieldValidationState(phoneInput, errorPhone, {
+            valid: false,
+            message: 'Solo se permiten numeros en el telefono (no se permiten letras).'
+          });
+        }
+      });
+
+      phoneInput.addEventListener('input', () => {
+        // Sanitizar si se pegan letras
+        const sanitized = phoneInput.value.replace(/[^\d\s\+\-()]/g, '');
+        if (sanitized !== phoneInput.value) {
+          phoneInput.value = sanitized;
+          setFieldValidationState(phoneInput, errorPhone, {
+            valid: false,
+            message: 'Solo se permiten numeros en el telefono (no se permiten letras).'
+          });
+          return;
+        }
+
+        if (!phoneInput.value.trim()) {
+          clearFieldValidationState(phoneInput, errorPhone);
+          return;
+        }
+
+        const res = CHECKOUT_VALIDATORS.phone(phoneInput.value);
+        setFieldValidationState(phoneInput, errorPhone, res);
+      });
+
       phoneInput.addEventListener('blur', () => {
         const res = CHECKOUT_VALIDATORS.phone(phoneInput.value);
-        setFieldValidationState(phoneInput, document.getElementById('error-customer-phone'), res);
-      });
-      phoneInput.addEventListener('input', () => {
-        if (phoneInput.classList.contains('border-rose-500')) {
-          const res = CHECKOUT_VALIDATORS.phone(phoneInput.value);
-          setFieldValidationState(phoneInput, document.getElementById('error-customer-phone'), res);
-        }
+        setFieldValidationState(phoneInput, errorPhone, res);
       });
     }
 
+    // 3. Ciudad / Estado: Bloqueo de numeros en keydown + sanitizacion en input
     if (cityInput) {
+      cityInput.addEventListener('keydown', (e) => {
+        if (e.key && e.key.length === 1 && /[0-9]/.test(e.key) && !e.ctrlKey && !e.metaKey) {
+          e.preventDefault();
+          setFieldValidationState(cityInput, errorCity, {
+            valid: false,
+            message: 'No se permiten numeros en la ciudad o estado.'
+          });
+        }
+      });
+
+      cityInput.addEventListener('input', () => {
+        if (/[0-9]/.test(cityInput.value)) {
+          cityInput.value = cityInput.value.replace(/[0-9]/g, '');
+          setFieldValidationState(cityInput, errorCity, {
+            valid: false,
+            message: 'La ciudad solo puede contener letras.'
+          });
+          return;
+        }
+
+        if (!cityInput.value.trim()) {
+          clearFieldValidationState(cityInput, errorCity);
+          return;
+        }
+
+        const res = CHECKOUT_VALIDATORS.city(cityInput.value);
+        setFieldValidationState(cityInput, errorCity, res);
+      });
+
       cityInput.addEventListener('blur', () => {
         const res = CHECKOUT_VALIDATORS.city(cityInput.value);
-        setFieldValidationState(cityInput, document.getElementById('error-customer-city'), res);
-      });
-      cityInput.addEventListener('input', () => {
-        if (cityInput.classList.contains('border-rose-500')) {
-          const res = CHECKOUT_VALIDATORS.city(cityInput.value);
-          setFieldValidationState(cityInput, document.getElementById('error-customer-city'), res);
-        }
+        setFieldValidationState(cityInput, errorCity, res);
       });
     }
 
+    // 4. Direccion / Salon: Validacion en input y blur
     if (addressInput) {
+      addressInput.addEventListener('input', () => {
+        const deliveryType = document.querySelector('input[name="shipping_method"]:checked')?.value || 'Delivery en Barquisimeto';
+        if (!addressInput.value.trim() && deliveryType === 'Retiro en Tienda Barquisimeto') {
+          clearFieldValidationState(addressInput, errorAddress);
+          return;
+        }
+        const res = CHECKOUT_VALIDATORS.address(addressInput.value, deliveryType);
+        setFieldValidationState(addressInput, errorAddress, res);
+      });
+
       addressInput.addEventListener('blur', () => {
         const deliveryType = document.querySelector('input[name="shipping_method"]:checked')?.value || 'Delivery en Barquisimeto';
         const res = CHECKOUT_VALIDATORS.address(addressInput.value, deliveryType);
-        setFieldValidationState(addressInput, document.getElementById('error-customer-address'), res);
-      });
-      addressInput.addEventListener('input', () => {
-        if (addressInput.classList.contains('border-rose-500')) {
-          const deliveryType = document.querySelector('input[name="shipping_method"]:checked')?.value || 'Delivery en Barquisimeto';
-          const res = CHECKOUT_VALIDATORS.address(addressInput.value, deliveryType);
-          setFieldValidationState(addressInput, document.getElementById('error-customer-address'), res);
-        }
+        setFieldValidationState(addressInput, errorAddress, res);
       });
     }
 
@@ -1381,7 +1494,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (addressInput && addressInput.value.trim()) {
           const deliveryType = radio.value;
           const res = CHECKOUT_VALIDATORS.address(addressInput.value, deliveryType);
-          setFieldValidationState(addressInput, document.getElementById('error-customer-address'), res);
+          setFieldValidationState(addressInput, errorAddress, res);
         }
       });
     });

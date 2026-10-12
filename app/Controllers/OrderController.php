@@ -14,19 +14,23 @@ class OrderController extends Controller
 
         $errors = [];
 
-        // 1. Validar Nombre
+        // 1. Validar Nombre (Sin numeros)
         $customerName = trim($input['name'] ?? '');
         if (empty($customerName) || mb_strlen($customerName) < 3) {
             $errors['name'] = 'Por favor ingresa tu nombre completo (al menos 3 caracteres).';
-        } elseif (!preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s\.\-]+$/u', $customerName)) {
+        } elseif (preg_match('/\d/', $customerName)) {
+            $errors['name'] = 'El nombre no puede contener numeros. Solo letras y espacios.';
+        } elseif (!preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s\.\-]+$/u', $customerName)) {
             $errors['name'] = 'El nombre solo debe contener letras y espacios.';
         }
 
-        // 2. Validar Telefono
+        // 2. Validar Telefono (Sin letras)
         $customerPhone = trim($input['phone'] ?? '');
         $digitsOnly = preg_replace('/\D/', '', $customerPhone);
         if (empty($customerPhone) || strlen($digitsOnly) < 10) {
             $errors['phone'] = 'Por favor ingresa un numero de telefono valido con al menos 10 digitos (ej. 0412 1234567).';
+        } elseif (preg_match('/[a-zA-Z]/', $customerPhone)) {
+            $errors['phone'] = 'El telefono no debe contener letras. Solo numeros y formato telefonico.';
         }
 
         // 3. Validar Metodo de Entrega
@@ -40,10 +44,12 @@ class OrderController extends Controller
             $deliveryMethod = 'Delivery en Barquisimeto';
         }
 
-        // 4. Validar Ciudad
+        // 4. Validar Ciudad (Sin numeros)
         $customerCity = trim($input['city'] ?? '');
         if (empty($customerCity) || mb_strlen($customerCity) < 3) {
             $errors['city'] = 'Por favor indica la ciudad o estado de entrega (ej. Barquisimeto, Caracas).';
+        } elseif (preg_match('/\d/', $customerCity)) {
+            $errors['city'] = 'La ciudad o estado no debe contener numeros.';
         }
 
         // 5. Validar Direccion segun metodo de entrega

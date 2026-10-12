@@ -50,7 +50,7 @@
 <!-- Main Header -->
 <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-pink-100 shadow-sm transition-all duration-300">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-20 gap-4">
+    <div class="flex items-center justify-between h-16 sm:h-18 gap-3 sm:gap-4">
       
       <!-- Mobile Menu Toggle Button -->
       <button 
@@ -63,26 +63,26 @@
         </svg>
       </button>
 
-      <!-- Official Logo with image from Instagram -->
-      <a href="#inicio" class="flex items-center gap-3.5 group flex-shrink-0">
-        <div class="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full p-0.5 bg-gradient-to-tr from-[#E57399] via-[#F29AB6] to-[#D4AF37] shadow-sm group-hover:scale-105 transition-transform flex-shrink-0">
+      <!-- Official Logo with image from Instagram (Centrado y Proporcional) -->
+      <a href="#inicio" class="flex items-center gap-2.5 sm:gap-3 group flex-shrink-0 my-auto">
+        <div class="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full p-0.5 bg-gradient-to-tr from-[#E57399] via-[#F29AB6] to-[#D4AF37] shadow-sm group-hover:scale-105 transition-transform flex-shrink-0 flex items-center justify-center">
           <div class="w-full h-full rounded-full bg-white overflow-hidden flex items-center justify-center">
             <img 
               src="<?= \App\Core\View::asset('assets/images/logo.jpg') ?>" 
               alt="RM Nails Boutique Logo Oficial" 
-              class="w-full h-full object-cover rounded-full transform group-hover:scale-110 transition-transform duration-300"
+              class="w-full h-full object-cover object-center rounded-full transform group-hover:scale-110 transition-transform duration-300"
               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
             />
             <div class="hidden w-full h-full bg-pink-50 rounded-full items-center justify-center">
-              <span class="font-serif font-black text-lg text-[#E57399]">RM</span>
+              <span class="font-serif font-black text-sm text-[#E57399]">RM</span>
             </div>
           </div>
         </div>
-        <div class="flex flex-col">
-          <span class="font-serif font-bold text-lg sm:text-xl text-gray-900 tracking-tight leading-none group-hover:text-[#E57399] transition-colors">
+        <div class="flex flex-col justify-center">
+          <span class="font-serif font-bold text-base sm:text-lg text-gray-900 tracking-tight leading-tight group-hover:text-[#E57399] transition-colors">
             <?= htmlspecialchars($appName ?? 'RM Nails Boutique') ?>
           </span>
-          <span class="text-[10px] sm:text-[11px] font-medium text-gray-400 tracking-wider uppercase mt-1">
+          <span class="text-[9px] sm:text-[10px] font-semibold text-gray-400 tracking-widest uppercase">
             <?= htmlspecialchars($slogan ?? 'La boutique de las unas') ?>
           </span>
         </div>
