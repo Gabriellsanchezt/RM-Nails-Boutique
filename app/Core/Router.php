@@ -53,43 +53,77 @@ class Router
             $requestUri = '/';
         }
 
-        foreach ($this->routes as $route) {
-            if ($route['method'] !== $requestMethod) {
-                continue;
-            }
-
-            // Pattern matching
-            $pattern = preg_replace('/\{([a-zA-Z0-9_]+)\}/', '(?P<$1>[^/]+)', $route['path']);
-            $pattern = '#^' . $pattern . '$#';
-
-            if (preg_match($pattern, $requestUri, $matches)) {
-                $params = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
-
-                if (is_callable($route['handler'])) {
-                    call_user_func_array($route['handler'], $params);
-                    return;
+        try {
+            foreach ($this->routes as $route) {
+                if ($route['method'] !== $requestMethod) {
+                    continue;
                 }
 
-                if (is_array($route['handler'])) {
-                    [$controllerClass, $action] = $route['handler'];
-                    if (class_exists($controllerClass)) {
-                        $controller = new $controllerClass();
-                        if (method_exists($controller, $action)) {
-                            call_user_func_array([$controller, $action], $params);
-                            return;
+                // Pattern matching
+                $pattern = preg_replace('/\{([a-zA-Z0-9_]+)\}/', '(?P<$1>[^/]+)', $route['path']);
+                $pattern = '#^' . $pattern . '$#';
+
+                if (preg_match($pattern, $requestUri, $matches)) {
+                    $params = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
+
+                    if (is_callable($route['handler'])) {
+                        call_user_func_array($route['handler'], $params);
+                        return;
+                    }
+
+                    if (is_array($route['handler'])) {
+                        [$controllerClass, $action] = $route['handler'];
+                        if (class_exists($controllerClass)) {
+                            $controller = new $controllerClass();
+                            if (method_exists($controller, $action)) {
+                                call_user_func_array([$controller, $action], $params);
+                                return;
+                            }
                         }
                     }
                 }
             }
-        }
 
-        // 404 Not Found
-        http_response_code(404);
-        header('Content-Type: application/json');
-        echo json_encode([
-            'status' => 'error',
-            'message' => 'Ruta no encontrada (404) - RM Nails Boutique',
-            'requested_uri' => $requestUri
-        ]);
+            // 404 Not Found
+            http_response_code(404);
+            $isJson = str_starts_with($requestUri, '/api/') || str_contains($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json');
+
+            if ($isJson) {
+                header('Content-Type: application/json');
+                echo json_encode([
+                    'status' => 'error',
+                    'code' => 404,
+                    'message' => 'Ruta no encontrada (404) - RM Nails Boutique',
+                    'requested_uri' => $requestUri
+                ]);
+                return;
+            }
+
+            View::render('errors.404', [
+                'appName' => Config::get('app_name', 'RM Nails Boutique'),
+                'slogan' => Config::get('slogan', 'La boutique de las unas'),
+                'requestedUri' => $requestUri
+            ], 'main');
+
+        } catch (\Throwable $e) {
+            http_response_code(500);
+            $isJson = str_starts_with($requestUri, '/api/') || str_contains($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json');
+
+            if ($isJson) {
+                header('Content-Type: application/json');
+                echo json_encode([
+                    'status' => 'error',
+                    'code' => 500,
+                    'message' => 'Error interno al procesar la solicitud en el servidor.'
+                ]);
+                return;
+            }
+
+            View::render('errors.500', [
+                'appName' => Config::get('app_name', 'RM Nails Boutique'),
+                'slogan' => Config::get('slogan', 'La boutique de las unas'),
+                'errorMessage' => $e->getMessage()
+            ], 'main');
+        }
     }
 }

@@ -64,6 +64,7 @@
   <?php \App\Core\View::component('modals/quickview', $data ?? []); ?>
   <?php \App\Core\View::component('modals/wishlist', $data ?? []); ?>
   <?php \App\Core\View::component('modals/rate', $data ?? []); ?>
+  <?php \App\Core\View::component('modals/error_modal', $data ?? []); ?>
 
   <!-- Floating WhatsApp Quick Button con Icono SVG -->
   <div class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 flex items-center gap-2">

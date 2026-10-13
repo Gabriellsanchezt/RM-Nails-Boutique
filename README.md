@@ -40,12 +40,16 @@ rm-nails-boutique/
 │       │   ├── features.php       # Banners de tienda fisica, delivery y envios nacionales
 │       │   ├── reviews.php        # Muro de testimonios de clientas
 │       │   ├── instagram.php      # Feed de comunidad @rmnailsboutique
-│       │   └── index.php          # Ensamblador de vistas home
+│       │   ├── index.php          # Ensamblador de vistas home
+│       ├── errors/
+│       │   ├── 404.php            # Pagina boutique para rutas no encontradas
+│       │   └── 500.php            # Pagina boutique para interrupciones del servidor
 │       └── modals/
 │           ├── cart_drawer.php    # Carrito lateral deslizante (Slide-Over)
 │           ├── checkout.php       # Checkout modal con generador WhatsApp
 │           ├── quickview.php      # Modal de vista rapida de producto
-│           └── wishlist.php       # Modal de favoritos
+│           ├── wishlist.php       # Modal de favoritos
+│           └── error_modal.php    # Ventana de error elegante para contingencias de red/servidor
 ├── assets/                        # Carpeta dedicada de recursos estaticos
 │   ├── css/
 │   │   └── styles.css             # Estilos boutique, gradientes oro/rosa

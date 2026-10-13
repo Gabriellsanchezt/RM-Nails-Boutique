@@ -349,7 +349,15 @@ function initElements() {
     
     wishlistModal: document.getElementById('wishlist-modal'),
     wishlistItemsList: document.getElementById('wishlist-items-list'),
-    wishlistEmptyState: document.getElementById('wishlist-empty-state')
+    wishlistEmptyState: document.getElementById('wishlist-empty-state'),
+
+    errorModal: document.getElementById('error-modal'),
+    errorModalTitle: document.getElementById('error-modal-title'),
+    errorModalBadge: document.getElementById('error-modal-badge'),
+    errorModalMessage: document.getElementById('error-modal-message'),
+    errorModalRetryBtn: document.getElementById('error-modal-retry-btn'),
+    errorModalRetryText: document.getElementById('error-modal-retry-text'),
+    errorModalWhatsappBtn: document.getElementById('error-modal-whatsapp-btn')
   };
 }
 
@@ -1127,13 +1135,19 @@ async function handleCheckoutSubmit(event) {
   };
 
   let targetWaUrl = '';
+  let backendFailed = false;
 
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 4000);
+
     const res = await fetch(getApiUrl('/api/order/whatsapp'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
+      signal: controller.signal
     });
+    clearTimeout(timeoutId);
 
     const result = await res.json();
 
@@ -1156,9 +1170,12 @@ async function handleCheckoutSubmit(event) {
 
     if (res.ok && result.status === 'success' && result.data?.whatsAppUrl) {
       targetWaUrl = result.data.whatsAppUrl;
+    } else {
+      backendFailed = true;
     }
   } catch (err) {
-    console.info('Backend API request skipped, using client-side list generator.', err);
+    backendFailed = true;
+    console.info('Backend API request no respondio a tiempo, preparando contingencia.', err);
   }
 
   // Generador local en formato de lista para atencion al cliente sin emojis
@@ -1193,6 +1210,20 @@ async function handleCheckoutSubmit(event) {
 
   resetSubmitBtn();
   closeCheckoutModal();
+
+  if (backendFailed) {
+    // Cuando el servidor no responde o no da respuesta a tiempo, mostrar la ventana de error elegante
+    showErrorModal({
+      title: 'El servidor no respondio a tiempo',
+      badge: 'PEDIDO GENERADO Y PROTEGIDO',
+      message: 'Hubo una demora de conexion con el servidor web. Sin embargo, tu lista de insumos y datos estan 100% listos. Puedes enviarlos de inmediato a nuestra asesora por WhatsApp o reintentar en linea.',
+      retryLabel: 'Reintentar Envio en Linea',
+      retryFn: () => handleCheckoutSubmit(event),
+      waUrl: targetWaUrl
+    });
+    return;
+  }
+
   showToast('Abriendo WhatsApp oficial para atender tu orden...', 'success');
 
   setTimeout(() => {
@@ -1349,11 +1380,103 @@ function showToast(message, type = 'info') {
 
   container.appendChild(toast);
 
-  setTimeout(() => {
-    toast.classList.add('hiding');
-    setTimeout(() => toast.remove(), 300);
-  }, 3200);
 }
+
+// =========================================================================
+// VENTANA Y MODAL DE ERROR CON DISENO BOUTIQUE (CONTINGENCIA Y ASISTENCIA)
+// Se dispara cuando la red no responde, hay timeout o error del servidor
+// =========================================================================
+let lastFailedAction = null;
+
+function showErrorModal(options = {}) {
+  const modal = document.getElementById('error-modal');
+  if (!modal) return;
+
+  const titleEl = document.getElementById('error-modal-title');
+  const badgeEl = document.getElementById('error-modal-badge');
+  const messageEl = document.getElementById('error-modal-message');
+  const retryBtn = document.getElementById('error-modal-retry-btn');
+  const retryTextEl = document.getElementById('error-modal-retry-text');
+  const waBtn = document.getElementById('error-modal-whatsapp-btn');
+
+  if (titleEl) titleEl.textContent = options.title || 'No pudimos conectar en este momento';
+  if (badgeEl) badgeEl.textContent = options.badge || 'Aviso de Conexion o Respuesta';
+  if (messageEl) messageEl.textContent = options.message || 'El servidor o la red no respondieron a tiempo. Tu seleccion de insumos sigue a salvo y puedes reintentar o enviar tu pedido directamente a WhatsApp.';
+  
+  if (options.retryFn && typeof options.retryFn === 'function') {
+    lastFailedAction = options.retryFn;
+    if (retryBtn) retryBtn.classList.remove('hidden');
+    if (retryTextEl) retryTextEl.textContent = options.retryLabel || 'Reintentar Conexion';
+  } else {
+    lastFailedAction = null;
+    if (retryBtn) retryBtn.classList.add('hidden');
+  }
+
+  if (waBtn) {
+    if (options.waUrl) {
+      waBtn.href = options.waUrl;
+    } else {
+      const defaultMsg = options.waMessage || 'Hola RM Nails Boutique, tuve un inconveniente de conexion en la tienda web y deseo atencion directa.';
+      waBtn.href = 'https://wa.me/584120549526?text=' + encodeURIComponent(defaultMsg);
+    }
+  }
+
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeErrorModal() {
+  const modal = document.getElementById('error-modal');
+  if (modal) {
+    modal.classList.remove('active');
+  }
+  document.body.style.overflow = '';
+}
+
+function retryLastAction() {
+  closeErrorModal();
+  if (typeof lastFailedAction === 'function') {
+    const fn = lastFailedAction;
+    lastFailedAction = null;
+    showToast('Reintentando accion...', 'info');
+    setTimeout(() => fn(), 300);
+  } else {
+    showToast('Comprobando conexion con el servidor...', 'info');
+    fetchOfficialRate();
+  }
+}
+
+// Exponer globalmente para pruebas o integraciones
+window.showErrorModal = showErrorModal;
+window.closeErrorModal = closeErrorModal;
+
+// Detectar perdida o recuperacion de conexion a internet en tiempo real
+window.addEventListener('offline', () => {
+  showErrorModal({
+    title: 'Sin Conexion a Internet',
+    badge: 'MODO DESCONECTADO',
+    message: 'Se ha interrumpido la conexion a internet de tu dispositivo. Puedes seguir viendo los productos del catalogo en pantalla o contactarnos directamente por WhatsApp.',
+    retryLabel: 'Comprobar Conexion',
+    retryFn: () => {
+      if (navigator.onLine) {
+        showToast('Conexion restablecida con exito.', 'success');
+        fetchOfficialRate();
+      } else {
+        showErrorModal({
+          title: 'Aun Sin Conexion',
+          badge: 'MODO DESCONECTADO',
+          message: 'Continuas sin conexion a internet. Por favor revisa tus datos moviles o senal WiFi.'
+        });
+      }
+    }
+  });
+});
+
+window.addEventListener('online', () => {
+  closeErrorModal();
+  showToast('Conexion restablecida con exito.', 'success');
+  fetchOfficialRate();
+});
 
 function toggleMobileMenu() {
   const drawer = elements.mobileMenuDrawer;
