@@ -18,17 +18,17 @@ rm-nails-boutique/
 │   │   ├── Config.php             # Lector centralizado de configuraciones y .env
 │   │   ├── Controller.php         # Controlador base con renderizador de vistas y respuestas JSON
 │   │   ├── Model.php              # Modelo base
+│   │   ├── RateService.php        # Tasa de cambio BCV automatica con respaldo en cache congelada
 │   │   ├── Router.php             # Enrutador HTTP (GET, POST, parametros dinamicos)
 │   │   └── View.php               # Motor de renderizado con layouts y sub-componentes
 │   ├── Controllers/
 │   │   ├── HomeController.php     # Controlador principal de la tienda
 │   │   ├── ProductController.php  # Endpoints REST de catalogo y filtrado
+│   │   ├── RateController.php     # Endpoint REST de tasa de cambio oficial
 │   │   └── OrderController.php    # Procesamiento y validacion de ordenes WhatsApp
 │   ├── Models/
 │   │   ├── Product.php            # Modelo de catalogo, stock, precios USD/VES y filtros
 │   │   └── Setting.php            # Parametros de negocio, tasas y delivery
-│   ├── Services/
-│   │   └── ExchangeRateService.php# Tasa de cambio BCV automatica con respaldo en cache congelada
 │   └── Views/
 │       ├── layouts/
 │       │   ├── main.php           # Layout maestro (HTML head, scripts, modals)
@@ -46,17 +46,18 @@ rm-nails-boutique/
 │           ├── checkout.php       # Checkout modal con generador WhatsApp
 │           ├── quickview.php      # Modal de vista rapida de producto
 │           └── wishlist.php       # Modal de favoritos
+├── assets/                        # Carpeta dedicada de recursos estaticos
+│   ├── css/
+│   │   └── styles.css             # Estilos boutique, gradientes oro/rosa
+│   ├── js/
+│   │   └── app.js                 # Logica de carrito resistente, validaciones y pedidos
+│   └── images/
+│       ├── logo.jpg               # Monograma oficial centrado opticamente
+│       └── hero-showcase.jpg      # Fotografia de estudio estetico
 ├── config/
 │   └── app.php                    # Configuracion general (nombre, WhatsApp, tasas, delivery)
 ├── public/
-│   ├── assets/
-│   │   ├── css/
-│   │   │   └── styles.css         # Estilos boutique, gradientes oro/rosa
-│   │   ├── js/
-│   │   │   └── app.js             # Reactividad del carrito, validaciones y pedidos
-│   │   └── images/
-│   │       ├── logo.jpg           # Monograma oficial centrado opticamente
-│   │       └── hero-showcase.jpg  # Fotografia de estudio estetico
+│   ├── assets/                    # Espejo publico de recursos web (css, js, images)
 │   ├── .htaccess                  # Reescritura de URLs para Apache/cPanel
 │   └── index.php                  # Front Controller (punto de entrada)
 ├── .env.example                   # Plantilla de variables de entorno

@@ -183,26 +183,41 @@ const STATE = {
   quickViewProduct: null
 };
 
-// Cargar estado persistente
+// Cargar estado inicial (El carrito SIEMPRE inicia en 0 al recargar o reiniciar la pagina)
 function loadPersistedState() {
   try {
-    const savedCart = localStorage.getItem('rm_cart');
-    if (savedCart) STATE.cart = JSON.parse(savedCart);
+    // REGLA FUNDAMENTAL DE E-COMMERCE:
+    // Cada vez que se reinicia o recarga la pagina, los productos seleccionados para el carrito inician en 0.
+    STATE.cart = [];
+    localStorage.removeItem('rm_cart');
+    sessionStorage.removeItem('rm_cart');
     
     const savedWishlist = localStorage.getItem('rm_wishlist');
-    if (savedWishlist) STATE.wishlist = JSON.parse(savedWishlist);
+    if (savedWishlist) {
+      try {
+        const parsed = JSON.parse(savedWishlist);
+        if (Array.isArray(parsed)) STATE.wishlist = parsed;
+      } catch (e) {
+        STATE.wishlist = [];
+      }
+    }
 
     const savedCurrency = localStorage.getItem('rm_currency');
-    if (savedCurrency) STATE.currency = savedCurrency;
+    if (savedCurrency && (savedCurrency === 'USD' || savedCurrency === 'VES')) {
+      STATE.currency = savedCurrency;
+    }
 
     // Recuperar tasa congelada en caso de conexion fallida
     const frozenRate = localStorage.getItem('rm_frozen_rate');
     if (frozenRate) {
-      STATE.exchangeRate = parseFloat(frozenRate) || 875.65;
-      STATE.isRateFrozen = true;
+      const parsedRate = parseFloat(frozenRate);
+      if (!isNaN(parsedRate) && parsedRate > 0) {
+        STATE.exchangeRate = parsedRate;
+        STATE.isRateFrozen = true;
+      }
     }
   } catch (e) {
-    console.warn('Error leyendo localStorage', e);
+    console.warn('Error leyendo almacenamiento local', e);
   }
 }
 
@@ -217,24 +232,39 @@ function getApiUrl(endpoint) {
 
 // Consultar API de tasa oficial y congelar en caso de fallo
 async function fetchOfficialRate() {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 3500);
+
   try {
-    const res = await fetch(getApiUrl('/api/rate'), { cache: 'no-store' });
+    const res = await fetch(getApiUrl('/api/rate'), { 
+      cache: 'no-store',
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId);
+
     if (res.ok) {
       const json = await res.json();
-      if (json.status === 'success' && json.data && json.data.rate) {
-        STATE.exchangeRate = parseFloat(json.data.rate);
-        STATE.rateSource = json.data.source || 'BCV Oficial';
-        STATE.isRateFrozen = Boolean(json.data.frozen);
+      if (json && json.status === 'success' && json.data && json.data.rate) {
+        const parsedRate = parseFloat(json.data.rate);
+        if (!isNaN(parsedRate) && parsedRate > 0) {
+          STATE.exchangeRate = parsedRate;
+          STATE.rateSource = json.data.source || 'BCV Oficial';
+          STATE.isRateFrozen = Boolean(json.data.frozen);
 
-        // Congelar en localStorage para contingencia de conexion
-        localStorage.setItem('rm_frozen_rate', STATE.exchangeRate.toString());
-        updateCurrencyDisplay();
-        renderProducts();
-        renderCartDrawer();
-        return;
+          // Congelar en localStorage para contingencia de conexion
+          try {
+            localStorage.setItem('rm_frozen_rate', STATE.exchangeRate.toString());
+          } catch (e) {}
+
+          updateCurrencyDisplay();
+          renderProducts();
+          renderCartDrawer();
+          return;
+        }
       }
     }
   } catch (err) {
+    clearTimeout(timeoutId);
     console.info('Problema consultando la API en vivo. Congelando tasa en ultimo valor registrado.', err);
     STATE.isRateFrozen = true;
   }
@@ -243,10 +273,13 @@ async function fetchOfficialRate() {
 }
 
 function persistCart() {
+  // El carrito vive exclusivamente en la sesion de navegacion activa en memoria:
+  // Cualquier recarga o reinicio de pagina garantiza que el carrito inicie en 0.
   try {
-    localStorage.setItem('rm_cart', JSON.stringify(STATE.cart));
+    localStorage.removeItem('rm_cart');
+    sessionStorage.removeItem('rm_cart');
   } catch (e) {
-    console.warn(e);
+    // Ignorar restricciones en entornos aislados
   }
 }
 
@@ -258,10 +291,13 @@ function persistWishlist() {
   }
 }
 
-// Formateador de precios (USD / Bs)
+// Formateador de precios robusto (USD / Bs)
 function formatPrice(usdAmount) {
-  const usdFormatted = `$${usdAmount.toFixed(2)}`;
-  const vesAmount = usdAmount * STATE.exchangeRate;
+  const validUsd = typeof usdAmount === 'number' && !isNaN(usdAmount) ? Math.max(0, usdAmount) : 0;
+  const validRate = typeof STATE.exchangeRate === 'number' && !isNaN(STATE.exchangeRate) && STATE.exchangeRate > 0 ? STATE.exchangeRate : 46.50;
+
+  const usdFormatted = `$${validUsd.toFixed(2)}`;
+  const vesAmount = validUsd * validRate;
   const vesFormatted = `Bs. ${vesAmount.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
   if (STATE.currency === 'VES') {
@@ -317,18 +353,28 @@ function initElements() {
   };
 }
 
+// Helper para normalizar busquedas ignorando tildes y mayusculas
+function normalizeSearchTerm(str) {
+  return (str || '')
+    .toString()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/ñ/g, 'n');
+}
+
 // Renderizado de Catalogo
 function renderProducts() {
   if (!elements.productsGrid) return;
   
   let filtered = PRODUCTS.filter(prod => {
     const matchesCat = STATE.category === 'all' || prod.category === STATE.category;
-    const query = STATE.searchQuery.trim().toLowerCase();
+    const query = normalizeSearchTerm(STATE.searchQuery.trim());
     const matchesSearch = !query || 
-      prod.name.toLowerCase().includes(query) || 
-      prod.description.toLowerCase().includes(query) ||
-      prod.categoryName.toLowerCase().includes(query) ||
-      prod.features.some(f => f.toLowerCase().includes(query));
+      normalizeSearchTerm(prod.name).includes(query) || 
+      normalizeSearchTerm(prod.description).includes(query) ||
+      normalizeSearchTerm(prod.categoryName).includes(query) ||
+      (Array.isArray(prod.features) && prod.features.some(f => normalizeSearchTerm(f).includes(query)));
     
     return matchesCat && matchesSearch;
   });
@@ -370,6 +416,7 @@ function renderProducts() {
             alt="${product.name}" 
             class="product-img absolute inset-0 w-full h-full object-cover object-center"
             loading="lazy"
+            onerror="this.onerror=null; this.src='assets/images/logo.jpg'; this.classList.add('object-contain', 'p-6', 'bg-pink-50');"
           />
           
           <div class="absolute top-3 left-3 flex flex-col gap-1 z-10">
@@ -463,14 +510,15 @@ function renderProducts() {
   }).join('');
 }
 
-// Gestion de Carrito
+// Gestion de Carrito Robusta
 function addToCart(productId, qty = 1) {
   const product = PRODUCTS.find(p => p.id === productId);
   if (!product) return;
 
+  const validQty = Math.min(99, Math.max(1, parseInt(qty, 10) || 1));
   const existing = STATE.cart.find(item => item.id === productId);
   if (existing) {
-    existing.quantity += qty;
+    existing.quantity = Math.min(99, existing.quantity + validQty);
   } else {
     STATE.cart.push({
       id: product.id,
@@ -478,7 +526,7 @@ function addToCart(productId, qty = 1) {
       priceUsd: product.priceUsd,
       image: product.image,
       categoryName: product.categoryName,
-      quantity: qty
+      quantity: validQty
     });
   }
 
@@ -492,10 +540,13 @@ function updateCartQuantity(productId, delta) {
   const item = STATE.cart.find(i => i.id === productId);
   if (!item) return;
 
-  item.quantity += delta;
-  if (item.quantity <= 0) {
+  const validDelta = parseInt(delta, 10) || 0;
+  const nextQty = item.quantity + validDelta;
+
+  if (nextQty <= 0) {
     removeFromCart(productId, false);
   } else {
+    item.quantity = Math.min(99, nextQty);
     persistCart();
     updateCartCounters();
     renderCartDrawer();
@@ -525,25 +576,29 @@ function clearCart() {
 }
 
 function updateCartCounters() {
-  const totalCount = STATE.cart.reduce((sum, item) => sum + item.quantity, 0);
-  elements.cartCountBadges.forEach(badge => {
-    badge.textContent = totalCount;
-    if (totalCount > 0) {
-      badge.classList.remove('hidden');
-    } else {
-      badge.classList.add('hidden');
-    }
-  });
+  const totalCount = (STATE.cart || []).reduce((sum, item) => sum + (parseInt(item.quantity, 10) || 0), 0);
+  if (elements.cartCountBadges) {
+    elements.cartCountBadges.forEach(badge => {
+      badge.textContent = totalCount;
+      if (totalCount > 0) {
+        badge.classList.remove('hidden');
+      } else {
+        badge.classList.add('hidden');
+      }
+    });
+  }
 
-  const totalWishlist = STATE.wishlist.length;
-  elements.wishlistCountBadges.forEach(badge => {
-    badge.textContent = totalWishlist;
-    if (totalWishlist > 0) {
-      badge.classList.remove('hidden');
-    } else {
-      badge.classList.add('hidden');
-    }
-  });
+  const totalWishlist = (STATE.wishlist || []).length;
+  if (elements.wishlistCountBadges) {
+    elements.wishlistCountBadges.forEach(badge => {
+      badge.textContent = totalWishlist;
+      if (totalWishlist > 0) {
+        badge.classList.remove('hidden');
+      } else {
+        badge.classList.add('hidden');
+      }
+    });
+  }
 }
 
 function calculateCartTotals() {
@@ -575,9 +630,23 @@ function renderCartDrawer() {
   const totals = calculateCartTotals();
 
   if (STATE.cart.length === 0) {
-    elements.cartItemsList.classList.add('hidden');
-    elements.cartEmptyState.classList.remove('hidden');
-    document.getElementById('cart-checkout-footer').classList.add('hidden');
+    if (elements.cartItemsList) elements.cartItemsList.classList.add('hidden');
+    if (elements.cartEmptyState) elements.cartEmptyState.classList.remove('hidden');
+    const footer = document.getElementById('cart-checkout-footer');
+    if (footer) footer.classList.add('hidden');
+
+    const progressElem = document.getElementById('free-delivery-progress');
+    const progressText = document.getElementById('free-delivery-text');
+    if (progressElem && progressText) {
+      progressElem.style.width = '0%';
+      progressElem.className = 'h-1.5 rounded-full bg-pink-500 transition-all duration-300';
+      progressText.innerHTML = 'Agrega <strong>$35.00</strong> mas para delivery gratis en Bqto';
+    }
+
+    if (elements.cartSubtotalUsd) elements.cartSubtotalUsd.textContent = '$0.00';
+    if (elements.cartSubtotalVes) elements.cartSubtotalVes.textContent = 'Bs. 0.00';
+    if (elements.cartTotalUsd) elements.cartTotalUsd.textContent = '$0.00';
+    if (elements.cartTotalVes) elements.cartTotalVes.textContent = 'Bs. 0.00';
     return;
   }
 
@@ -1310,6 +1379,7 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchOfficialRate();
   updateCurrencyDisplay();
   updateCartCounters();
+  renderCartDrawer();
   renderProducts();
 
   const handleSearchInput = (val) => {

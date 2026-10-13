@@ -211,7 +211,12 @@ body {
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.drawer-content.active {
+.drawer-content.drawer-left {
+  transform: translateX(-100%);
+}
+
+.drawer-content.active,
+.drawer-content.drawer-left.active {
   transform: translateX(0);
 }
 
@@ -239,29 +244,49 @@ body {
 /* Floating Toast notifications */
 #toast-container {
   position: fixed;
-  bottom: 24px;
-  left: 24px;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
   z-index: 9999;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   pointer-events: none;
+}
+
+@media (min-width: 640px) {
+  #toast-container {
+    bottom: 24px;
+    left: 24px;
+    right: auto;
+    gap: 10px;
+  }
 }
 
 .toast {
   pointer-events: auto;
-  min-width: 280px;
-  max-width: 380px;
-  padding: 12px 18px;
+  width: 100%;
+  max-width: 100%;
+  padding: 12px 16px;
   border-radius: 12px;
   background: #FFFFFF;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(229, 115, 153, 0.2);
   border-left: 4px solid var(--primary-pink);
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   animation: toast-slide-in 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+@media (min-width: 640px) {
+  .toast {
+    width: auto;
+    min-width: 280px;
+    max-width: 380px;
+    padding: 12px 18px;
+    gap: 12px;
+  }
 }
 
 @keyframes toast-slide-in {
@@ -286,6 +311,28 @@ body {
   color: #FFFFFF;
   border-color: var(--primary-pink);
   box-shadow: 0 4px 12px var(--shadow-pink);
+}
+
+/* Mobile Scrolling Utilities & Touch Optimizations */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* iOS Safari: Prevent automatic zoom on focus while maintaining clean aesthetics */
+@media (max-width: 768px) {
+  input[type="text"],
+  input[type="tel"],
+  input[type="number"],
+  select,
+  textarea {
+    font-size: 16px;
+  }
 }
 
 /* Marquee for Notification Top Bar */
